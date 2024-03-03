@@ -7,7 +7,7 @@ namespace ArtifactWidgets {
 
  struct AlignmentComboboxPrivate;
 
- class __DLL__ AlignmentCombobox :public QComboBox {
+ class __declspec(export) AlignmentCombobox :public QComboBox {
   Q_OBJECT
  private:
 

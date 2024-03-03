@@ -40,6 +40,15 @@
     <Filter Include="ソース ファイル\Dock">
       <UniqueIdentifier>{ecb5ecd6-8385-4bbb-b08b-84c08ad0b359}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Common">
+      <UniqueIdentifier>{9c7919f5-1124-4e87-86eb-223f322f739d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\NewFilter2">
+      <UniqueIdentifier>{9bc85e78-34d4-4d70-a40f-f69ea5d8ec87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Color">
+      <UniqueIdentifier>{726ecd7f-5a40-4de6-a41a-c0cea3d49f98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
@@ -63,5 +72,31 @@
     <ClInclude Include="include\Common\AlignmentCombobox.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
+    <ClInclude Include="include\Common\CommonHeader.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioInclude.hpp">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\CommandAction.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\CommonApplicationSignal.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Color\ColorViewLabel.hpp">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Color\VectorScopeWidget.hpp">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Common\AlignmentComboBox.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\VectorScopeWidget.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
