@@ -128,7 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
+    <ClInclude Include="include\Audio\ArtifactAudioMixierWidget.hpp" />
+    <ClInclude Include="include\Dock\DockWidget.hpp" />
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

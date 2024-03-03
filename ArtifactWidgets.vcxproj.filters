@@ -19,10 +19,34 @@
     <Filter Include="ヘッダー ファイル\Image">
       <UniqueIdentifier>{39924927-d7bc-4389-8092-ef9115300f40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Audio">
+      <UniqueIdentifier>{710f0180-2ac1-4997-a9a0-24fbc8cbfe16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Color">
+      <UniqueIdentifier>{2ffe4135-6ebe-416d-ac72-4d5eb840e5d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Dock">
+      <UniqueIdentifier>{d7e7ca42-0132-4b42-8fda-5057351b3954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Common">
+      <UniqueIdentifier>{f3e7ba94-b9f3-40fd-9738-56e4067c5a10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
       <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArtifactAbstractWidget.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
+      <Filter>ヘッダー ファイル\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\ArtifactAudioMixierWidget.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dock\DockWidget.hpp">
+      <Filter>ヘッダー ファイル\Dock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
