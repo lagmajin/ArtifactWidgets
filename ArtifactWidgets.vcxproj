@@ -130,6 +130,8 @@
   <ItemGroup>
     <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
     <ClInclude Include="include\Audio\ArtifactAudioMixierWidget.hpp" />
+    <ClInclude Include="include\Common\AbstractDialog.hpp" />
+    <ClInclude Include="include\Common\AlignmentCombobox.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />

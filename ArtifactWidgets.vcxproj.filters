@@ -31,6 +31,15 @@
     <Filter Include="ヘッダー ファイル\Common">
       <UniqueIdentifier>{f3e7ba94-b9f3-40fd-9738-56e4067c5a10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\NewFilter1">
+      <UniqueIdentifier>{85d1cf19-6949-464a-90b3-cfbdea595cb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Video">
+      <UniqueIdentifier>{a65ebce9-271e-4dc1-bef7-cb09c9bfddf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Dock">
+      <UniqueIdentifier>{ecb5ecd6-8385-4bbb-b08b-84c08ad0b359}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
@@ -47,6 +56,12 @@
     </ClInclude>
     <ClInclude Include="include\Dock\DockWidget.hpp">
       <Filter>ヘッダー ファイル\Dock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\AbstractDialog.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\AlignmentCombobox.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
