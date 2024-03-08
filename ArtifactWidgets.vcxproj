@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>$(SolutionDir)/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Qt\6.5.0\msvc2019_64\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -109,6 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,9 +145,11 @@
     <ClInclude Include="include\Common\CommonHeader.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClInclude Include="include\Knob\KnobEditorWidget.hpp" />
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
   </ItemGroup>

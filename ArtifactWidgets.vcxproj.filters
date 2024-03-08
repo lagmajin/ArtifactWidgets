@@ -31,9 +31,6 @@
     <Filter Include="ヘッダー ファイル\Common">
       <UniqueIdentifier>{f3e7ba94-b9f3-40fd-9738-56e4067c5a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\NewFilter1">
-      <UniqueIdentifier>{85d1cf19-6949-464a-90b3-cfbdea595cb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Video">
       <UniqueIdentifier>{a65ebce9-271e-4dc1-bef7-cb09c9bfddf6}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Color">
       <UniqueIdentifier>{726ecd7f-5a40-4de6-a41a-c0cea3d49f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Knob">
+      <UniqueIdentifier>{85d1cf19-6949-464a-90b3-cfbdea595cb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,12 +90,18 @@
     <ClInclude Include="include\Color\VectorScopeWidget.hpp">
       <Filter>ヘッダー ファイル\Color</Filter>
     </ClInclude>
+    <ClInclude Include="include\Knob\KnobEditorWidget.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Common\AlignmentComboBox.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\Color\VectorScopeWidget.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ColorViewLabel.cpp">
       <Filter>ソース ファイル\Color</Filter>
     </ClCompile>
   </ItemGroup>
