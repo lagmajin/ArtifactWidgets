@@ -145,13 +145,16 @@
     <ClInclude Include="include\Common\CommonHeader.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClInclude Include="include\Knob\AbstractKnobEditor.hpp" />
     <ClInclude Include="include\Knob\KnobEditorWidget.hpp" />
+    <ClInclude Include="include\Knob\KnobExports.hpp" />
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
+    <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

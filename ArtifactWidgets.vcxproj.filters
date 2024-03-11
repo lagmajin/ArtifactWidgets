@@ -40,14 +40,14 @@
     <Filter Include="ソース ファイル\Common">
       <UniqueIdentifier>{9c7919f5-1124-4e87-86eb-223f322f739d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\NewFilter2">
-      <UniqueIdentifier>{9bc85e78-34d4-4d70-a40f-f69ea5d8ec87}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Color">
       <UniqueIdentifier>{726ecd7f-5a40-4de6-a41a-c0cea3d49f98}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Knob">
       <UniqueIdentifier>{85d1cf19-6949-464a-90b3-cfbdea595cb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Image">
+      <UniqueIdentifier>{32ac3dd1-7435-437a-bf94-42891ca5024e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +93,12 @@
     <ClInclude Include="include\Knob\KnobEditorWidget.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
+    <ClInclude Include="include\Knob\AbstractKnobEditor.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Knob\KnobExports.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Common\AlignmentComboBox.cpp">
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="src\Color\ColorViewLabel.cpp">
       <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Image\BasicImageViewWidget.cpp">
+      <Filter>ソース ファイル\Image</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
