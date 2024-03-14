@@ -78,9 +78,6 @@
     <ClInclude Include="include\Audio\AudioInclude.hpp">
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\CommandAction.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
@@ -113,5 +110,13 @@
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp">
       <Filter>ソース ファイル\Image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Common\CommandAction.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\Common\CommandAction.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
