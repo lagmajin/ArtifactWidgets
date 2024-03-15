@@ -87,7 +87,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Qt\6.5.0\msvc2019_64\lib;$(SolutionDir)/lib;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Qt\6.5.0\msvc2019_64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -132,7 +132,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qt6cored.lib;qt6guid.lib;qt6widgetsd.lib;qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
     <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
+    <ClInclude Include="include\Audio\AudioDllImport.hpp" />
     <ClInclude Include="include\Audio\VolumeSlider.hpp" />
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
     <ClInclude Include="include\Color\ColorViewLabel.hpp" />
@@ -164,11 +165,14 @@
     <QtMoc Include="include\Common\CommandAction.hpp" />
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp" />
     <ClInclude Include="include\Common\CommonImports.hpp" />
+    <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
     <ClInclude Include="include\Knob\AbstractKnobEditor.hpp" />
+    <ClInclude Include="include\Knob\KnobCheckBox.hpp" />
+    <ClInclude Include="include\Knob\KnobColorPicker.hpp" />
     <ClInclude Include="include\Knob\KnobEditorWidget.hpp" />
-    <ClInclude Include="include\Knob\KnobExports.hpp" />
+    <ClInclude Include="include\Knob\KnobDllImports.hpp" />
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +181,7 @@
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
+    <ClCompile Include="src\Knob\VolumeSlider.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

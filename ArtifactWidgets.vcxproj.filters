@@ -49,6 +49,9 @@
     <Filter Include="ソース ファイル\Image">
       <UniqueIdentifier>{32ac3dd1-7435-437a-bf94-42891ca5024e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Audio">
+      <UniqueIdentifier>{2192db48-3e5c-4e0b-9d32-65527195b85b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
@@ -93,11 +96,23 @@
     <ClInclude Include="include\Knob\AbstractKnobEditor.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
-    <ClInclude Include="include\Knob\KnobExports.hpp">
+    <ClInclude Include="include\Knob\KnobDllImports.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio\AudioBusWidget.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioDllImport.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Defines.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Knob\KnobCheckBox.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Knob\KnobColorPicker.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="src\Common\CommandAction.cpp">
       <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\VolumeSlider.cpp">
+      <Filter>ソース ファイル\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
