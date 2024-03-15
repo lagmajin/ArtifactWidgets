@@ -4,7 +4,7 @@
 
 namespace Artifact {
 
-
+ class __declspec(dllimport)CommandAction;
 
 
 

@@ -10,7 +10,7 @@ namespace ArtifactWidgets {
 
  class CommandActionPrivate;
 
- class CommandAction :public QAction {
+ class __declspec(dllexport) CommandAction :public QAction {
   Q_OBJECT
  private:
   CommandActionPrivate* const	pAction_;

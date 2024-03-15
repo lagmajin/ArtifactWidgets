@@ -60,7 +60,7 @@
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
       <Filter>ヘッダー ファイル\Video</Filter>
     </ClInclude>
-    <ClInclude Include="include\Audio\ArtifactAudioMixierWidget.hpp">
+    <ClInclude Include="include\Audio\VolumeSlider.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\Dock\DockWidget.hpp">
@@ -72,7 +72,7 @@
     <ClInclude Include="include\Common\AlignmentCombobox.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\CommonHeader.hpp">
+    <ClInclude Include="include\Common\CommonImports.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio\AudioInclude.hpp">
@@ -95,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="include\Knob\KnobExports.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioBusWidget.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
