@@ -52,19 +52,19 @@
     <Filter Include="ソース ファイル\Audio">
       <UniqueIdentifier>{2192db48-3e5c-4e0b-9d32-65527195b85b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Basis">
+      <UniqueIdentifier>{bf0c11f3-7339-486b-93eb-d3294a2cbef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code">
+      <UniqueIdentifier>{80a2ef1a-a224-494b-90b1-5ab6543dfe13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code">
+      <UniqueIdentifier>{18984407-badb-45a5-b164-995d17d0bdc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ArtifactAbstractWidget.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
       <Filter>ヘッダー ファイル\Video</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Audio\VolumeSlider.hpp">
-      <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\Dock\DockWidget.hpp">
       <Filter>ヘッダー ファイル\Dock</Filter>
@@ -72,14 +72,8 @@
     <ClInclude Include="include\Common\AbstractDialog.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\AlignmentCombobox.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Common\CommonImports.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Audio\AudioInclude.hpp">
-      <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
@@ -114,6 +108,24 @@
     <ClInclude Include="include\Knob\KnobColorPicker.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
+    <ClInclude Include="include\Color\HistgramWidget.hpp">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioInclude.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Common\AbstractWidget.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArtifactAbstractWidget.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Color\ParadeScopeWidget.hpp">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Code\CodeEditor.hpp">
+      <Filter>ヘッダー ファイル\Code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Common\AlignmentComboBox.cpp">
@@ -134,10 +146,25 @@
     <ClCompile Include="src\Knob\VolumeSlider.cpp">
       <Filter>ソース ファイル\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Color\HistgramWidget.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp">
+      <Filter>ソース ファイル\Video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\Common\CommandAction.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Common\AlignmentCombobox.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Image\BasicImageViewWidget.hpp">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Audio\VolumeSlider.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

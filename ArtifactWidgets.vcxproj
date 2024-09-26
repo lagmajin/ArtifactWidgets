@@ -46,7 +46,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>true</EnableUnitySupport>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -92,6 +92,7 @@
     <IncludePath>C:\Qt\6.5.0\msvc2019_64\include;$(IncludePath)</IncludePath>
     <TargetName>$(ProjectName)d</TargetName>
     <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
+    <OutDir>C:\Users\lagma\Desktop\Artifact\Artifact\App\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,6 +132,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TranslateIncludes>true</TranslateIncludes>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,18 +163,22 @@
     <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
     <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
-    <ClInclude Include="include\Audio\VolumeSlider.hpp" />
+    <QtMoc Include="include\Audio\VolumeSlider.hpp" />
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
+    <ClInclude Include="include\Code\CodeEditor.hpp" />
     <ClInclude Include="include\Color\ColorViewLabel.hpp" />
+    <ClInclude Include="include\Color\HistgramWidget.hpp" />
+    <ClInclude Include="include\Color\ParadeScopeWidget.hpp" />
     <ClInclude Include="include\Color\VectorScopeWidget.hpp" />
     <ClInclude Include="include\Common\AbstractDialog.hpp" />
-    <ClInclude Include="include\Common\AlignmentCombobox.hpp" />
+    <QtMoc Include="include\Common\AlignmentCombobox.hpp" />
     <QtMoc Include="include\Common\CommandAction.hpp" />
+    <ClInclude Include="include\Common\AbstractWidget.hpp" />
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp" />
     <ClInclude Include="include\Common\CommonImports.hpp" />
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
-    <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
+    <QtMoc Include="include\Image\BasicImageViewWidget.hpp" />
     <ClInclude Include="include\Knob\AbstractKnobEditor.hpp" />
     <ClInclude Include="include\Knob\KnobCheckBox.hpp" />
     <ClInclude Include="include\Knob\KnobColorPicker.hpp" />
@@ -181,11 +188,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
+    <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
     <ClCompile Include="src\Knob\VolumeSlider.cpp" />
+    <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

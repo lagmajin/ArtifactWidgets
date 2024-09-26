@@ -7,15 +7,16 @@ namespace ArtifactWidgets {
 
  struct AlignmentComboboxPrivate;
 
- class __declspec(export) AlignmentCombobox :public QComboBox {
+ class  AlignmentCombobox :public QComboBox {
   Q_OBJECT
  private:
 
  protected:
-  bool eventFilter(QObject* object, QEvent* event);
+  //bool eventFilter(QObject* object, QEvent* event);
  public:
   explicit AlignmentCombobox(QWidget* parent = nullptr);
   virtual ~AlignmentCombobox();
+  Qt::Alignment allignment() const;
   void setAlignment(const Qt::Alignment align);
  signals:
  private slots:

@@ -7,7 +7,12 @@
 
 namespace ArtifactWidgets {
 
+ class AudioBusWidget {
+ private:
 
+ public:
+
+ };
 
 
 
