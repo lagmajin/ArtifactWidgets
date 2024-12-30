@@ -3,7 +3,7 @@
 
 namespace Artifact {
 
- VectorScopeWidget::VectorScopeWidget(QWidget* parent /*= nullptr*/):AbstractWidget(parent)
+ VectorScopeWidget::VectorScopeWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {
 
  }

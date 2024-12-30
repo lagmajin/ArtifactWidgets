@@ -15,7 +15,7 @@ namespace Artifact {
 
  class VectorScopeWidgetPrivate;
 
- class VectorScopeWidget :public AbstractWidget{
+ class VectorScopeWidget :public QWidget{
  private:
   VectorScopeWidgetPrivate* pWidget_;
  public:

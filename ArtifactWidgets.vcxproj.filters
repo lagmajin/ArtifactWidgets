@@ -114,9 +114,6 @@
     <ClInclude Include="include\Audio\AudioInclude.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\AbstractWidget.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\ArtifactAbstractWidget.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
@@ -125,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="include\Code\CodeEditor.hpp">
       <Filter>ヘッダー ファイル\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AbstractWidget.hpp">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +152,9 @@
     <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp">
       <Filter>ソース ファイル\Video</Filter>
     </ClCompile>
+    <ClCompile Include="src\AbstractWidget.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\Common\CommandAction.hpp">
@@ -165,6 +168,9 @@
     </QtMoc>
     <QtMoc Include="include\Audio\VolumeSlider.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
+    </QtMoc>
+    <QtMoc Include="include\Common\AbstractWidget.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

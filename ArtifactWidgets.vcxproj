@@ -60,7 +60,7 @@
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>6.5.0_msvc2019_64</QtInstall>
+    <QtInstall>6.7.2_msvc2019_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
@@ -88,8 +88,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>C:\Qt\6.5.0\msvc2019_64\lib;$(SolutionDir)/lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Qt\6.5.0\msvc2019_64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>Z:\MyLib\Qt-Advanced-Docking-System\build\Desktop_Qt_6_7_2_MSVC2019_64bit-Debug\lib;$(SolutionDir)/lib;X:\Qt\6.7.2\msvc2019_64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>X:\Qt\6.7.2\msvc2019_64\include;$(IncludePath)</IncludePath>
     <TargetName>$(ProjectName)d</TargetName>
     <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
     <OutDir>C:\Users\lagma\Desktop\Artifact\Artifact\App\</OutDir>
@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AbstractWidget.hpp" />
     <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
     <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
@@ -173,7 +174,7 @@
     <ClInclude Include="include\Common\AbstractDialog.hpp" />
     <QtMoc Include="include\Common\AlignmentCombobox.hpp" />
     <QtMoc Include="include\Common\CommandAction.hpp" />
-    <ClInclude Include="include\Common\AbstractWidget.hpp" />
+    <QtMoc Include="include\Common\AbstractWidget.hpp" />
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp" />
     <ClInclude Include="include\Common\CommonImports.hpp" />
     <ClInclude Include="include\Defines.hpp" />
@@ -187,12 +188,14 @@
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AbstractWidget.cpp" />
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
+    <ClCompile Include="src\Knob\AbstractKnobEditor.cpp" />
     <ClCompile Include="src\Knob\VolumeSlider.cpp" />
     <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp" />
   </ItemGroup>

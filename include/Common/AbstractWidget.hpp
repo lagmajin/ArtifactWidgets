@@ -8,22 +8,17 @@ namespace ArtifactWidgets {
  class AbstractWidgetPrivate;
 
  class AbstractWidget :public QWidget{
+  Q_OBJECT
  private:
 
  public:
   explicit AbstractWidget(QWidget* parent = nullptr);
   virtual~AbstractWidget();
+ public slots:
+
  };
 
- AbstractWidget::AbstractWidget(QWidget* parent /*= nullptr*/)
- {
 
- }
-
- AbstractWidget::~AbstractWidget()
- {
-
- }
 
 
 
