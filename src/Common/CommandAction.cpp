@@ -9,6 +9,7 @@ namespace ArtifactWidgets {
 
  class CommandActionPrivate {
  private:
+  bool hasCommand_ = false;
   QString command_;
 
  public:
@@ -38,6 +39,7 @@ namespace ArtifactWidgets {
  void CommandActionPrivate::setCommand(const QString& command)
  {
   command_ = command;
+  hasCommand_ = true;
  }
 
  bool CommandActionPrivate::hasCommand() const
@@ -49,6 +51,11 @@ namespace ArtifactWidgets {
  {
 
   connect(this, SIGNAL(triggered()), this, SLOT(sendCommand()));
+ }
+
+ CommandAction::CommandAction(const QString& command, QObject* parent) :QAction(parent), pAction_(new CommandActionPrivate)
+ {
+
  }
 
  CommandAction::~CommandAction()

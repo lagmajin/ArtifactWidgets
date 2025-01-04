@@ -20,7 +20,8 @@ namespace ArtifactWidgets {
 
  }
 
- void VolumeSlider::setVolume()
+
+ void VolumeSlider::setVolume(float volume/*=1.0f*/)
  {
 
  }

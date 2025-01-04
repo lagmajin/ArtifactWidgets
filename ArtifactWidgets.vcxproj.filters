@@ -61,6 +61,9 @@
     <Filter Include="ソース ファイル\Code">
       <UniqueIdentifier>{18984407-badb-45a5-b164-995d17d0bdc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Graphics">
+      <UniqueIdentifier>{c2777b33-68a1-4700-9fc9-dbdda81857bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
@@ -126,6 +129,9 @@
     <ClInclude Include="include\AbstractWidget.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="include\Graphics\GraphicsItemFloatImageItem.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Common\AlignmentComboBox.cpp">
@@ -154,6 +160,15 @@
     </ClCompile>
     <ClCompile Include="src\AbstractWidget.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\AbstractKnobEditor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp">
+      <Filter>ソース ファイル\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp">
+      <Filter>ソース ファイル\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

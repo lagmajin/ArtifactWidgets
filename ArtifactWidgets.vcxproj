@@ -180,6 +180,7 @@
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <QtMoc Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClInclude Include="include\Graphics\GraphicsItemFloatImageItem.hpp" />
     <ClInclude Include="include\Knob\AbstractKnobEditor.hpp" />
     <ClInclude Include="include\Knob\KnobCheckBox.hpp" />
     <ClInclude Include="include\Knob\KnobColorPicker.hpp" />
@@ -194,6 +195,8 @@
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
+    <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp" />
+    <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp" />
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
     <ClCompile Include="src\Knob\AbstractKnobEditor.cpp" />
     <ClCompile Include="src\Knob\VolumeSlider.cpp" />

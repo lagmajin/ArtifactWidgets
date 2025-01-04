@@ -7,7 +7,10 @@
 
 
 namespace Artifact {
+ 
+ class BasicImageViewWidgetPrivate {
 
+ };
 
  BasicImageViewWidget::BasicImageViewWidget()
  {

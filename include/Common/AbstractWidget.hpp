@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
 #include <QtWidgets/QWidget>
 
 

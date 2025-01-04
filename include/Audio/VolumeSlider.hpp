@@ -1,4 +1,6 @@
 #pragma once
+
+#include <memory>
 #include <QtWidgets/QSlider>
 
 
@@ -19,7 +21,7 @@ namespace ArtifactWidgets {
  signals:
 
  public slots:
-  void setVolume();
+  void setVolume(float volume=1.0f);
  };
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <QtCore/QScopedPointer>
 #include <QtGui/QAction>
 
 

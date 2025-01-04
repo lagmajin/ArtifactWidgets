@@ -7,7 +7,9 @@
 
 namespace Artifact {
 
- class ArtifactDialog :public QDialog {
+ class AbstractDialogPrivate;
+
+ class AbstractDialog :public QDialog {
  private:
 
  public:
@@ -15,6 +17,8 @@ namespace Artifact {
  signals:
 
  public slots:
+  explicit AbstractDialog();
+  ~AbstractDialog();
  };
 
 

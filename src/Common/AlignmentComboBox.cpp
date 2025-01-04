@@ -5,7 +5,16 @@
 
 namespace ArtifactWidgets {
 
+ struct AlignmentComboboxPrivate
+ {
+  Qt::Alignment allignment() const;
+  void setAlignment(const Qt::Alignment align);
+ };
 
+ void AlignmentComboboxPrivate::setAlignment(const Qt::Alignment align)
+ {
+
+ }
 
 AlignmentCombobox::AlignmentCombobox(QWidget* parent /*= nullptr*/):QComboBox(parent)
  {
