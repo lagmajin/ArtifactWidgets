@@ -64,6 +64,9 @@
     <Filter Include="ソース ファイル\Graphics">
       <UniqueIdentifier>{c2777b33-68a1-4700-9fc9-dbdda81857bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Define">
+      <UniqueIdentifier>{1405cd1d-0687-4bba-a601-1d94a782c962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp">
       <Filter>ソース ファイル\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\AbstractDialog.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

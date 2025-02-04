@@ -1,7 +1,9 @@
 #pragma once
 
 
+module;
 
+#include <QtWidgets/QWidget>
 
 
 namespace Artifact {

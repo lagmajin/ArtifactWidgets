@@ -193,6 +193,7 @@
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
+    <ClCompile Include="src\Common\AbstractDialog.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp" />
