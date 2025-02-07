@@ -1,10 +1,15 @@
-#include "../../include/Knob/AbstractKnobEditor.hpp"
+//#include "../../include/Knob/AbstractKnobEditor.hpp"
 
+module;
+#include <wobjectimpl.h>
 
+module AbstractKnobEditor;
 
 
 
 namespace ArtifactWidgets {
+
+ W_OBJECT_IMPL(AbstractKnobEditor)
 
 
  AbstractKnobEditor::AbstractKnobEditor(QWidget* parent /*= nullptr*/) :QWidget(parent)
@@ -23,7 +28,7 @@ namespace ArtifactWidgets {
 
  void AbstractKnobEditor::dragMoveEvent(QDragMoveEvent* event)
  {
-  throw std::logic_error("The method or operation is not implemented.");
+  //throw std::logic_error("The method or operation is not implemented.");
  }
 
  void AbstractKnobEditor::dropEvent(QDropEvent* event)

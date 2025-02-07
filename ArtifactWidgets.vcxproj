@@ -44,7 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
@@ -89,10 +89,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>Z:\MyLib\Qt-Advanced-Docking-System\build\Desktop_Qt_6_7_2_MSVC2019_64bit-Debug\lib;$(SolutionDir)/lib;X:\Qt\6.7.2\msvc2019_64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>X:\Qt\6.7.2\msvc2019_64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\lagma\Desktop\Artifact\third_party;X:\Qt\6.7.2\msvc2019_64\include;$(IncludePath)</IncludePath>
     <TargetName>$(ProjectName)d</TargetName>
     <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
     <OutDir>C:\Users\lagma\Desktop\Artifact\Artifact\App\</OutDir>
+    <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -127,16 +128,23 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <TranslateIncludes>true</TranslateIncludes>
+      <TranslateIncludes>false</TranslateIncludes>
       <OpenMPSupport>true</OpenMPSupport>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <EnableModules>true</EnableModules>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <BuildStlModules>true</BuildStlModules>
+      <AdditionalHeaderUnitDependencies>
+      </AdditionalHeaderUnitDependencies>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qt6cored.lib;qt6guid.lib;qt6widgetsd.lib;qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
@@ -160,38 +168,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\AbstractWidget.hpp" />
-    <ClInclude Include="include\ArtifactAbstractWidget.hpp" />
     <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
     <QtMoc Include="include\Audio\VolumeSlider.hpp" />
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
     <ClInclude Include="include\Code\CodeEditor.hpp" />
-    <ClInclude Include="include\Color\ColorViewLabel.hpp" />
+    <ClCompile Include="include\Color\ColorViewLabel.ixx" />
     <ClInclude Include="include\Color\HistgramWidget.hpp" />
-    <ClInclude Include="include\Color\ParadeScopeWidget.hpp" />
+    <ClCompile Include="include\Color\ParadeScopeWidget.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="include\Color\VectorScopeWidget.hpp" />
-    <ClInclude Include="include\Common\AbstractDialog.hpp" />
-    <QtMoc Include="include\Common\AlignmentCombobox.hpp" />
-    <QtMoc Include="include\Common\CommandAction.hpp" />
-    <QtMoc Include="include\Common\AbstractWidget.hpp" />
+    <ClCompile Include="include\Common\AbstractDialog.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="include\Common\AlignmentCombobox.hpp" />
+    <ClCompile Include="include\Common\CommandAction.hpp" />
+    <ClCompile Include="include\Common\AbstractWidget.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp" />
     <ClInclude Include="include\Common\CommonImports.hpp" />
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <QtMoc Include="include\Image\BasicImageViewWidget.hpp" />
     <ClInclude Include="include\Graphics\GraphicsItemFloatImageItem.hpp" />
-    <ClInclude Include="include\Knob\AbstractKnobEditor.hpp" />
-    <ClInclude Include="include\Knob\KnobCheckBox.hpp" />
+    <ClCompile Include="include\Knob\AbstractKnobEditor.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobCheckBox.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
+    <ClInclude Include="include\Interface\IViewer.ixx" />
     <ClInclude Include="include\Knob\KnobColorPicker.hpp" />
-    <ClInclude Include="include\Knob\KnobEditorWidget.hpp" />
+    <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="include\Knob\KnobDllImports.hpp" />
-    <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp" />
+    <ClCompile Include="include\Video\ArtifactBasicVideoPreviewWidget.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\Common\WidgetCounter.ixx" />
     <ClCompile Include="src\AbstractWidget.cpp" />
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
+    <ClCompile Include="src\Color\ParadeScopeWidget.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
     <ClCompile Include="src\Common\AbstractDialog.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
@@ -201,7 +222,11 @@
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
     <ClCompile Include="src\Knob\AbstractKnobEditor.cpp" />
     <ClCompile Include="src\Knob\VolumeSlider.cpp" />
-    <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp" />
+    <ClCompile Include="src\Video\ArtifactBasicVideoPreviewWidget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\Common\WinJumpList.ixx" />
+    <None Include="src\Common\WidgetCounter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

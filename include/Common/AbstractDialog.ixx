@@ -1,16 +1,18 @@
-#pragma once
+module;
 
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QDialog>
+#include <wobjectdefs.h>
+
+export module AbstractDialog;
 
 
-
-
-namespace ArtifactWidgets {
+export namespace ArtifactWidgets {
 
  class AbstractDialogPrivate;
 
  class AbstractDialog :public QDialog {
+	W_OBJECT(AbstractDialog)
  private:
   QScopedPointer<AbstractDialogPrivate> const pImpl_;
  public:

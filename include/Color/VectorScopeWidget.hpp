@@ -5,7 +5,7 @@
 #include <QtWidgets/QWidget>
 
 
-#include "../Common/AbstractWidget.hpp"
+//#include "../Common/AbstractWidget.hpp"
 
 
 

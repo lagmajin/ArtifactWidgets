@@ -1,24 +1,21 @@
-#include "../../include/Graphics/GraphicsItemFloatImageItem.hpp"
 
 
 
 
+module;
+
+//module 
 
 
 namespace ArtifactCore {
 
  class GraphicsFloatImageItemPrivate {
+ private:
+
+ public:
 
  };
 
- GraphicsFloatImageItem::GraphicsFloatImageItem(QGraphicsItem* parent /*= nullptr*/)
- {
 
- }
-
- GraphicsFloatImageItem::~GraphicsFloatImageItem()
- {
-
- }
 
 };

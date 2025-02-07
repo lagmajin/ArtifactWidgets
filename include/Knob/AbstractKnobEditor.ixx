@@ -1,13 +1,19 @@
-#pragma once
+module;
 
-
+#include <wobjectcpp.h>
+#include <QtCore/QtCore>
 #include <QtWidgets/QtWidgets>
 
-namespace ArtifactWidgets {
+export module AbstractKnobEditor;
+
+
+
+export namespace ArtifactWidgets {
 
  class AbstractKnobEditorPrivate;
 
  class AbstractKnobEditor:public QWidget {
+  W_OBJECT(AbstractKnobEditor)
  private:
  protected:
   void dragEnterEvent(QDragEnterEvent* event) override;

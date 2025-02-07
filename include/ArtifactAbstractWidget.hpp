@@ -4,14 +4,6 @@
 
 namespace ArtifactWidgets {
 
- class AbstractArtifactWidget {
- private:
-
-  public:
-
- };
-
-
 
 
 

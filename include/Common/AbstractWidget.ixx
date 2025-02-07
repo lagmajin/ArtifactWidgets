@@ -1,15 +1,22 @@
-#pragma once
+
+module;
+
+#include <wobjectcpp.h>
 
 #include <QtCore/QScopedPointer>
+#include <QtCore/QFileInfo>
 #include <QtWidgets/QWidget>
 
+export module AbstractWidget;
 
-namespace ArtifactWidgets {
+export namespace ArtifactWidgets {
+
+
 
  class AbstractWidgetPrivate;
 
  class AbstractWidget :public QWidget{
-  Q_OBJECT
+  W_OBJECT(AbstractWidget)
  private:
   QScopedPointer<AbstractWidgetPrivate>const pImpl_;
  public:

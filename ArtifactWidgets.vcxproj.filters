@@ -67,16 +67,13 @@
     <Filter Include="ヘッダー ファイル\Define">
       <UniqueIdentifier>{1405cd1d-0687-4bba-a601-1d94a782c962}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Interface">
+      <UniqueIdentifier>{c0a28621-0b70-4402-bf79-0a2c5ec57d46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Video\ArtifactBasicVideoPreviewWidget.hpp">
-      <Filter>ヘッダー ファイル\Video</Filter>
-    </ClInclude>
     <ClInclude Include="include\Dock\DockWidget.hpp">
       <Filter>ヘッダー ファイル\Dock</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\AbstractDialog.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
     <ClInclude Include="include\Common\CommonImports.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
@@ -84,17 +81,8 @@
     <ClInclude Include="include\Common\CommonApplicationSignal.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
-    <ClInclude Include="include\Color\ColorViewLabel.hpp">
-      <Filter>ヘッダー ファイル\Color</Filter>
-    </ClInclude>
     <ClInclude Include="include\Color\VectorScopeWidget.hpp">
       <Filter>ヘッダー ファイル\Color</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Knob\KnobEditorWidget.hpp">
-      <Filter>ヘッダー ファイル\Knob</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Knob\AbstractKnobEditor.hpp">
-      <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
@@ -108,9 +96,6 @@
     <ClInclude Include="include\Defines.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="include\Knob\KnobCheckBox.hpp">
-      <Filter>ヘッダー ファイル\Knob</Filter>
-    </ClInclude>
     <ClInclude Include="include\Knob\KnobColorPicker.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
@@ -120,20 +105,14 @@
     <ClInclude Include="include\Audio\AudioInclude.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\ArtifactAbstractWidget.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Color\ParadeScopeWidget.hpp">
-      <Filter>ヘッダー ファイル\Color</Filter>
-    </ClInclude>
     <ClInclude Include="include\Code\CodeEditor.hpp">
       <Filter>ヘッダー ファイル\Code</Filter>
     </ClInclude>
-    <ClInclude Include="include\AbstractWidget.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="include\Graphics\GraphicsItemFloatImageItem.hpp">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interface\IViewer.ixx">
+      <Filter>ヘッダー ファイル\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,11 +137,8 @@
     <ClCompile Include="src\Color\HistgramWidget.cpp">
       <Filter>ソース ファイル\Color</Filter>
     </ClCompile>
-    <ClCompile Include="src\Video\ArtifactBasicPreviewWidget.cpp">
+    <ClCompile Include="src\Video\ArtifactBasicVideoPreviewWidget.cpp">
       <Filter>ソース ファイル\Video</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AbstractWidget.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\Knob\AbstractKnobEditor.cpp">
       <Filter>ソース ファイル</Filter>
@@ -176,22 +152,60 @@
     <ClCompile Include="src\Common\AbstractDialog.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="include\Common\WidgetCounter.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobCheckBox.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\AbstractKnobEditor.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AbstractDialog.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Video\ArtifactBasicVideoPreviewWidget.ixx">
+      <Filter>ヘッダー ファイル\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AbstractWidget.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AlignmentCombobox.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommandAction.hpp">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\ColorViewLabel.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AbstractWidget.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ParadeScopeWidget.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\ParadeScopeWidget.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="include\Common\CommandAction.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </QtMoc>
-    <QtMoc Include="include\Common\AlignmentCombobox.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </QtMoc>
     <QtMoc Include="include\Image\BasicImageViewWidget.hpp">
       <Filter>ヘッダー ファイル\Image</Filter>
     </QtMoc>
     <QtMoc Include="include\Audio\VolumeSlider.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
     </QtMoc>
-    <QtMoc Include="include\Common\AbstractWidget.hpp">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Common\WidgetCounter.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </None>
+    <None Include="include\Common\WinJumpList.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
-    </QtMoc>
+    </None>
   </ItemGroup>
 </Project>

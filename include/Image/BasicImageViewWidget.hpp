@@ -5,7 +5,8 @@
 
 #include <QtCore/QSharedPointer>
 
-
+import AbstractWidget;
+import IViewer;
 
 namespace Artifact {
 

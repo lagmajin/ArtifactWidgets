@@ -1,12 +1,35 @@
-#include "../include/Common/AbstractWidget.hpp"
+//#include "../include/Common/AbstractWidget.hpp"
 
-
-
+module;
+#include <wobjectimpl.h>
+import std;
+module AbstractWidget;
 
 
 namespace ArtifactWidgets {
 
- AbstractWidget::AbstractWidget(QWidget* parent /*= nullptr*/)
+ W_OBJECT_IMPL(AbstractWidget)
+
+ class AbstractWidgetPrivate {
+ private:
+
+ 
+ public:
+  AbstractWidgetPrivate();
+  ~AbstractWidgetPrivate();
+ };
+
+ AbstractWidgetPrivate::AbstractWidgetPrivate()
+ {
+
+ }
+
+ AbstractWidgetPrivate::~AbstractWidgetPrivate()
+ {
+
+ }
+
+ AbstractWidget::AbstractWidget(QWidget* parent /*= nullptr*/) :QWidget(parent)
  {
 
  }

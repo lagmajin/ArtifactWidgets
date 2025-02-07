@@ -1,6 +1,8 @@
-#include "../../include/Common/AbstractDialog.hpp"
+//#include "../../include/Common/AbstractDialog.hpp"
 
+module;
 
+module AbstractDialog;
 
 
 

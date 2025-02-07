@@ -17,10 +17,12 @@ namespace ArtifactWidgets {
   
 
   void paintEvent(QPaintEvent* event) override;
-
+  
  public:
   explicit HistgramWidget(QWidget* parent = nullptr);
   virtual ~HistgramWidget();
+  void setHistgram();
+
  };
 
 
