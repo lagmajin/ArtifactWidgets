@@ -1,12 +1,11 @@
-#pragma once
-
+module;
 #include <QtWidgets/QWidget>
 
+export module HistgramWidget;
 
 
 
-
-namespace ArtifactWidgets {
+export namespace ArtifactWidgets {
 
  class HistgramWidgetPrivate;
 

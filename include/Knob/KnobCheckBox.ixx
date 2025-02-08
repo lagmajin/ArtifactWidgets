@@ -18,6 +18,8 @@ export namespace ArtifactWidgets {
  public:
   KnobCheckBox();
   ~KnobCheckBox();
+  bool checkBox() const;
+  void setCheckBox(bool b);
  };
 
 

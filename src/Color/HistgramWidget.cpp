@@ -1,6 +1,8 @@
 #include <QtGui/QPainter>
 
-#include "../../../include/Color/HistgramWidget.hpp"
+//#include "../../../include/Color/HistgramWidget.hpp"
+
+module HistgramWidget;
 
 namespace ArtifactWidgets {
 

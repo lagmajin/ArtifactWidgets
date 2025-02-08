@@ -1,7 +1,9 @@
-#include "../../../include/Color/VectorScopeWidget.hpp"
+//#include "../../../include/Color/VectorScopeWidget.hpp"
+
+module VectorScopeWidget;
 
 
-namespace Artifact {
+namespace ArtifactWidgets {
 
  VectorScopeWidget::VectorScopeWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {

@@ -1,13 +1,16 @@
 //#include "../../include/Common/AbstractDialog.hpp"
 
 module;
-
+//#include <wobjectdefs.h>
+#include <wobjectimpl.h>
 module AbstractDialog;
 
 
 
 
 namespace ArtifactWidgets {
+ W_OBJECT_IMPL(AbstractDialog)
+
  
  class AbstractDialogPrivate {
  private:

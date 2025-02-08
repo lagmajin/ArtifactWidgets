@@ -1,12 +1,10 @@
-#pragma once
+module;
 
-
-//#include <memory>
 #include <QtWidgets/QGraphicsItem>
 
+export module GraphicsFloatImageItem;
 
-
-namespace ArtifactCore {
+export namespace ArtifactCore {
 
  class GraphicsFloatImageItem;
 

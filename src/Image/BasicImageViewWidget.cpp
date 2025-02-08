@@ -6,7 +6,7 @@
 
 
 
-namespace Artifact {
+namespace ArtifactWidgets {
  
  class BasicImageViewWidgetPrivate {
 

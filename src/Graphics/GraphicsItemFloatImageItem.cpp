@@ -4,7 +4,7 @@
 
 module;
 
-//module 
+module GraphicsFloatImageItem;
 
 
 namespace ArtifactCore {

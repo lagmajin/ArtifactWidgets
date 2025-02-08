@@ -1,14 +1,19 @@
-#pragma once
+module;
 
 #include <QtWidgets/QtWidgets>
+#include <wobjectdefs.h>
 
-namespace ArtifactWidgets {
+export module AlignmentCombobox;
+
+
+
+export namespace ArtifactWidgets {
 
 
  struct AlignmentComboboxPrivate;
 
  class  AlignmentCombobox :public QComboBox {
-  Q_OBJECT
+  W_OBJECT(AlignmentCombobox)
  private:
 
  protected:

@@ -1,4 +1,7 @@
-#include "../../include/Audio/VolumeSlider.hpp"
+//#include "../../include/Audio/VolumeSlider.hpp"
+
+
+module VolumeSlider;
 
 namespace ArtifactWidgets {
  
@@ -7,10 +10,21 @@ namespace ArtifactWidgets {
  private:
 
  public:
-  
+  VolumeSliderPrivate();
+  ~VolumeSliderPrivate();
  };
 
- VolumeSlider::VolumeSlider(QWidget* parent /*= nullptr*/):QSlider(parent)
+ VolumeSliderPrivate::VolumeSliderPrivate()
+ {
+
+ }
+
+ VolumeSliderPrivate::~VolumeSliderPrivate()
+ {
+
+ }
+
+ VolumeSlider::VolumeSlider(QWidget* parent /*= nullptr*/) :QSlider(parent)
  {
 
  }

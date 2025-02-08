@@ -8,7 +8,7 @@
 import AbstractWidget;
 import IViewer;
 
-namespace Artifact {
+namespace ArtifactWidgets {
 
  class BasicImageViewWidgetPrivate;
 

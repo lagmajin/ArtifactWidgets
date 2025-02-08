@@ -1,8 +1,9 @@
-#pragma once
-
+module;
 #include <memory>
 #include <QtWidgets/QSlider>
+#include <wobjectdefs.h>
 
+export module VolumeSlider;
 
 
 
@@ -12,7 +13,8 @@ namespace ArtifactWidgets {
  class VolumeSliderPrivate;
 
  class __declspec(dllexport) VolumeSlider :public QSlider{
-  Q_OBJECT
+  //Q_OBJECT
+  W_OBJECT(VolumeSlider)
  private:
 
  public:

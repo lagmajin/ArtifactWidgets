@@ -1,17 +1,13 @@
-#pragma once
 
+module;
 #include <QtCore/QSharedPointer>
 
 #include <QtWidgets/QWidget>
+#include <wobjectdefs.h>
+export module VectorScopeWidget;
 
 
-//#include "../Common/AbstractWidget.hpp"
-
-
-
-
-
-namespace Artifact {
+namespace ArtifactWidgets {
 
  class VectorScopeWidgetPrivate;
 

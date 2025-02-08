@@ -1,9 +1,7 @@
+module;
+#include <QtWidgets/QWidget>
 
-
-#include "../../../include/Common/AlignmentCombobox.hpp"
-
-
-
+module AlignmentCombobox;
 
 namespace ArtifactWidgets {
 

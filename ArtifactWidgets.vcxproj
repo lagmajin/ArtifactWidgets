@@ -47,6 +47,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <EnableUnitySupport>false</EnableUnitySupport>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -145,7 +146,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>qt6cored.lib;qt6guid.lib;qt6widgetsd.lib;qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
     </Link>
@@ -170,19 +171,23 @@
   <ItemGroup>
     <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
-    <QtMoc Include="include\Audio\VolumeSlider.hpp" />
+    <ClCompile Include="include\Audio\VolumeSlider.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
     <ClInclude Include="include\Code\CodeEditor.hpp" />
     <ClCompile Include="include\Color\ColorViewLabel.ixx" />
-    <ClInclude Include="include\Color\HistgramWidget.hpp" />
+    <ClCompile Include="include\Color\HistgramWidget.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClCompile Include="include\Color\ParadeScopeWidget.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
-    <ClInclude Include="include\Color\VectorScopeWidget.hpp" />
+    <ClCompile Include="include\Color\VectorScopeWidget.ixx" />
     <ClCompile Include="include\Common\AbstractDialog.ixx">
       <FileType>Document</FileType>
     </ClCompile>
-    <ClCompile Include="include\Common\AlignmentCombobox.hpp" />
+    <ClCompile Include="include\Common\AlignmentCombobox.ixx" />
     <ClCompile Include="include\Common\CommandAction.hpp" />
     <ClCompile Include="include\Common\AbstractWidget.ixx">
       <FileType>CppHeader</FileType>
@@ -192,15 +197,21 @@
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
     <QtMoc Include="include\Image\BasicImageViewWidget.hpp" />
-    <ClInclude Include="include\Graphics\GraphicsItemFloatImageItem.hpp" />
+    <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClCompile Include="include\Knob\AbstractKnobEditor.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
     <ClCompile Include="include\Knob\KnobCheckBox.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
-    <ClInclude Include="include\Interface\IViewer.ixx" />
-    <ClInclude Include="include\Knob\KnobColorPicker.hpp" />
+    <ClCompile Include="include\Interface\IViewer.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobColorPicker.ixx">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
