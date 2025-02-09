@@ -1,9 +1,12 @@
 module;
 #include <QtWidgets/QWidget>
+#include <wobjectimpl.h>
 
 module AlignmentCombobox;
 
 namespace ArtifactWidgets {
+
+ W_OBJECT_IMPL(AlignmentCombobox)
 
  struct AlignmentComboboxPrivate
  {

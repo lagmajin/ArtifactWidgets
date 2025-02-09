@@ -149,6 +149,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>qt6cored.lib;qt6guid.lib;qt6widgetsd.lib;qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -188,7 +189,7 @@
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="include\Common\AlignmentCombobox.ixx" />
-    <ClCompile Include="include\Common\CommandAction.hpp" />
+    <ClCompile Include="include\Common\CommandAction.ixx" />
     <ClCompile Include="include\Common\AbstractWidget.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>

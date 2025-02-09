@@ -1,9 +1,13 @@
 //#include "../../include/Audio/VolumeSlider.hpp"
+module;
+#include <wobjectimpl.h>
 
 
 module VolumeSlider;
 
 namespace ArtifactWidgets {
+
+ W_OBJECT_IMPL(VolumeSlider)
  
  
  class VolumeSliderPrivate {

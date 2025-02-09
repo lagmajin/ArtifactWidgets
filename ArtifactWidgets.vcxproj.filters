@@ -161,7 +161,7 @@
     <ClCompile Include="include\Common\AlignmentCombobox.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="include\Common\CommandAction.hpp">
+    <ClCompile Include="include\Common\CommandAction.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="include\Knob\KnobEditorWidget.ixx">

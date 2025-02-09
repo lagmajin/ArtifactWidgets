@@ -1,4 +1,10 @@
-#include "../../include/Common/CommandAction.hpp"
+
+module;
+#include <wobjectimpl.h>
+
+module CommandAction;
+
+//#include "../../include/Common/CommandAction.hpp"
 
 
 
@@ -6,6 +12,7 @@
 
 
 namespace ArtifactWidgets {
+ W_OBJECT_IMPL(CommandAction)
 
  class CommandActionPrivate {
  private:
@@ -79,7 +86,7 @@ namespace ArtifactWidgets {
  void CommandAction::sendCommand()
  {
 
-  emit commandRequested(pAction_->command());
+  //emit commandRequested(pAction_->command());
  }
 
  bool CommandAction::hasCommand() const
