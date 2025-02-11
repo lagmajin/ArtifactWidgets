@@ -73,6 +73,9 @@
     <Filter Include="ソース ファイル\Knob">
       <UniqueIdentifier>{6f2b2b4b-81e5-4664-95a8-c3f3f1ab95c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Consle">
+      <UniqueIdentifier>{f7924d6b-9ad3-4921-8f2f-54ee7b49a1c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Dock\DockWidget.hpp">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="include\Code\CodeEditor.hpp">
       <Filter>ヘッダー ファイル\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
+      <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,11 +203,9 @@
     <ClCompile Include="include\Color\HistgramWidget.ixx">
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="include\Image\BasicImageViewWidget.hpp">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </QtMoc>
+    <ClCompile Include="include\Console\ConsoleWidget.ixx">
+      <Filter>ヘッダー ファイル\Consle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">

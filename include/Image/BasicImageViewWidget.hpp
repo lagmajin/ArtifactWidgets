@@ -13,16 +13,16 @@ namespace ArtifactWidgets {
  class BasicImageViewWidgetPrivate;
 
  class BasicImageViewWidget :public QWidget{
-  Q_OBJECT
+  //Q_OBJECT
  private:
 
  public:
   explicit BasicImageViewWidget();
   ~BasicImageViewWidget();
- signals:
+ //signals:
   void updateFrameSucceeded();
 
- public slots:
+ //public slots:
   void Clear();
   void setImage(const QImage& image);
  };
