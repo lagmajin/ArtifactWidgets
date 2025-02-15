@@ -143,10 +143,11 @@
       <AdditionalHeaderUnitDependencies>
       </AdditionalHeaderUnitDependencies>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <AdditionalOptions>/Zf %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalDependencies>qt6cored.lib;qt6guid.lib;qt6widgetsd.lib;qtadvanceddockingd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
       <ForceFileOutput>Enabled</ForceFileOutput>
@@ -193,11 +194,11 @@
     <ClCompile Include="include\Common\AbstractWidget.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
-    <ClInclude Include="include\Common\CommonApplicationSignal.hpp" />
+    <ClCompile Include="include\Common\CommonApplicationSignal.ixx" />
     <ClInclude Include="include\Common\CommonImports.hpp" />
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
-    <ClInclude Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClCompile Include="include\Image\BasicImageViewWidget.hpp" />
     <ClCompile Include="include\Console\ConsoleWidget.ixx" />
     <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
       <FileType>CppHeader</FileType>
@@ -230,16 +231,19 @@
     <ClCompile Include="src\Common\AbstractDialog.cpp" />
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
+    <ClCompile Include="src\Console\ConsoleWidget.cpp" />
     <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp" />
     <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp" />
     <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
     <ClCompile Include="src\Knob\AbstractKnobEditor.cpp" />
+    <ClCompile Include="src\Knob\KnobEditorWidget\KnobEditorWidget.cpp" />
     <ClCompile Include="src\Knob\VolumeSlider.cpp" />
     <ClCompile Include="src\Video\ArtifactBasicVideoPreviewWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Common\WinJumpList.ixx" />
     <None Include="src\Common\WidgetCounter.cpp" />
+    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

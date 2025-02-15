@@ -1,6 +1,10 @@
 module;
 
-import std.core;
+//import std.core;
+
+//import std;
+#include <wobjectdefs.h>
+#include <QtWidgets/QCheckBox>
 
 export module KnobCheckBox;
 
@@ -12,14 +16,17 @@ export namespace ArtifactWidgets {
 
  class KnobCheckBoxPrivate;
 
- class KnobCheckBox {
+ class KnobCheckBox :public QCheckBox{
+  W_OBJECT(KnobCheckBox);
  private:
-
+  class Impl;
+  Impl* d;
  public:
-  KnobCheckBox();
+  explicit KnobCheckBox(QWidget* parent = nullptr);;
   ~KnobCheckBox();
   bool checkBox() const;
-  void setCheckBox(bool b);
+  void setValue(bool b);
+
  };
 
 

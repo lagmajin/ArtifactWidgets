@@ -1,8 +1,8 @@
 
 #include <QtWidgets/QGraphicsScene>
-#include "../../../include/Image/BasicImageViewWidget.hpp"
+//#include "../../../include/Image/BasicImageViewWidget.hpp"
 
-
+import BasicImageViewWidget;
 
 
 

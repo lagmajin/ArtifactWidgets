@@ -76,15 +76,15 @@
     <Filter Include="ヘッダー ファイル\Consle">
       <UniqueIdentifier>{f7924d6b-9ad3-4921-8f2f-54ee7b49a1c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Console">
+      <UniqueIdentifier>{5fa2a3df-1f74-4ebf-93bc-49c4fa066e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Dock\DockWidget.hpp">
       <Filter>ヘッダー ファイル\Dock</Filter>
     </ClInclude>
     <ClInclude Include="include\Common\CommonImports.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Common\CommonApplicationSignal.hpp">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClInclude>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -104,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="include\Code\CodeEditor.hpp">
       <Filter>ヘッダー ファイル\Code</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Image\BasicImageViewWidget.hpp">
-      <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +203,18 @@
     <ClCompile Include="include\Console\ConsoleWidget.ixx">
       <Filter>ヘッダー ファイル\Consle</Filter>
     </ClCompile>
+    <ClCompile Include="include\Image\BasicImageViewWidget.hpp">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Console\ConsoleWidget.cpp">
+      <Filter>ソース ファイル\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobEditorWidget\KnobEditorWidget.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommonApplicationSignal.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">
@@ -213,6 +222,9 @@
     </None>
     <None Include="include\Common\WinJumpList.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
+    </None>
+    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
     </None>
   </ItemGroup>
 </Project>

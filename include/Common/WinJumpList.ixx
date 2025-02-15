@@ -12,6 +12,10 @@ namespace ArtifactWidgets
 
 	class WinJumpList
 	{
+
+	public:
+	 WinJumpList();
+	 ~WinJumpList();
 		
 	};
 

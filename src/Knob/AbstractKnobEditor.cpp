@@ -9,6 +9,24 @@ module AbstractKnobEditor;
 
 namespace ArtifactWidgets {
 
+ class AbstractKnobEditorPrivate {
+ private:
+
+ public:
+  AbstractKnobEditorPrivate();
+  ~AbstractKnobEditorPrivate();
+ };
+
+ AbstractKnobEditorPrivate::AbstractKnobEditorPrivate()
+ {
+
+ }
+
+ AbstractKnobEditorPrivate::~AbstractKnobEditorPrivate()
+ {
+
+ }
+
  W_OBJECT_IMPL(AbstractKnobEditor)
 
 
@@ -35,4 +53,7 @@ namespace ArtifactWidgets {
  {
   //throw std::logic_error("The method or operation is not implemented.");
  }
+
+
+
 };

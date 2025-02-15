@@ -1,14 +1,31 @@
-#pragma once
+#include <QtWidgets/QWidget>
+
+export module KnobEditorWidget;
+
+//import AbstractKnobWidgetl;
 
 
+export namespace ArtifactWidgets {
 
+ class KnobEditorWidget:public QWidget {
+ private:
 
+ public:
+  explicit KnobEditorWidget();
+  ~KnobEditorWidget();
+  void addWidget();
+  void clear();
+ };
 
-namespace ArtifactWidgets {
+ KnobEditorWidget::KnobEditorWidget()
+ {
 
+ }
 
+ KnobEditorWidget::~KnobEditorWidget()
+ {
 
-
+ }
 
 
 

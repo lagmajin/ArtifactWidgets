@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include <QtGui/QImage>
 #include <QtWidgets/QWidget>
@@ -7,8 +7,9 @@
 
 import AbstractWidget;
 import IViewer;
+export module BasicImageViewWidget;
 
-namespace ArtifactWidgets {
+export namespace ArtifactWidgets {
 
  class BasicImageViewWidgetPrivate;
 
