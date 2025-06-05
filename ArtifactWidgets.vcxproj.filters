@@ -84,14 +84,8 @@
     <ClInclude Include="include\Dock\DockWidget.hpp">
       <Filter>ヘッダー ファイル\Dock</Filter>
     </ClInclude>
-    <ClInclude Include="include\Common\CommonImports.hpp">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClInclude>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Audio\AudioBusWidget.hpp">
-      <Filter>ヘッダー ファイル\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio\AudioDllImport.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
@@ -101,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="include\Audio\AudioInclude.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Code\CodeEditor.hpp">
-      <Filter>ヘッダー ファイル\Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +194,7 @@
     <ClCompile Include="include\Console\ConsoleWidget.ixx">
       <Filter>ヘッダー ファイル\Consle</Filter>
     </ClCompile>
-    <ClCompile Include="include\Image\BasicImageViewWidget.hpp">
+    <ClCompile Include="include\Image\BasicImageViewWidget.ixx">
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClCompile>
     <ClCompile Include="src\Console\ConsoleWidget.cpp">
@@ -213,6 +204,15 @@
       <Filter>ソース ファイル\Knob</Filter>
     </ClCompile>
     <ClCompile Include="include\Common\CommonApplicationSignal.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Code\CodeEditor.ixx">
+      <Filter>ヘッダー ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Audio\AudioBusWidget.ixx">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommonImports.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
   </ItemGroup>

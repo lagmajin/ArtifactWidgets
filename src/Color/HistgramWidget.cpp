@@ -1,3 +1,4 @@
+module;
 #include <QtGui/QPainter>
 
 //#include "../../../include/Color/HistgramWidget.hpp"

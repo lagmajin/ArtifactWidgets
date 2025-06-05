@@ -5,10 +5,10 @@ module;
 
 #include <QtCore/QSharedPointer>
 
+
+export module BasicImageViewWidget;
 import AbstractWidget;
 import IViewer;
-export module BasicImageViewWidget;
-
 export namespace ArtifactWidgets {
 
  class BasicImageViewWidgetPrivate;

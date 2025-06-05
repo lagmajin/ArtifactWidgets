@@ -1,10 +1,10 @@
 module;
 
 
-import AbstractWidget;
+
 #include <wobjectdefs.h>
 export module ParadeScopeWidget;
-
+import AbstractWidget;
 export namespace ArtifactWidgets {
 
 

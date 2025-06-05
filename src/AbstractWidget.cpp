@@ -2,10 +2,10 @@
 
 module;
 #include <wobjectimpl.h>
-import std;
+
 module AbstractWidget;
 
-
+import std;
 namespace ArtifactWidgets {
 
  W_OBJECT_IMPL(AbstractWidget)

@@ -1,8 +1,6 @@
-#pragma once
-#include <QtWidgets/QSlider>
+module;
 
-#include "VolumeSlider.hpp"
-
+export module AudioBusWidget;
 
 
 namespace ArtifactWidgets {

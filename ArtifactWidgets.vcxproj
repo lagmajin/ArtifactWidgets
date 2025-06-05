@@ -136,14 +136,14 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TranslateIncludes>false</TranslateIncludes>
       <OpenMPSupport>true</OpenMPSupport>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <EnableModules>true</EnableModules>
       <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
       <BuildStlModules>true</BuildStlModules>
       <AdditionalHeaderUnitDependencies>
       </AdditionalHeaderUnitDependencies>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <AdditionalOptions>/Zf %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zf /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,13 +171,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Audio\AudioBusWidget.hpp" />
+    <ClCompile Include="include\Audio\AudioBusWidget.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
     <ClCompile Include="include\Audio\VolumeSlider.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
-    <ClInclude Include="include\Code\CodeEditor.hpp" />
+    <ClCompile Include="include\Code\CodeEditor.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
     <ClCompile Include="include\Color\ColorViewLabel.ixx" />
     <ClCompile Include="include\Color\HistgramWidget.ixx">
       <FileType>CppHeader</FileType>
@@ -195,10 +199,10 @@
       <FileType>CppHeader</FileType>
     </ClCompile>
     <ClCompile Include="include\Common\CommonApplicationSignal.ixx" />
-    <ClInclude Include="include\Common\CommonImports.hpp" />
+    <ClCompile Include="include\Common\CommonImports.ixx" />
     <ClInclude Include="include\Defines.hpp" />
     <ClInclude Include="include\Dock\DockWidget.hpp" />
-    <ClCompile Include="include\Image\BasicImageViewWidget.hpp" />
+    <ClCompile Include="include\Image\BasicImageViewWidget.ixx" />
     <ClCompile Include="include\Console\ConsoleWidget.ixx" />
     <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
       <FileType>CppHeader</FileType>
