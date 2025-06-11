@@ -1,5 +1,5 @@
 module;
-
+#include <wobjectcpp.h>
 export module AudioBusWidget;
 
 

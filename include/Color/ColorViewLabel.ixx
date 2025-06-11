@@ -9,9 +9,12 @@ export module ColorViewLabel;
 
 namespace ArtifactWidgets {
 
- class ColorViewLabel
- {
-	 
+ class ColorViewLabel{
+ private:
+
+
+
+
  };
 
 

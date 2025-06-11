@@ -1,6 +1,7 @@
-#pragma once
+module;
 
 
+export module Widgets;
 
 namespace ArtifactWidgets {
 
