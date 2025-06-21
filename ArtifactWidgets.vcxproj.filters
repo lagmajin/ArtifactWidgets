@@ -79,11 +79,17 @@
     <Filter Include="ソース ファイル\Console">
       <UniqueIdentifier>{5fa2a3df-1f74-4ebf-93bc-49c4fa066e8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Render">
+      <UniqueIdentifier>{a8fc2362-60a7-4d34-85ee-82279440ea11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Render">
+      <UniqueIdentifier>{adb94e2c-800e-402d-8959-78841dd359a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Dialog">
+      <UniqueIdentifier>{e6483d41-6065-4cf3-9598-54aa59d29334}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Dock\DockWidget.hpp">
-      <Filter>ヘッダー ファイル\Dock</Filter>
-    </ClInclude>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClInclude>
@@ -214,6 +220,27 @@
     </ClCompile>
     <ClCompile Include="include\Common\CommonImports.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\BackendSettingWidget.cpp">
+      <Filter>ソース ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Render\BackendSettingWidget.ixx">
+      <Filter>ヘッダー ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\ToggleGlyphButton.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\ToggleGlyphButton.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="HeadPanel.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\HeadPanel.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dock\DockWidget.ixx">
+      <Filter>ヘッダー ファイル\Dock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
