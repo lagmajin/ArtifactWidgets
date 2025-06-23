@@ -1,18 +1,23 @@
-
-#include <QtWidgets/QGraphicsScene>
+module;
+#include <wobjectimpl.h>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 //#include "../../../include/Image/BasicImageViewWidget.hpp"
+module BasicImageViewWidget;
 
-import BasicImageViewWidget;
+
 
 
 
 namespace ArtifactWidgets {
- 
+
+ W_OBJECT_IMPL(BasicImageViewWidget)
+
  class BasicImageViewWidgetPrivate {
 
  };
 
- BasicImageViewWidget::BasicImageViewWidget()
+ BasicImageViewWidget::BasicImageViewWidget(QWidget*parent):QGraphicsView(parent)
  {
  
  }
