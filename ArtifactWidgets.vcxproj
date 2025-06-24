@@ -206,6 +206,7 @@
     </ClCompile>
     <ClCompile Include="include\Common\CommonImports.ixx" />
     <ClInclude Include="include\Defines.hpp" />
+    <ClCompile Include="include\Common\IClonableWidget.ixx" />
     <ClCompile Include="include\Dock\DockWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>

@@ -20,7 +20,10 @@ export namespace ArtifactWidgets {
  class BasicImageViewWidget :public QGraphicsView{
   W_OBJECT(BasicImageViewWidget)
  private:
-
+  class Impl;
+  std::unique_ptr<Impl> impl_;
+ protected:
+  void wheelEvent(QWheelEvent* event) override;
  public:
   explicit BasicImageViewWidget(QWidget*parent=nullptr);
   ~BasicImageViewWidget();
@@ -29,9 +32,13 @@ export namespace ArtifactWidgets {
 
  //public slots:
   void Clear();
+  W_SLOT(Clear)
   void setImage(const QImage& image);
+  W_SLOT(setImage)
   //void setImage(const cv::Mat& image);
  	void setFromFile();
+
+
  };
 
 

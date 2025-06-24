@@ -242,6 +242,9 @@
     <ClCompile Include="include\Dock\DockWidget.ixx">
       <Filter>ヘッダー ファイル\Dock</Filter>
     </ClCompile>
+    <ClCompile Include="include\Common\IClonableWidget.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">

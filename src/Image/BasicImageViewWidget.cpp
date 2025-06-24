@@ -17,6 +17,11 @@ namespace ArtifactWidgets {
 
  };
 
+	struct BasicImageViewWidget::Impl
+	{
+		
+	};
+
  BasicImageViewWidget::BasicImageViewWidget(QWidget*parent):QGraphicsView(parent)
  {
  
@@ -33,6 +38,11 @@ namespace ArtifactWidgets {
  }
 
  void BasicImageViewWidget::setImage(const QImage& image)
+ {
+
+ }
+
+ void BasicImageViewWidget::wheelEvent(QWheelEvent* event)
  {
 
  }
