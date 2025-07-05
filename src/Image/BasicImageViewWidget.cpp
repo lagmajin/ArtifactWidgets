@@ -2,6 +2,13 @@ module;
 #include <wobjectimpl.h>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QEvent>
+
+#include <OpenImageIO/imagebuf.h>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include "qevent.h"
+#include <QMimeData>
 //#include "../../../include/Image/BasicImageViewWidget.hpp"
 module BasicImageViewWidget;
 
@@ -24,6 +31,7 @@ namespace ArtifactWidgets {
 
  BasicImageViewWidget::BasicImageViewWidget(QWidget*parent):QGraphicsView(parent)
  {
+  setAcceptDrops(true);
  
  }
 
@@ -43,6 +51,18 @@ namespace ArtifactWidgets {
  }
 
  void BasicImageViewWidget::wheelEvent(QWheelEvent* event)
+ {
+
+ }
+
+ void BasicImageViewWidget::dragEnterEvent(QDragEnterEvent* event)
+ {
+  if (event->mimeData()->hasUrls()) {
+   event->acceptProposedAction();
+  }
+ }
+
+ void BasicImageViewWidget::dropEvent(QDropEvent* event)
  {
 
  }

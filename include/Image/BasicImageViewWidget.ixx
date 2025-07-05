@@ -7,7 +7,8 @@ module;
 #include <QtCore/QSharedPointer>
 //#include <opencv2/opencv.hpp>
 
-
+//#include <opencv2/opencv.hpp>
+#include <OpenImageIO/imagebuf.h>
 export module BasicImageViewWidget;
 import AbstractWidget;
 import IViewer;
@@ -24,6 +25,8 @@ export namespace ArtifactWidgets {
   std::unique_ptr<Impl> impl_;
  protected:
   void wheelEvent(QWheelEvent* event) override;
+  void dragEnterEvent(QDragEnterEvent* event) override;
+  void dropEvent(QDropEvent* event) override;
  public:
   explicit BasicImageViewWidget(QWidget*parent=nullptr);
   ~BasicImageViewWidget();
