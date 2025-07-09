@@ -3,7 +3,7 @@
 module;
 #include <wobjectimpl.h>
 
-module AbstractKnobEditor;
+module Widget.Knob;
 
 
 

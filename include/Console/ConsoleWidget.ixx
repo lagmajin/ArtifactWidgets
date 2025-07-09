@@ -2,7 +2,9 @@
 module;
 
 #include <wobjectdefs.h>
-#include <QtWidgets/QWidget>
+//
+// #include <QtWidgets/QWidget>
+#include <QPlainTextEdit>
 
 export module ConsoleWidget;
 
@@ -12,7 +14,7 @@ export namespace ArtifactWidgets {
 
  class ConsoleWidgetPrivate;
 
- class ConsoleWidget : public QWidget {
+ class ConsoleWidget : public QPlainTextEdit {
  private:
 
  public:

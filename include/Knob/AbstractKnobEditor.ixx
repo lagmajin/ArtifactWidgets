@@ -4,7 +4,8 @@ module;
 #include <QtCore/QtCore>
 #include <QtWidgets/QtWidgets>
 
-export module AbstractKnobEditor;
+export module Widget.Knob;
+//export import VolumeSlider;
 
 
 

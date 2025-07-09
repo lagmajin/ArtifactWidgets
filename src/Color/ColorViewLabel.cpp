@@ -1,6 +1,6 @@
 module;
 #include <wobjectimpl.h>
-module ColorViewLabel;
+module Widget.ColorViewLabel;
 
 
 namespace Artifact {

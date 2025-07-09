@@ -14,7 +14,15 @@ export namespace ArtifactWidgets {
   ~KnobColorPicker();
  };
 
+ KnobColorPicker::KnobColorPicker()
+ {
 
+ }
+
+ KnobColorPicker::~KnobColorPicker()
+ {
+
+ }
 
 
 

@@ -88,6 +88,18 @@
     <Filter Include="ヘッダー ファイル\Dialog">
       <UniqueIdentifier>{e6483d41-6065-4cf3-9598-54aa59d29334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Animation">
+      <UniqueIdentifier>{10a8b981-afbd-4211-993e-43099ba1f977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Core">
+      <UniqueIdentifier>{954e6ce7-02b5-4647-a314-fafc7062a0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Preview">
+      <UniqueIdentifier>{711e436d-ce17-4067-8440-12c9e86bb097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Preview">
+      <UniqueIdentifier>{d8191fd7-d119-4071-8edc-dd54a53a8ec6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -244,6 +256,18 @@
     </ClCompile>
     <ClCompile Include="include\Common\IClonableWidget.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobSlider.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobSlider.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Preview\PreviewControlWidget.ixx">
+      <Filter>ヘッダー ファイル\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Preview\PreviewControlWidget.cpp">
+      <Filter>ソース ファイル\Preview</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

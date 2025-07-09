@@ -32,7 +32,8 @@ namespace ArtifactWidgets {
 
  ConsoleWidget::ConsoleWidget(QWidget* parent /*= nullptr*/)
  {
-  //QVBoxLayout
+  setReadOnly(true);
+  setWordWrapMode(QTextOption::NoWrap);
  }
 
  ConsoleWidget::~ConsoleWidget()
