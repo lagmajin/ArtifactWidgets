@@ -130,7 +130,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;LIBRARY_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -144,6 +144,7 @@
       </AdditionalHeaderUnitDependencies>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <AdditionalOptions>/Zf /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4267;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -174,8 +175,14 @@
     <ClCompile Include="HeadPanel.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="include\3D\ModelViewer.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Audio\AudioBusWidget.ixx">
       <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\Viewer\ModelViewer.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
     <ClCompile Include="include\Audio\VolumeSlider.ixx">
@@ -211,7 +218,9 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Common\ToggleGlyphButton.ixx" />
-    <ClCompile Include="include\Image\BasicImageViewWidget.ixx" />
+    <ClCompile Include="include\Image\BasicImageViewWidget.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Console\ConsoleWidget.ixx" />
     <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
       <FileType>CppHeader</FileType>
@@ -231,6 +240,7 @@
     <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
       <FileType>CppHeader</FileType>
     </ClCompile>
+    <ClInclude Include="include\Define\DllExportMacro.hpp" />
     <ClInclude Include="include\Knob\KnobDllImports.hpp" />
     <ClCompile Include="include\Knob\KnobSlider.ixx" />
     <ClCompile Include="include\Preview\PreviewControlWidget.ixx">
@@ -241,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Common\WidgetCounter.ixx" />
+    <ClCompile Include="include\Viewer\ContentViewer.ixx" />
     <ClCompile Include="src\AbstractWidget.cpp" />
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
@@ -254,7 +265,9 @@
     <ClCompile Include="src\Console\ConsoleWidget.cpp" />
     <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp" />
     <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp" />
-    <ClCompile Include="src\Image\BasicImageViewWidget.cpp" />
+    <ClCompile Include="src\Image\BasicImageViewWidget.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Knob\AbstractKnobEditor.cpp" />
     <ClCompile Include="src\Knob\KnobEditorWidget\KnobEditorWidget.cpp" />
     <ClCompile Include="src\Knob\KnobSlider.cpp" />

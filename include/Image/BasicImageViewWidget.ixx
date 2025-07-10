@@ -5,10 +5,8 @@ module;
 #include <QWidget>
 #include <QGraphicsView>
 #include <QtCore/QSharedPointer>
-//#include <opencv2/opencv.hpp>
-
-//#include <opencv2/opencv.hpp>
 #include <OpenImageIO/imagebuf.h>
+#include "../Define/DllExportMacro.hpp"
 export module BasicImageViewWidget;
 import AbstractWidget;
 import IViewer;
@@ -16,24 +14,32 @@ import IViewer;
 
 export namespace ArtifactWidgets {
 
- class BasicImageViewWidgetPrivate;
+ 
 
- class BasicImageViewWidget :public QGraphicsView{
+ class LIBRARY_DLL_API BasicImageViewWidget :public QGraphicsView{
   W_OBJECT(BasicImageViewWidget)
  private:
   class Impl;
-  std::unique_ptr<Impl> impl_;
+  Impl* impl_;
  protected:
   void wheelEvent(QWheelEvent* event) override;
   void dragEnterEvent(QDragEnterEvent* event) override;
   void dropEvent(QDropEvent* event) override;
+
+  void dragMoveEvent(QDragMoveEvent* event) override;
+
+
+  void dragLeaveEvent(QDragLeaveEvent* event) override;
+
  public:
   explicit BasicImageViewWidget(QWidget*parent=nullptr);
   ~BasicImageViewWidget();
- //signals:
-  void updateFrameSucceeded();
+  void enableCheckerBoard();
+ 
+  void showContextMenu(const QPoint& pos);
+  W_SLOT(showContextMenu, (const QPoint&));
 
- //public slots:
+  void updateFrameSucceeded();
   void Clear();
   W_SLOT(Clear)
   void setImage(const QImage& image);

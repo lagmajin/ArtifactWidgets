@@ -100,6 +100,12 @@
     <Filter Include="ソース ファイル\Preview">
       <UniqueIdentifier>{d8191fd7-d119-4071-8edc-dd54a53a8ec6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{faa7a57d-080e-4eba-948b-43336e313744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Viewer">
+      <UniqueIdentifier>{c69f552f-62b6-4587-a009-6f5cad9ef377}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -113,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="include\Audio\AudioInclude.hpp">
       <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Define\DllExportMacro.hpp">
+      <Filter>ヘッダー ファイル\Define</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +276,15 @@
       <Filter>ヘッダー ファイル\Preview</Filter>
     </ClCompile>
     <ClCompile Include="src\Preview\PreviewControlWidget.cpp">
+      <Filter>ソース ファイル\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="include\3D\ModelViewer.ixx">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Viewer\ContentViewer.ixx">
+      <Filter>ヘッダー ファイル\Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewer\ModelViewer.cpp">
       <Filter>ソース ファイル\Preview</Filter>
     </ClCompile>
   </ItemGroup>
