@@ -90,7 +90,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>Z:\MyLib\Qt-Advanced-Docking-System\build\Desktop_Qt_6_7_2_MSVC2019_64bit-Debug\lib;$(SolutionDir)/lib;X:\Qt\6.7.2\msvc2019_64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>Z:\MyLib\Qt-Advanced-Docking-System\src;X:\Qt\6.7.2\msvc2019_64\include\QtWidgets;C:\Users\lagma\Desktop\Artifact\third_party;X:\Qt\6.7.2\msvc2019_64\include;$(IncludePath)</IncludePath>
+    <IncludePath>Z:\MyLib\Qt-Advanced-Docking-System\src;X:\Qt\6.7.2\msvc2019_64\include\QtWidgets;C:\Users\lagma\Desktop\Artifact\third_party;X:\Qt\6.7.2\msvc2019_64\include;X:\Qt\6.7.2\msvc2019_64\include\QtMultimedia;$(IncludePath)</IncludePath>
     <TargetName>$(ProjectName)d</TargetName>
     <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
     <OutDir>C:\Users\lagma\Desktop\Artifact\Artifact\App\</OutDir>
@@ -153,6 +153,9 @@
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
       <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Qt6Cored.lib;Qt6Guid.lib;Qt6Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -181,6 +184,10 @@
     <ClCompile Include="include\Audio\AudioBusWidget.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp" />
     <ClCompile Include="src\Viewer\ModelViewer.cpp">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
@@ -282,6 +289,11 @@
     <None Include="include\Common\WinJumpList.ixx" />
     <None Include="src\Common\WidgetCounter.cpp" />
     <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ArtifactCore\ArtifactCore.vcxproj">
+      <Project>{c9c6f040-1511-4b6d-8f5d-fe6c6237a268}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

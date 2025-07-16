@@ -1,39 +1,86 @@
-module;
+﻿module;
 
 #include <wobjectcpp.h>
 #include <wobjectdefs.h>
 #include <wobjectimpl.h>
 
 #include <QtCore/QtCore>
-#include <QtWidgets/QWidget>
+#include <QWidget>
+#include <QGraphicsScene>
+#include <QAudioSink>
+#include <QIODevice>
+#include <QBuffer>
 
 //#include "../Image/BasicImageViewWidget.hpp"
 
- module ArtifactBasicViedeoPreviewWidget;
+module Widgets.VideoPreview;
 
 
  
 namespace ArtifactWidgets {
 
 
- W_OBJECT_IMPL(ArtifactBasicViedeoPreviewWidget)
+ W_OBJECT_IMPL(ArtifactBasicVideoPreviewWidget)
 
-  ArtifactBasicViedeoPreviewWidget::ArtifactBasicViedeoPreviewWidget()
+  class ArtifactBasicVideoPreviewWidget::Impl {
+  private:
+   QGraphicsScene scene_;
+  public:
+   Impl();
+   ~Impl();
+   void initializeAudio(int sampleRate, int channels, int sampleSize);
+   void playAudio();
+   void stopAudio();
+   void writeAudioBuffer(const QByteArray& array);
+   QAudioSink* audioSink_ = nullptr;
+   QAudioFormat audioFormat_;        // 再生するオーディオのフォーマット
+   QBuffer audioBuffer_;             // 再生用のオーディオデータバッファ (例: デコード済みPCMデータ)
+   QIODevice* audioDeviceIo_ = nullptr;
+ };
+
+
+
+ ArtifactBasicVideoPreviewWidget::Impl::Impl()
  {
 
  }
- ArtifactBasicViedeoPreviewWidget::~ArtifactBasicViedeoPreviewWidget()
+
+ ArtifactBasicVideoPreviewWidget::Impl::~Impl()
+ {
+  if (audioSink_) {
+   audioSink_->stop(); // 停止
+   delete audioSink_;
+  }
+ }
+
+ void ArtifactBasicVideoPreviewWidget::Impl::initializeAudio(int sampleRate, int channels, int sampleSize)
  {
 
  }
 
+ void ArtifactBasicVideoPreviewWidget::Impl::playAudio()
+ {
 
+ }
 
-//ArtifactBasicViedeoPreviewWidget::ArtifactBasicVideoPreviewWidget(QW
+ void ArtifactBasicVideoPreviewWidget::Impl::stopAudio()
+ {
 
+ }
 
+ void ArtifactBasicVideoPreviewWidget::Impl::writeAudioBuffer(const QByteArray& array)
+ {
 
+ }
 
+ ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/)
+ {
 
+ }
 
-};
+ ArtifactBasicVideoPreviewWidget::~ArtifactBasicVideoPreviewWidget()
+ {
+
+ }
+
+ };

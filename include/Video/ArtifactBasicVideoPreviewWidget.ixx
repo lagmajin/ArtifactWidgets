@@ -1,28 +1,31 @@
-module;
+﻿module;
 
 #include <wobjectcpp.h>
 #include <wobjectdefs.h>
 
 #include <QtCore/QtCore>
-#include <QtWidgets/QWidget>
-
+#include <QWidget>
+#include <QGraphicsView>
 //#include "../Image/BasicImageViewWidget.hpp"
 
-export module ArtifactBasicViedeoPreviewWidget;
+export module Widgets.VideoPreview;
 
 import AbstractWidget;
 
 export namespace ArtifactWidgets {
 
- class ArtifactBasicVideoPreviewWidgetPrivate;
+ 
 
- class ArtifactBasicViedeoPreviewWidget:public QWidget{
-  W_OBJECT(ArtifactBasicViedeoPreviewWidget)
+ class ArtifactBasicVideoPreviewWidget:public QWidget{
+  W_OBJECT(ArtifactBasicVideoPreviewWidget)
  private:
-
+  class Impl;
+  Impl* impl_;
  public:
-  explicit ArtifactBasicViedeoPreviewWidget();
-  virtual ~ArtifactBasicViedeoPreviewWidget();
+  explicit ArtifactBasicVideoPreviewWidget(QWidget*parent=nullptr);
+  virtual ~ArtifactBasicVideoPreviewWidget();
+  void play();
+  void stop();
  };
 
 
