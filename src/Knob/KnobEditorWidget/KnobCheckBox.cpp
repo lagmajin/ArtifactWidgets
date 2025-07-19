@@ -1,5 +1,7 @@
-import module KnobCheckBox;
-#include <QtWidgets/QCheckBox>
+ï»¿module; 
+#include <QCheckBox>
+module Widgets.Knob.CheckBox;
+
 
 
 
@@ -22,7 +24,7 @@ namespace ArtifactWidgets {
 		}
 	};
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^ & ƒfƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ & ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	KnobCheckBox::KnobCheckBox(QWidget* parent)
 		: QWidget(parent), d(new Impl(this)) {
 		setLayout(&d->layout);
@@ -32,7 +34,7 @@ namespace ArtifactWidgets {
 		delete d;
 	}
 
-	// ’l‚ÌŽæ“¾ & Ý’è
+	// å€¤ã®å–å¾— & è¨­å®š
 	void KnobCheckBox::setValue(bool checked) {
 		d->checkbox.setChecked(checked);
 	}

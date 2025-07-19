@@ -1,43 +1,42 @@
-//#include "../../include/Knob/AbstractKnobEditor.hpp"
+﻿//#include "../../include/Knob/AbstractKnobEditor.hpp"
 
 module;
 #include <wobjectimpl.h>
 
-module Widget.Knob;
-
-
+module Widgets.Knob;
 
 namespace ArtifactWidgets {
 
- class AbstractKnobEditorPrivate {
- private:
-
- public:
-  AbstractKnobEditorPrivate();
-  ~AbstractKnobEditorPrivate();
- };
-
- AbstractKnobEditorPrivate::AbstractKnobEditorPrivate()
- {
-
- }
-
- AbstractKnobEditorPrivate::~AbstractKnobEditorPrivate()
- {
-
- }
-
  W_OBJECT_IMPL(AbstractKnobEditor)
 
+  class AbstractKnobEditor::Impl {
+  private:
 
- AbstractKnobEditor::AbstractKnobEditor(QWidget* parent /*= nullptr*/) :QWidget(parent)
+  public:
+   Impl();
+   ~Impl();
+ };
+
+ AbstractKnobEditor::Impl::Impl()
  {
+
+ }
+
+ AbstractKnobEditor::Impl::~Impl()
+ {
+
+ }
+
+ AbstractKnobEditor::AbstractKnobEditor(QWidget* parent /*= nullptr*/) :QWidget(parent),impl_(new Impl())
+ {
+  setDisabled(false);
   setAcceptDrops(true);
+ 
  }
 
  AbstractKnobEditor::~AbstractKnobEditor()
  {
-
+  delete impl_;
  }
  void AbstractKnobEditor::dragEnterEvent(QDragEnterEvent* event)
  {

@@ -1,4 +1,4 @@
-module;
+ï»¿module ;
 #include <wobjectimpl.h>
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -47,7 +47,7 @@ namespace ArtifactWidgets {
 
   setAcceptDrops(true);
   setContextMenuPolicy(Qt::CustomContextMenu);
-  setRenderHint(QPainter::Antialiasing, true); // ƒAƒ“ƒ`ƒGƒCƒŠƒAƒVƒ“ƒO‚ğ—LŒø‚É‚·‚éiƒIƒvƒVƒ‡ƒ“j
+  setRenderHint(QPainter::Antialiasing, true); // ã‚¢ãƒ³ãƒã‚¨ã‚¤ãƒªã‚¢ã‚·ãƒ³ã‚°ã‚’æœ‰åŠ¹ã«ã™ã‚‹ï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰
   setRenderHint(QPainter::SmoothPixmapTransform, true);
 
   setBackgroundBrush(Qt::darkGray);
@@ -86,10 +86,10 @@ namespace ArtifactWidgets {
   impl_->scene_->addItem(pix);
   pix->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 
-  // ƒV[ƒ“‚ÌƒTƒCƒY‚ğ‰æ‘œ‚É‡‚í‚¹‚Äİ’è
+  // ã‚·ãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’ç”»åƒã«åˆã‚ã›ã¦è¨­å®š
   impl_->scene_->setSceneRect(pix->boundingRect());
 
-  // ‰æ‘œ‚ªƒrƒ…[‘S‘Ì‚Éû‚Ü‚é‚æ‚¤‚É’²®
+  // ç”»åƒãŒãƒ“ãƒ¥ãƒ¼å…¨ä½“ã«åã¾ã‚‹ã‚ˆã†ã«èª¿æ•´
   fitInView(pix->boundingRect(), Qt::KeepAspectRatio);
 
  }
@@ -99,11 +99,11 @@ namespace ArtifactWidgets {
   constexpr double scaleFactor = 1.15;
 
   if (event->angleDelta().y() > 0) {
-   // ƒzƒC[ƒ‹ã•ûŒü ¨ Šg‘å
+   // ãƒ›ã‚¤ãƒ¼ãƒ«ä¸Šæ–¹å‘ â†’ æ‹¡å¤§
    scale(scaleFactor, scaleFactor);
   }
   else {
-   // ƒzƒC[ƒ‹‰º•ûŒü ¨ k¬
+   // ãƒ›ã‚¤ãƒ¼ãƒ«ä¸‹æ–¹å‘ â†’ ç¸®å°
    scale(1.0 / scaleFactor, 1.0 / scaleFactor);
   }
 
@@ -130,12 +130,12 @@ namespace ArtifactWidgets {
 	QString path = url.toLocalFile();
 	qDebug() << "Dropped file path:" << path;
 	qDebug() << "Exists:" << QFile::exists(path);
-	// Å‰‚Éƒhƒƒbƒv‚³‚ê‚½‰æ‘œ‚ğ“Ç‚İ‚Ş
-	// •¡”ƒhƒƒbƒv‚³‚ê‚½ê‡‚Å‚àÅ‰‚Ì1‚Â‚¾‚¯ˆ—‚·‚é—á
+	// æœ€åˆã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸç”»åƒã‚’èª­ã¿è¾¼ã‚€
+	// è¤‡æ•°ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸå ´åˆã§ã‚‚æœ€åˆã®1ã¤ã ã‘å‡¦ç†ã™ã‚‹ä¾‹
 	QImage droppedImage(path);
 	if (!droppedImage.isNull()) {
 	 setImage(droppedImage);
-	 break; // Å‰‚Ì‰æ‘œ‚ğˆ—‚µ‚½‚çƒ‹[ƒv‚ğ”²‚¯‚é
+	 break; // æœ€åˆã®ç”»åƒã‚’å‡¦ç†ã—ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 	}
 	else {
 	 qDebug() << "Failed to load image from:" << path;

@@ -10,6 +10,7 @@ module Widgets.Render.Queue;
 
 import Render;
 
+namespace ArtifactCore{}
 
 namespace ArtifactWidgets {
 
@@ -53,7 +54,9 @@ RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
 
  RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {
-  auto manager=RendererQueueManager::instance();
+  setEnabled(false);
+
+  auto& manager=RendererQueueManager::instance();
 
  }
 

@@ -1,21 +1,26 @@
-module;
+﻿module;
+#include <QWidget>
 #include <QPushButton>
 module Preview.ControlWidget;
 
 
 namespace ArtifactCore {
+
+
  class PreviewControlWidget::Impl {
  private:
-  QPushButton playButton;
-  QPushButton stopButton;
+ 
  public:
   Impl();
   ~Impl();
+  QPushButton* playButton=nullptr;
+  QPushButton* stopButton=nullptr;
+
  };
 
 
 
- PreviewControlWidget::PreviewControlWidget(QWidget* parent /*= nullptr*/)
+ PreviewControlWidget::PreviewControlWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {
 
  }
@@ -24,4 +29,15 @@ namespace ArtifactCore {
  {
 
  }
+
+ void PreviewControlWidget::play()
+ {
+
+ }
+
+ void PreviewControlWidget::stop()
+ {
+
+ }
+
 };

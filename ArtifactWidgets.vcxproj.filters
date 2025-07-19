@@ -293,6 +293,12 @@
     <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp">
       <Filter>ソース ファイル\Render</Filter>
     </ClCompile>
+    <ClCompile Include="include\Knob\RotaryKnob.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">

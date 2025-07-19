@@ -1,4 +1,4 @@
-module;
+﻿module;
 
 //import std.core;
 
@@ -6,7 +6,7 @@ module;
 #include <wobjectdefs.h>
 #include <QtWidgets/QCheckBox>
 
-export module KnobCheckBox;
+export module Widgets.Knob.CheckBox;
 
 
 

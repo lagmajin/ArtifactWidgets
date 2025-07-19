@@ -1,21 +1,25 @@
-module;
+﻿module;
 
 #include <wobjectcpp.h>
 #include <QtCore/QtCore>
-#include <QtWidgets/QtWidgets>
+#include <Qtwidgets/QWidget>
 
-export module Widget.Knob;
+#include "../Define/DllExportMacro.hpp"
+
+export module Widgets.Knob;
 //export import VolumeSlider;
 
 
 
 export namespace ArtifactWidgets {
 
- class AbstractKnobEditorPrivate;
 
- class AbstractKnobEditor:public QWidget {
+
+ class LIBRARY_DLL_API AbstractKnobEditor:public QWidget {
   W_OBJECT(AbstractKnobEditor)
  private:
+  class Impl;
+  Impl* impl_;
  protected:
   void dragEnterEvent(QDragEnterEvent* event) override;
   void dragMoveEvent(QDragMoveEvent* event) override;
