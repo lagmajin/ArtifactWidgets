@@ -1,4 +1,4 @@
-module;
+﻿module;
 #include <QtWidgets/QWidget>
 
 export module HistgramWidget;
@@ -7,11 +7,12 @@ export module HistgramWidget;
 
 export namespace ArtifactWidgets {
 
- class HistgramWidgetPrivate;
+
 
  class HistgramWidget :public QWidget{
  private:
-
+  class Impl;
+  Impl* impl_;
  protected:
   
 

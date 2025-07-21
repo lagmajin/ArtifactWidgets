@@ -75,12 +75,26 @@ namespace ArtifactWidgets {
 
  ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/)
  {
+  
+
 
  }
 
  ArtifactBasicVideoPreviewWidget::~ArtifactBasicVideoPreviewWidget()
  {
 
+ }
+
+ void ArtifactBasicVideoPreviewWidget::dragEnterEvent(QDragEnterEvent* event)
+ {
+  
+ }
+
+ QSize ArtifactBasicVideoPreviewWidget::sizeHint() const
+ {
+  //throw std::logic_error("The method or operation is not implemented.");
+ 
+  return QSize(600, 400);
  }
 
  };

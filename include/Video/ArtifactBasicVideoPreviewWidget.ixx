@@ -26,6 +26,12 @@ export namespace ArtifactWidgets {
   virtual ~ArtifactBasicVideoPreviewWidget();
   void play();
   void stop();
+
+  QSize sizeHint() const override;
+
+ protected:
+  void dragEnterEvent(QDragEnterEvent* event) override;
+
  };
 
 

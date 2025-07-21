@@ -1,4 +1,4 @@
-module;
+﻿module;
 #include <wobjectimpl.h>
 
 #include <QImage>
@@ -47,6 +47,9 @@ export namespace ArtifactWidgets {
   //void setImage(const cv::Mat& image);
  	void setFromFile();
 
+
+
+  QSize sizeHint() const override;
 
  };
 

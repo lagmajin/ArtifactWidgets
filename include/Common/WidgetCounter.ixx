@@ -1,4 +1,4 @@
-module;
+﻿module;
 
 #include <QtCore/QObject>
 #include <wobjectcpp.h>
@@ -14,14 +14,14 @@ export namespace ArtifactWidgets {
  {
   W_OBJECT(WidgetCounter)
  private:
+  class Impl;
+  Impl* impl_;
 
+  
  public:
   explicit WidgetCounter();
   ~WidgetCounter();
- signals:
-
- public slots:
-
+  static WidgetCounter& getInstance();
  };
 
 

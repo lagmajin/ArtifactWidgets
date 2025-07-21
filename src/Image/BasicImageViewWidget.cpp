@@ -170,4 +170,10 @@ namespace ArtifactWidgets {
 
  }
 
+ QSize BasicImageViewWidget::sizeHint() const
+ {
+
+  return QSize(600, 500);
+ }
+
 };

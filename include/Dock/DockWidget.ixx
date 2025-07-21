@@ -1,4 +1,4 @@
-module;
+﻿module;
 #include <DockWidget.h>
 #include <qboxlayout.h>
 #include <QLabel>
@@ -39,6 +39,8 @@ export namespace ArtifactWidgets {
    layout->addWidget(contentWidget);
 
    this->setWidget(wrapper);
+
+   
 
    connect(btnCollapse, &QPushButton::clicked, [=]() {
 	contentWidget->setVisible(!contentWidget->isVisible());
