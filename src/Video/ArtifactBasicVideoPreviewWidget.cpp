@@ -28,6 +28,7 @@ namespace ArtifactWidgets {
   public:
    Impl();
    ~Impl();
+   void fetchVideoThumbnail();
    void initializeAudio(int sampleRate, int channels, int sampleSize);
    void playAudio();
    void stopAudio();
@@ -69,6 +70,11 @@ namespace ArtifactWidgets {
  }
 
  void ArtifactBasicVideoPreviewWidget::Impl::writeAudioBuffer(const QByteArray& array)
+ {
+
+ }
+
+ void ArtifactBasicVideoPreviewWidget::Impl::fetchVideoThumbnail()
  {
 
  }
