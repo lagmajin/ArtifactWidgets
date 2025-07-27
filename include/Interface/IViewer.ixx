@@ -1,4 +1,4 @@
-module;
+﻿module;
 
 #include <QtCore/QFileInfo>
 
@@ -12,7 +12,7 @@ export namespace ArtifactWidgets
  class QFileInfo;
 
  class IViewer {
-
+ private:
  public:
   virtual void loadFromFile(const QFileInfo& info)=0;
   virtual QFileInfo activeFileInfo() const=0;

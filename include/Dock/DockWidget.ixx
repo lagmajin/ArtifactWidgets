@@ -26,8 +26,8 @@ export namespace ArtifactWidgets {
    auto header = new QWidget(this);
    auto hlayout = new QHBoxLayout(header);
    hlayout->setContentsMargins(4, 2, 4, 2);
-   auto label = new QLabel(title);
-   hlayout->addWidget(label);
+   //auto label = new QLabel(title);
+   //hlayout->addWidget(label);
    auto btnCollapse = new QPushButton("-");
    btnCollapse->setFixedSize(16, 16);
    hlayout->addWidget(btnCollapse);
