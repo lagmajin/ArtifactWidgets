@@ -1,4 +1,4 @@
-module;
+ï»¿module;
 #include <qboxlayout.h>
 #include <QLabel>
 #include <QPushButton>
@@ -20,7 +20,7 @@ export namespace ArtifactWidgets
    auto layout = new QVBoxLayout(this);
    layout->setContentsMargins(0, 0, 0, 0);
 
-   // ƒwƒbƒ_[•”•ª
+   // ãƒ˜ãƒƒãƒ€ãƒ¼éƒ¨åˆ†
    auto header = new QWidget(this);
    header->setObjectName("header");
    header->setStyleSheet("background-color: #333; color: white;");
@@ -37,7 +37,7 @@ export namespace ArtifactWidgets
 
    layout->addWidget(header);
 
-   // ƒRƒ“ƒeƒ“ƒc•”•ªi‚±‚±‚ÉŒã‚ÅD‚«‚Èwidget‚ðƒZƒbƒgj
+   // ã‚³ãƒ³ãƒ†ãƒ³ãƒ„éƒ¨åˆ†ï¼ˆã“ã“ã«å¾Œã§å¥½ããªwidgetã‚’ã‚»ãƒƒãƒˆï¼‰
    m_content = new QWidget(this);
    layout->addWidget(m_content);
 

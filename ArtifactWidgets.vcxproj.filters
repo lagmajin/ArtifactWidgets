@@ -106,6 +106,9 @@
     <Filter Include="ヘッダー ファイル\Viewer">
       <UniqueIdentifier>{c69f552f-62b6-4587-a009-6f5cad9ef377}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Viewer">
+      <UniqueIdentifier>{877b2aa7-3c1d-4e9a-af97-f18c0c18a99b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -254,9 +257,6 @@
     <ClCompile Include="src\Common\ToggleGlyphButton.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="HeadPanel.ixx">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </ClCompile>
     <ClCompile Include="src\Common\HeadPanel.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
@@ -298,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cpp">
       <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewer\ContentViewer.cpp">
+      <Filter>ソース ファイル\Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dock\HeadPanel.ixx">
+      <Filter>ヘッダー ファイル\Dock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
