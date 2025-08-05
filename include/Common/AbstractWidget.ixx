@@ -1,4 +1,4 @@
-
+﻿
 module;
 
 #include <wobjectcpp.h>
@@ -7,22 +7,25 @@ module;
 #include <QtCore/QFileInfo>
 #include <QtWidgets/QWidget>
 
+#include "../Define/DllExportMacro.hpp"
+
 export module AbstractWidget;
 
 export namespace ArtifactWidgets {
 
-
-
- class AbstractWidgetPrivate;
-
- class AbstractWidget :public QWidget{
+  class LIBRARY_DLL_API AbstractWidget :public QWidget{
   W_OBJECT(AbstractWidget)
  private:
-  QScopedPointer<AbstractWidgetPrivate>const pImpl_;
+  class Impl;
+  Impl* impl_;
+ protected:
+  void focusInEvent(QFocusEvent* event) override;
+  void focusOutEvent(QFocusEvent* event) override;
+  void resizeEvent(QResizeEvent* event) override;
  public:
   explicit AbstractWidget(QWidget* parent = nullptr);
   virtual~AbstractWidget();
- public slots:
+  void setEnableFocusFrameGlow(bool isEnabled=true);
 
  };
 

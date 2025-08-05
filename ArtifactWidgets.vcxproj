@@ -182,12 +182,15 @@
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="include\Dock\HeadPanel.ixx" />
+    <ClCompile Include="include\Effect\WidgetGlowFrame.ixx" />
     <ClCompile Include="include\Knob\RotaryKnob.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClCompile Include="src\Dock\Pane.cpp" />
+    <ClCompile Include="src\Effect\WidgetGlowFrame.cpp" />
     <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp" />
     <ClCompile Include="src\Viewer\ContentViewer.cpp" />
     <ClCompile Include="src\Viewer\ModelViewer.cpp">
@@ -223,7 +226,7 @@
     <ClCompile Include="include\Common\CommonImports.ixx" />
     <ClInclude Include="include\Defines.hpp" />
     <ClCompile Include="include\Common\IClonableWidget.ixx" />
-    <ClCompile Include="include\Dock\DockWidget.ixx">
+    <ClCompile Include="include\Dock\Pane.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Common\ToggleGlyphButton.ixx" />

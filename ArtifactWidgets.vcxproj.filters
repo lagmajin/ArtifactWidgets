@@ -109,6 +109,12 @@
     <Filter Include="ソース ファイル\Viewer">
       <UniqueIdentifier>{877b2aa7-3c1d-4e9a-af97-f18c0c18a99b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Effects">
+      <UniqueIdentifier>{45922bbf-9398-4e31-8ade-70afe8984300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{4a3bf74d-c893-4127-96e8-d41cfc340bd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -260,7 +266,7 @@
     <ClCompile Include="src\Common\HeadPanel.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="include\Dock\DockWidget.ixx">
+    <ClCompile Include="include\Dock\Pane.ixx">
       <Filter>ヘッダー ファイル\Dock</Filter>
     </ClCompile>
     <ClCompile Include="include\Common\IClonableWidget.ixx">
@@ -304,6 +310,15 @@
     </ClCompile>
     <ClCompile Include="include\Dock\HeadPanel.ixx">
       <Filter>ヘッダー ファイル\Dock</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Effect\WidgetGlowFrame.ixx">
+      <Filter>ヘッダー ファイル\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\WidgetGlowFrame.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dock\Pane.cpp">
+      <Filter>ソース ファイル\Dock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

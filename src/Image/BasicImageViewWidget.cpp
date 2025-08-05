@@ -14,6 +14,7 @@
 #include <QFile>
 module BasicImageViewWidget;
 
+import Widgets.Effects.GlowFrame;
 
 namespace ArtifactWidgets {
 
@@ -27,6 +28,7 @@ namespace ArtifactWidgets {
    QGraphicsPixmapItem* pixmap_ = nullptr;
    QGraphicsScene* scene_ = nullptr;
    QMenu* menu_ = nullptr;
+   GlowFrame* glow = nullptr;
  };
 
  BasicImageViewWidget::Impl::Impl()
@@ -54,6 +56,10 @@ namespace ArtifactWidgets {
 
   connect(this, &QWidget::customContextMenuRequested,
    this, &BasicImageViewWidget::showContextMenu);
+
+  impl_->glow = new GlowFrame(this);
+  impl_->glow->setGeometry(rect());
+  impl_->glow->show();
  }
 
  BasicImageViewWidget::~BasicImageViewWidget()
@@ -174,6 +180,16 @@ namespace ArtifactWidgets {
  {
 
   return QSize(600, 500);
+ }
+
+ void BasicImageViewWidget::focusInEvent(QFocusEvent*)
+ {
+  impl_->glow->setFocused(true);
+ }
+
+ void BasicImageViewWidget::focusOutEvent(QFocusEvent*)
+ {
+  impl_->glow->setFocused(false);
  }
 
 };

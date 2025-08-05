@@ -9,6 +9,7 @@
 module Widgets.Render.Queue;
 
 import Render;
+import Widgets.Utils.CSS;
 
 namespace ArtifactCore{}
 
@@ -21,7 +22,9 @@ W_OBJECT_IMPL(RenderQueueManagerWidget)
 
 RenderQueueManagerJobPanel::RenderQueueManagerJobPanel(QWidget* parent/*=nullptr*/):QTreeView(parent)
 {
- //auto header = header();
+ auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+
+ setStyleSheet(style);
 
 
 }
@@ -55,7 +58,9 @@ RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
  RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {
   setEnabled(false);
+  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
 
+  setStyleSheet(style);
   auto& manager=RendererQueueManager::instance();
 
  }
