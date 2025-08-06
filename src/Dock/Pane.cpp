@@ -66,12 +66,12 @@ namespace ArtifactWidgets
   mainContentWrapper->setStyleSheet("background-color: transparent;");
 
 
-  impl_->glowFrame = new GlowFrame(nullptr);
-  impl_->glowFrame->setParent(mainContentWrapper);
+  //impl_->glowFrame = new GlowFrame(nullptr);
+  //impl_->glowFrame->setParent(mainContentWrapper);
 
-  impl_->glowFrame->setGeometry(rect());
-  impl_->glowFrame->show();
-  impl_->glowFrame->raise();
+  //impl_->glowFrame->setGeometry(rect());
+  //impl_->glowFrame->show();
+  //impl_->glowFrame->raise();
 
   // ads::CDockWidget のコンテンツとして mainContentWrapper を設定
   setWidget(mainContentWrapper);
@@ -90,12 +90,12 @@ namespace ArtifactWidgets
 
  void Pane::focusInEvent(QFocusEvent* event)
  {
-  impl_->glowFrame->setFocused(true);
+  //impl_->glowFrame->setFocused(true);
  }
 
  void Pane::focusOutEvent(QFocusEvent* event)
  {
-  impl_->glowFrame->setFocused(false);
+  //impl_->glowFrame->setFocused(false);
  }
 
  Pane::~Pane()
@@ -105,7 +105,7 @@ namespace ArtifactWidgets
 
  void Pane::resizeEvent(QResizeEvent* event)
  {
-  impl_->glowFrame->resize(event->size());
+  //impl_->glowFrame->resize(event->size());
  }
 
 };

@@ -9,8 +9,12 @@
 
 module HeadPanel;
 
+import Widgets.Utils.CSS;
+
 namespace ArtifactWidgets
 {
+ using namespace ArtifactCore;
+
  W_OBJECT_IMPL(HeaderPanel)
 
 
@@ -23,6 +27,11 @@ namespace ArtifactWidgets
 
   HeaderPanel::HeaderPanel(const QString& title, QWidget* parent /*= nullptr*/) : QWidget(parent)
  {
+  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+
+  setStyleSheet(style);
+
+
   auto layout = new QVBoxLayout(this);
   layout->setContentsMargins(0, 0, 0, 0);
 
@@ -30,6 +39,7 @@ namespace ArtifactWidgets
   auto header = new QWidget(this);
   header->setObjectName("header");
   header->setStyleSheet("background-color: #333; color: white;");
+  header->setStyleSheet(style);
 
   auto headerLayout = new QHBoxLayout(header);
   headerLayout->setContentsMargins(5, 2, 5, 2);
