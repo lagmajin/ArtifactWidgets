@@ -49,7 +49,15 @@ export namespace ArtifactWidgets {
   void setFloatingMode(bool isFloating);
  };
 
-
+ class RenderQueueManagerUnderInfoWidget:public QWidget
+ {
+ private:
+  class Impl;
+  Impl* impl_;
+ public:
+  explicit RenderQueueManagerUnderInfoWidget(QWidget* parent = nullptr);
+  ~RenderQueueManagerUnderInfoWidget();
+ };
 
 
 

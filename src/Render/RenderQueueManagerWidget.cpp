@@ -1,5 +1,6 @@
 ﻿module;
 
+#include <QLabel>
 #include <QWidget>
 #include <QTreeView>
 #include <QPushButton>
@@ -115,7 +116,7 @@ namespace ArtifactWidgets {
   ~Impl();
   RenderQueueControlPanel* coontrolPanel_ = nullptr;
   RenderQueueManagerJobPanel* jobPanel_ = nullptr;
-
+  RenderQueueManagerUnderInfoWidget* infoWidget = nullptr;
  };
 
  RenderQueueManagerWidget::Impl::Impl()
@@ -141,6 +142,8 @@ namespace ArtifactWidgets {
 
   impl_->coontrolPanel_ = new RenderQueueControlPanel();
 
+  auto info = impl_->infoWidget = new RenderQueueManagerUnderInfoWidget();
+
   impl_->jobPanel_ = new RenderQueueManagerJobPanel();
   impl_->jobPanel_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   QVBoxLayout* layout = new QVBoxLayout();
@@ -149,7 +152,8 @@ namespace ArtifactWidgets {
   layout->setSpacing(0);
   layout->addWidget(impl_->coontrolPanel_);
   layout->addWidget(impl_->jobPanel_, 0, Qt::AlignTop);
-  setLayout(layout);
+  layout->addWidget(info);
+ 	setLayout(layout);
  }
 
  RenderQueueManagerWidget::~RenderQueueManagerWidget()
@@ -167,6 +171,44 @@ namespace ArtifactWidgets {
 
  }
 
+ class RenderQueueManagerUnderInfoWidget::Impl
+ {
+ private:
 
+ public:
+  Impl();
+  ~Impl();
+  QLabel* ramUsageLabel = nullptr;
+  QLabel* elpsedTimeLabel = nullptr;
+ };
+
+ RenderQueueManagerUnderInfoWidget::Impl::Impl()
+ {
+
+ }
+
+ RenderQueueManagerUnderInfoWidget::Impl::~Impl()
+ {
+
+ }
+
+ RenderQueueManagerUnderInfoWidget::RenderQueueManagerUnderInfoWidget(QWidget* parent /*= nullptr*/):QWidget(parent),impl_(new Impl())
+ {
+  QHBoxLayout* layout = new QHBoxLayout();
+
+  auto ramUsageLabel=impl_->ramUsageLabel = new QLabel();
+  ramUsageLabel->setText("Ram:");
+
+  auto elpsedTimeLabel = impl_->elpsedTimeLabel = new QLabel();
+  elpsedTimeLabel->setText("ElpsedTime");
+  layout->addWidget(ramUsageLabel);
+  layout->addWidget(elpsedTimeLabel);
+  setLayout(layout);
+ }
+
+ RenderQueueManagerUnderInfoWidget::~RenderQueueManagerUnderInfoWidget()
+ {
+  delete impl_;
+ }
 
 };
