@@ -7,43 +7,115 @@
 #include <QVBoxLayout>
 #include <wobjectimpl.h>
 
+#include "../../../../../../../Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/ucrt/corecrt_io.h"
+
 module Widgets.Render.Queue;
 
 import Render;
 import Widgets.Utils.CSS;
 
-namespace ArtifactCore{}
+
+namespace ArtifactCore {}
 
 namespace ArtifactWidgets {
 
  using namespace ArtifactCore;
 
-W_OBJECT_IMPL(RenderQueueManagerWidget)
+ W_OBJECT_IMPL(RenderQueueManagerWidget)
+
+  class RenderQueueControlPanel::Impl
+ {
+
+ public:
+  Impl();
+  //RenderQueueControlPanel* parent = nullptr;
+
+  QProgressBar* progressBar = nullptr;
+  QPushButton* renderingStartButton = nullptr;
+  QPushButton* clearAllRenderQueueButton = nullptr;
+ };
+
+ RenderQueueControlPanel::Impl::Impl()
+ {
+
+ }
+
+ RenderQueueControlPanel::RenderQueueControlPanel(QWidget* parent /*= nullptr*/) :QWidget(parent), impl_(new Impl())
+ {
+  auto pHVoxLayout = new QHBoxLayout();
+
+  auto renderingStartButton = impl_->renderingStartButton = new QPushButton();
+
+  //renderingStartButton->setFixedSize(50, 50); // 正方形に
+  renderingStartButton->setStyleSheet(
+   "QPushButton {"
+   " border-radius: 10px;"      // 角丸の半径
+   " background-color: #3498db;"
+   " color: white;"
+   " font-weight: bold;"
+   " }"
+   "QPushButton:hover {"
+   " background-color: #2980b9;"
+   " }"
+  );
+
+  auto progressBar = impl_->progressBar = new QProgressBar();
+  progressBar->setValue(10);
 
 
-RenderQueueManagerJobPanel::RenderQueueManagerJobPanel(QWidget* parent/*=nullptr*/):QTreeView(parent)
-{
- auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+  renderingStartButton->setText("Rendering");
+  pHVoxLayout->addWidget(progressBar);
+  pHVoxLayout->addWidget(renderingStartButton);
+  setLayout(pHVoxLayout);
+ }
 
- setStyleSheet(style);
+ RenderQueueControlPanel::~RenderQueueControlPanel()
+ {
+  delete impl_;
+ }
 
+ class RenderQueueManagerJobPanel::Impl
+ {
+ private:
 
-}
+ public:
+  Impl();
+  ~Impl();
+ };
 
-RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
-{
+ RenderQueueManagerJobPanel::Impl::~Impl()
+ {
 
-}
+ }
+
+ RenderQueueManagerJobPanel::RenderQueueManagerJobPanel(QWidget* parent/*=nullptr*/) :QTreeView(parent)
+ {
+  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+
+  setStyleSheet(style);
+
+  auto model = new RenderJobModel();
+
+  setModel(model);
+
+ }
+
+ RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
+ {
+
+ }
 
 
 
  class RenderQueueManagerWidget::Impl {
  private:
-  
+
  public:
   Impl();
   ~Impl();
-  RenderQueueManagerJobPanel* jobPanel_=nullptr;
+  RenderQueueControlPanel* coontrolPanel_ = nullptr;
+  RenderQueueManagerJobPanel* jobPanel_ = nullptr;
+
  };
 
  RenderQueueManagerWidget::Impl::Impl()
@@ -57,21 +129,26 @@ RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
  }
 
 
- RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget* parent /*= nullptr*/):QWidget(parent),impl_(new Impl())
+ RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget* parent /*= nullptr*/) :QWidget(parent), impl_(new Impl())
  {
   setEnabled(false);
   auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
 
   setStyleSheet(style);
-  auto& manager=RendererQueueManager::instance();
+  auto& manager = RendererQueueManager::instance();
 
   //impl_->jobPanel_->
 
-  impl_->jobPanel_ = new RenderQueueManagerJobPanel();
-	
-  QVBoxLayout* layout = new QVBoxLayout();
-  layout->addWidget(impl_->jobPanel_);
+  impl_->coontrolPanel_ = new RenderQueueControlPanel();
 
+  impl_->jobPanel_ = new RenderQueueManagerJobPanel();
+  impl_->jobPanel_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  QVBoxLayout* layout = new QVBoxLayout();
+
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->setSpacing(0);
+  layout->addWidget(impl_->coontrolPanel_);
+  layout->addWidget(impl_->jobPanel_, 0, Qt::AlignTop);
   setLayout(layout);
  }
 
@@ -89,5 +166,7 @@ RenderQueueManagerJobPanel::~RenderQueueManagerJobPanel()
  {
 
  }
+
+
 
 };

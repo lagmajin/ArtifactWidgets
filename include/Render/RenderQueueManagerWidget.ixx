@@ -16,9 +16,21 @@ import Render;
 
 export namespace ArtifactWidgets {
 
+ class RenderQueueControlPanel:public QWidget
+ {
+ private:
+  class Impl;
+  Impl* impl_;
+ public:
+  RenderQueueControlPanel(QWidget* parent = nullptr);
+  ~RenderQueueControlPanel();
+ };
+
+
  class RenderQueueManagerJobPanel:public QTreeView {
  private:
-
+  class Impl;
+  Impl* impl_;
  public:
   explicit RenderQueueManagerJobPanel(QWidget*parent=nullptr);
   ~RenderQueueManagerJobPanel();
