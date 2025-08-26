@@ -186,6 +186,7 @@
     <ClCompile Include="include\Knob\RotaryKnob.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClCompile Include="include\Panel\DraggableSplitter.ixx" />
     <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>

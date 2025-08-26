@@ -115,6 +115,12 @@
     <Filter Include="ソース ファイル\Effect">
       <UniqueIdentifier>{4a3bf74d-c893-4127-96e8-d41cfc340bd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Panel">
+      <UniqueIdentifier>{03d8bd85-950e-4418-91f3-6594b9b761ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Control">
+      <UniqueIdentifier>{30525b5c-6922-4d59-ba7a-1a818ba0af40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -319,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="src\Dock\Pane.cpp">
       <Filter>ソース ファイル\Dock</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Panel\DraggableSplitter.ixx">
+      <Filter>ヘッダー ファイル\Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
