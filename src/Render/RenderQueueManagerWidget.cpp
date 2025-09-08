@@ -46,7 +46,9 @@ namespace ArtifactWidgets {
   auto pHVoxLayout = new QHBoxLayout();
 
   auto renderingStartButton = impl_->renderingStartButton = new QPushButton();
-
+  renderingStartButton->setText("Rendering");
+  auto clearAllRenderQueueButton = impl_->clearAllRenderQueueButton = new QPushButton();
+  clearAllRenderQueueButton->setText("clear all");
   //renderingStartButton->setFixedSize(50, 50); // 正方形に
   renderingStartButton->setStyleSheet(
    "QPushButton {"
@@ -64,9 +66,10 @@ namespace ArtifactWidgets {
   progressBar->setValue(10);
 
 
-  renderingStartButton->setText("Rendering");
+  
   pHVoxLayout->addWidget(progressBar);
   pHVoxLayout->addWidget(renderingStartButton);
+  pHVoxLayout->addWidget(clearAllRenderQueueButton);
   setLayout(pHVoxLayout);
  }
 
@@ -178,6 +181,7 @@ namespace ArtifactWidgets {
  public:
   Impl();
   ~Impl();
+  QLabel* logLabel = nullptr;
   QLabel* ramUsageLabel = nullptr;
   QLabel* elpsedTimeLabel = nullptr;
  };
@@ -196,11 +200,16 @@ namespace ArtifactWidgets {
  {
   QHBoxLayout* layout = new QHBoxLayout();
 
+  auto logLabel = impl_->logLabel = new QLabel();
+  logLabel->setText("Log:");
+
   auto ramUsageLabel=impl_->ramUsageLabel = new QLabel();
   ramUsageLabel->setText("Ram:");
 
   auto elpsedTimeLabel = impl_->elpsedTimeLabel = new QLabel();
-  elpsedTimeLabel->setText("ElpsedTime");
+  elpsedTimeLabel->setText("Elapsed Time");
+
+  layout->addWidget(logLabel);
   layout->addWidget(ramUsageLabel);
   layout->addWidget(elpsedTimeLabel);
   setLayout(layout);

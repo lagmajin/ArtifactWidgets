@@ -121,6 +121,9 @@
     <Filter Include="ヘッダー ファイル\Control">
       <UniqueIdentifier>{30525b5c-6922-4d59-ba7a-1a818ba0af40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Button">
+      <UniqueIdentifier>{77351b59-832b-4b89-9efc-8037c33eb9e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="include\Panel\DraggableSplitter.ixx">
       <Filter>ヘッダー ファイル\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\SubToolButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
