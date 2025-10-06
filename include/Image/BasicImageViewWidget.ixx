@@ -38,7 +38,10 @@ export namespace ArtifactWidgets {
   explicit BasicImageViewWidget(QWidget*parent=nullptr);
   ~BasicImageViewWidget();
   void enableCheckerBoard();
- 
+  void soloMode();
+  void setRotate(double angleDegrees);
+
+  void resetRotate();
   void showContextMenu(const QPoint& pos);
   W_SLOT(showContextMenu, (const QPoint&));
 

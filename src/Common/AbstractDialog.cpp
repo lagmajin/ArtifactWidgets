@@ -24,6 +24,7 @@ namespace ArtifactWidgets {
   bool dragging = false;
   bool acceptOnEnter = true;
   bool rejectOnEscape = true;
+  bool highlightOnFocus = true;
  };
 
 
@@ -79,6 +80,16 @@ namespace ArtifactWidgets {
  void AbstractDialog::setRejectOnEscape(bool enabled /*= true*/)
  {
 
+ }
+
+ void AbstractDialog::focusInEvent(QFocusEvent* event)
+ {
+  throw std::logic_error("The method or operation is not implemented.");
+ }
+
+ void AbstractDialog::focusOutEvent(QFocusEvent* event)
+ {
+  throw std::logic_error("The method or operation is not implemented.");
  }
 
 };

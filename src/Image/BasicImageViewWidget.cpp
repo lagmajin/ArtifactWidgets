@@ -29,6 +29,8 @@ namespace ArtifactWidgets {
    QGraphicsScene* scene_ = nullptr;
    QMenu* menu_ = nullptr;
    GlowFrame* glow = nullptr;
+   bool soloMode = true;
+
  };
 
  BasicImageViewWidget::Impl::Impl()
@@ -190,6 +192,16 @@ namespace ArtifactWidgets {
  void BasicImageViewWidget::focusOutEvent(QFocusEvent*)
  {
   impl_->glow->setFocused(false);
+ }
+
+ void BasicImageViewWidget::soloMode()
+ {
+
+ }
+
+ void BasicImageViewWidget::setRotate(double angleDegrees)
+ {
+
  }
 
 };

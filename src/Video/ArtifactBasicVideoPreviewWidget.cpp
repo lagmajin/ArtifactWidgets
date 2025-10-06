@@ -15,10 +15,11 @@
 
 module Widgets.VideoPreview;
 
-
+namespace ArtifactCore{}//Dummy
  
 namespace ArtifactWidgets {
 
+ using namespace ArtifactCore;
 
  W_OBJECT_IMPL(ArtifactBasicVideoPreviewWidget)
 
@@ -33,6 +34,7 @@ namespace ArtifactWidgets {
    void playAudio();
    void stopAudio();
    void writeAudioBuffer(const QByteArray& array);
+   QImage thumbnail_;
    QAudioSink* audioSink_ = nullptr;
    QAudioFormat audioFormat_;        // 再生するオーディオのフォーマット
    QBuffer audioBuffer_;             // 再生用のオーディオデータバッファ (例: デコード済みPCMデータ)
@@ -76,10 +78,12 @@ namespace ArtifactWidgets {
 
  void ArtifactBasicVideoPreviewWidget::Impl::fetchVideoThumbnail()
  {
+  //QImage image;
+
 
  }
 
- ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/)
+ ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/):QWidget(parent)
  {
   
 

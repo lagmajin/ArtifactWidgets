@@ -335,6 +335,12 @@
     <ClCompile Include="include\Button\SubToolButton.ixx">
       <Filter>ヘッダー ファイル\Button</Filter>
     </ClCompile>
+    <ClCompile Include="include\Color\ColorWheel.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ColorWheel.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">

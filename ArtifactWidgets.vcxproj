@@ -182,6 +182,7 @@
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="include\Button\SubToolButton.ixx" />
+    <ClCompile Include="include\Color\ColorWheel.ixx" />
     <ClCompile Include="include\Dock\HeadPanel.ixx" />
     <ClCompile Include="include\Effect\WidgetGlowFrame.ixx" />
     <ClCompile Include="include\Knob\RotaryKnob.ixx">
@@ -191,6 +192,7 @@
     <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClCompile Include="src\Color\ColorWheel.cpp" />
     <ClCompile Include="src\Dock\Pane.cpp" />
     <ClCompile Include="src\Effect\WidgetGlowFrame.cpp" />
     <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp" />

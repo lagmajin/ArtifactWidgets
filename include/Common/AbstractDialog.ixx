@@ -24,6 +24,8 @@ export namespace ArtifactWidgets {
   void mousePressEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
+  void focusInEvent(QFocusEvent* event) override;
+  void focusOutEvent(QFocusEvent* event) override;
  public:
   explicit AbstractDialog(QWidget* parent = nullptr);
   virtual ~AbstractDialog();
