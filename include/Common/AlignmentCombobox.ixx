@@ -1,9 +1,9 @@
-module;
+﻿module;
 
 #include <QtWidgets/QtWidgets>
 #include <wobjectdefs.h>
 
-export module AlignmentCombobox;
+export module Widgets.AlignmentCombobox;
 
 
 
@@ -15,7 +15,8 @@ export namespace ArtifactWidgets {
  class  AlignmentCombobox :public QComboBox {
   W_OBJECT(AlignmentCombobox)
  private:
-
+  class Impl;
+  Impl* impl_;
  protected:
   //bool eventFilter(QObject* object, QEvent* event);
  public:
@@ -23,10 +24,9 @@ export namespace ArtifactWidgets {
   virtual ~AlignmentCombobox();
   Qt::Alignment allignment() const;
   void setAlignment(const Qt::Alignment align);
- signals:
- private slots:
 
- public slots:
+  
+
  };
 
 

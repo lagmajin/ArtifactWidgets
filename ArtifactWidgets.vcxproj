@@ -183,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="include\Button\SubToolButton.ixx" />
     <ClCompile Include="include\Color\ColorWheel.ixx" />
+    <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx" />
     <ClCompile Include="include\Dock\HeadPanel.ixx" />
     <ClCompile Include="include\Effect\WidgetGlowFrame.ixx" />
     <ClCompile Include="include\Knob\RotaryKnob.ixx">

@@ -1,8 +1,8 @@
-module;
+﻿module;
 #include <QtWidgets/QWidget>
 #include <wobjectimpl.h>
 
-module AlignmentCombobox;
+module Widgets.AlignmentCombobox;
 
 namespace ArtifactWidgets {
 
@@ -10,28 +10,43 @@ namespace ArtifactWidgets {
 
  struct AlignmentComboboxPrivate
  {
+  Qt::Alignment alignment = Qt::AlignLeft;
   Qt::Alignment allignment() const;
   void setAlignment(const Qt::Alignment align);
  };
+
 
  void AlignmentComboboxPrivate::setAlignment(const Qt::Alignment align)
  {
 
  }
 
-AlignmentCombobox::AlignmentCombobox(QWidget* parent /*= nullptr*/):QComboBox(parent)
+ class AlignmentCombobox::Impl
+ {
+ public:
+  
+  Qt::Alignment alignment = Qt::AlignLeft;
+ };
+
+
+AlignmentCombobox::AlignmentCombobox(QWidget* parent /*= nullptr*/):QComboBox(parent),impl_(new Impl)
  {
 
  }
 
 AlignmentCombobox::~AlignmentCombobox()
 {
+ delete impl_;
+}
 
+Qt::Alignment AlignmentCombobox::allignment() const
+{
+ return impl_->alignment;
 }
 
 void AlignmentCombobox::setAlignment(const Qt::Alignment align)
 {
-
+ impl_->alignment = align;
 }
 
 }

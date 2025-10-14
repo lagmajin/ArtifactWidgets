@@ -341,6 +341,9 @@
     <ClCompile Include="src\Color\ColorWheel.cpp">
       <Filter>ソース ファイル\Color</Filter>
     </ClCompile>
+    <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
+      <Filter>ヘッダー ファイル\Dialog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">
