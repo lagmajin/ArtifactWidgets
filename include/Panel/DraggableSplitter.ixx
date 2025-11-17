@@ -57,7 +57,7 @@ export namespace ArtifactWidgets
 
   void dropEvent(QDropEvent* event) override {
    // ドロップ位置に最も近いインデックスを探す
-   int posX = event->pos().x();
+   int posX = event->position().toPoint().x();
    int closestIndex = 0;
    int minDistance = INT_MAX;
 

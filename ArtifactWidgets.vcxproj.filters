@@ -124,6 +124,12 @@
     <Filter Include="ヘッダー ファイル\Button">
       <UniqueIdentifier>{77351b59-832b-4b89-9efc-8037c33eb9e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Dialog">
+      <UniqueIdentifier>{7967081c-4bb5-4f86-a6aa-9d7c99449e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Web">
+      <UniqueIdentifier>{a189b738-d4d7-4360-a8e1-1d292bcf8e31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -158,7 +164,7 @@
     <ClCompile Include="src\Common\CommandAction.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\Knob\VolumeSlider.cpp">
+    <ClCompile Include="src\Knob\VolumeSlider.cppm">
       <Filter>ソース ファイル\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\Color\HistgramWidget.cpp">
@@ -343,6 +349,12 @@
     </ClCompile>
     <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
       <Filter>ヘッダー ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cpp">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Web\WebBrowser.ixx">
+      <Filter>ヘッダー ファイル\Web</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

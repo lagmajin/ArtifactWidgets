@@ -6,6 +6,21 @@ module;
 module HistgramWidget;
 
 namespace ArtifactWidgets {
+ class HistgramWidget::Impl {
+ private:
+
+ public:
+  Impl();
+  ~Impl();
+ };
+
+ HistgramWidget::Impl::Impl()
+ {
+ }
+
+ HistgramWidget::Impl::~Impl()
+ {
+ }
 
  HistgramWidget::HistgramWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
  {

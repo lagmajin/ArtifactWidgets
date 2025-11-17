@@ -1,14 +1,19 @@
 module;
-
+#include <QWidget>
 export module CodeEditor;
-
-
 
 
 
 export namespace ArtifactWidgets {
 
- class CodeEditorPrivate;
+ class CodeEditor
+ {
+ private:
+
+ public:
+  explicit CodeEditor(QWidget* parent = nullptr);
+  ~CodeEditor();
+ };
 
 
 

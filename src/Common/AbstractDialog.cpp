@@ -55,7 +55,7 @@ namespace ArtifactWidgets {
  {
   if (event->button() == Qt::LeftButton) {
    impl_->dragging = true;
-   impl_->dragPos = event->globalPos() - frameGeometry().topLeft();
+   impl_->dragPos = event->globalPosition().toPoint() - frameGeometry().topLeft();
   }
  }
 
