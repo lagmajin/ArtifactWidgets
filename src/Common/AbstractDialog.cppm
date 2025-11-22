@@ -5,7 +5,8 @@ module;
 #include <wobjectimpl.h>
 #include <QDialog>
 #include <QMouseEvent>
-module AbstractDialog;
+#include <QGraphicsEffect>
+module Widgets.AbstractDialog;
 
 
 
@@ -25,6 +26,7 @@ namespace ArtifactWidgets {
   bool acceptOnEnter = true;
   bool rejectOnEscape = true;
   bool highlightOnFocus = true;
+  QGraphicsDropShadowEffect* shadowEffect = nullptr;
  };
 
 
@@ -62,7 +64,7 @@ namespace ArtifactWidgets {
  void AbstractDialog::mouseMoveEvent(QMouseEvent* event)
  {
   if (impl_->dragging && (event->buttons() & Qt::LeftButton)) {
-   move(event->globalPos() - impl_->dragPos);
+   move(event->globalPosition().toPoint() - impl_->dragPos);
   }
  }
 
@@ -90,6 +92,45 @@ namespace ArtifactWidgets {
  void AbstractDialog::focusOutEvent(QFocusEvent* event)
  {
   throw std::logic_error("The method or operation is not implemented.");
+ }
+
+ void AbstractDialog::setAlwaysOnTop(bool enabled)
+ {
+  Qt::WindowFlags flags = windowFlags();
+
+  if (enabled) {
+   flags |= Qt::WindowStaysOnTopHint;
+  }
+  else {
+   flags &= ~Qt::WindowStaysOnTopHint;
+  }
+
+  setWindowFlags(flags);
+
+  // フラグ変更後は再表示が必須
+  if (isVisible()) 
+  {
+   show();
+  }
+ }
+
+ void AbstractDialog::setFrameless(bool enabled /*= true*/)
+ {
+  Qt::WindowFlags flags = windowFlags();
+
+  if (enabled) {
+   flags |= Qt::FramelessWindowHint;
+  }
+  else {
+   flags &= ~Qt::FramelessWindowHint;
+  }
+
+  setWindowFlags(flags);
+
+  // フラグ変更後は再表示しないと反映されない
+  if (isVisible()) {
+   show();
+  }
  }
 
 };

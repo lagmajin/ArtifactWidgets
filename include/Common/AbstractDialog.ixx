@@ -4,12 +4,10 @@
 #include <QtWidgets/QDialog>
 #include <wobjectdefs.h>
 
-export module AbstractDialog;
+export module Widgets.AbstractDialog;
 
 
 export namespace ArtifactWidgets {
-
- class AbstractDialogPrivate;
 
  class AbstractDialog :public QDialog {
 	W_OBJECT(AbstractDialog)
@@ -31,6 +29,8 @@ export namespace ArtifactWidgets {
   virtual ~AbstractDialog();
   void setAcceptOnEnter(bool enabled = true);
   void setRejectOnEscape(bool enabled = true);
+  void setAlwaysOnTop(bool enabled);
+  void setFrameless(bool enabled = true);
  signals:
 
  public slots:

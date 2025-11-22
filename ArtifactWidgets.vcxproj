@@ -182,6 +182,7 @@
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="include\Button\SubToolButton.ixx" />
+    <ClCompile Include="include\Code\SyntaxHighlighter.ixx" />
     <ClCompile Include="include\Color\ColorWheel.ixx" />
     <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx" />
     <ClCompile Include="include\Dock\HeadPanel.ixx" />
@@ -194,8 +195,13 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Web\WebBrowser.ixx" />
+    <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Color\ColorWheel.cpp" />
-    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cpp" />
+    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Dock\Pane.cpp" />
     <ClCompile Include="src\Effect\WidgetGlowFrame.cpp" />
     <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp" />
@@ -276,7 +282,9 @@
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\ParadeScopeWidget.cpp" />
     <ClCompile Include="src\Color\VectorScopeWidget.cpp" />
-    <ClCompile Include="src\Common\AbstractDialog.cpp" />
+    <ClCompile Include="src\Common\AbstractDialog.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Common\HeadPanel.cpp" />
@@ -302,7 +310,7 @@
   <ItemGroup>
     <None Include="include\Common\WinJumpList.ixx" />
     <None Include="src\Common\WidgetCounter.cpp" />
-    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cpp" />
+    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm" />
     <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cpp" />
   </ItemGroup>
   <ItemGroup>

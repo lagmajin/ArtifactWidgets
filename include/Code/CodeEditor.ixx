@@ -6,7 +6,7 @@ export module CodeEditor;
 
 export namespace ArtifactWidgets {
 
- class CodeEditor
+ class CodeEditor : public QWidget
  {
  private:
 

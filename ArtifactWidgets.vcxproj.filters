@@ -182,9 +182,6 @@
     <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp">
       <Filter>ソース ファイル\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Common\AbstractDialog.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="include\Common\WidgetCounter.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
@@ -350,11 +347,20 @@
     <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
       <Filter>ヘッダー ファイル\Dialog</Filter>
     </ClCompile>
-    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cpp">
+    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cppm">
       <Filter>ソース ファイル\Dialog</Filter>
     </ClCompile>
     <ClCompile Include="include\Web\WebBrowser.ixx">
       <Filter>ヘッダー ファイル\Web</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Code\SyntaxHighlighter.ixx">
+      <Filter>ヘッダー ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
+      <Filter>ソース ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\AbstractDialog.cppm">
+      <Filter>ソース ファイル\Dialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,7 +370,7 @@
     <None Include="include\Common\WinJumpList.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </None>
-    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cpp">
+    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm">
       <Filter>ソース ファイル\Knob</Filter>
     </None>
   </ItemGroup>
