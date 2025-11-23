@@ -130,6 +130,9 @@
     <Filter Include="ヘッダー ファイル\Web">
       <UniqueIdentifier>{a189b738-d4d7-4360-a8e1-1d292bcf8e31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Utils">
+      <UniqueIdentifier>{6d52e70b-a613-4c2f-b8fc-c13c1d2b32a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="src\Common\AbstractDialog.cppm">
       <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Utils\RevalFileManager.ixx">
+      <Filter>ヘッダー ファイル\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

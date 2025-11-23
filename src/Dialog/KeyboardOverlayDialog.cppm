@@ -1,7 +1,7 @@
 module;
 #include <wobjectimpl.h>
 #include <QDialog>
-module KeyboardOverlayDialog;
+module Widgets.KeyboardOverlayDialog;
 
 namespace ArtifactWidgets
 {

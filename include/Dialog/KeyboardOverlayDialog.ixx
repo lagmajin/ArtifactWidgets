@@ -3,9 +3,9 @@
 #include <QDialog>
 
 #include "../Define/DllExportMacro.hpp"
-export module KeyboardOverlayDialog;
+export module Widgets.KeyboardOverlayDialog;
 
-import Widget.AbstractDialog;
+//import Widget.AbstractDialog;
 
 export namespace ArtifactWidgets
 {

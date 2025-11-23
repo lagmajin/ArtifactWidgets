@@ -6,8 +6,7 @@ module;
 #include <QDialog>
 #include <QMouseEvent>
 #include <QGraphicsEffect>
-module Widgets.AbstractDialog;
-
+module Widgets.Dialog.Abstract;
 
 
 

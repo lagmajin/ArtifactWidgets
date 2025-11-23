@@ -4,7 +4,7 @@
 #include <QtWidgets/QDialog>
 #include <wobjectdefs.h>
 
-export module Widgets.AbstractDialog;
+export module Widgets.Dialog.Abstract;
 
 
 export namespace ArtifactWidgets {
