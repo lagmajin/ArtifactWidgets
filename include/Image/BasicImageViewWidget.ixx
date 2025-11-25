@@ -16,7 +16,7 @@ export namespace ArtifactWidgets {
 
  
 
- class LIBRARY_DLL_API BasicImageViewWidget :public QGraphicsView{
+ class WIDGET_LIBRARY_DLL_API BasicImageViewWidget :public QGraphicsView{
   W_OBJECT(BasicImageViewWidget)
  private:
   class Impl;

@@ -7,7 +7,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <wobjectdefs.h>
-#include "..\Define\DllExportMacro.hpp"
+#include "../Define/DllExportMacro.hpp"
+//#include "..\Define\DllExportMacro.hpp"
 
 
 export module Widgets.Render.Queue;
@@ -36,7 +37,7 @@ export namespace ArtifactWidgets {
   ~RenderQueueManagerJobPanel();
  };
 
- class LIBRARY_DLL_API RenderQueueManagerWidget :public QWidget {
+ class WIDGET_LIBRARY_DLL_API RenderQueueManagerWidget :public QWidget {
   W_OBJECT(RenderQueueManagerWidget)
  private:
   class Impl;

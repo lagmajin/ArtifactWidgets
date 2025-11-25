@@ -8,12 +8,13 @@ module;
 #include <QDropEvent>
 #include <QPoint>
 #include "../Define/DllExportMacro.hpp"
+//#include "../Define/DllExportMacro.hpp"
 
 export module Panel.DraggableSplitter;
 
 export namespace ArtifactWidgets
 {
- class LIBRARY_DLL_API DraggableSplitter : public QSplitter {
+ class WIDGET_LIBRARY_DLL_API DraggableSplitter : public QSplitter {
   //Q_OBJECT
  public:
   using QSplitter::QSplitter;

@@ -6,14 +6,15 @@ module;
 #include <QtCore/QScopedPointer>
 #include <QtCore/QFileInfo>
 #include <QtWidgets/QWidget>
-
 #include "../Define/DllExportMacro.hpp"
+
+//#include "../Define/DllExportMacro.hpp"
 
 export module AbstractWidget;
 
 export namespace ArtifactWidgets {
 
-  class LIBRARY_DLL_API AbstractWidget :public QWidget{
+  class WIDGET_LIBRARY_DLL_API AbstractWidget :public QWidget{
   W_OBJECT(AbstractWidget)
  private:
   class Impl;

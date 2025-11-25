@@ -15,7 +15,7 @@ export namespace ArtifactWidgets {
 
 
 
- class LIBRARY_DLL_API AbstractKnobEditor:public QWidget {
+ class WIDGET_LIBRARY_DLL_API AbstractKnobEditor:public QWidget {
   W_OBJECT(AbstractKnobEditor)
  private:
   class Impl;
