@@ -38,9 +38,16 @@ namespace ArtifactWidgets
  {
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_TranslucentBackground);
-
+  setStyleSheet("background: transparent;");
+ 	
   // ヘッダー部分を作成 (変更なし)
   auto header = new QWidget(this);
+ 	
+  header->setAutoFillBackground(true);
+  QPalette pal = header->palette();
+  pal.setColor(QPalette::Window, QColor(50, 50, 50)); // 好きな色
+  header->setPalette(pal);
+  header->setStyleSheet("background-color: rgb(50,50,50);");
   auto hlayout = new QHBoxLayout(header);
   hlayout->setContentsMargins(4, 2, 4, 2);
   //auto label = new QLabel(title);
@@ -60,7 +67,7 @@ namespace ArtifactWidgets
   // mainLayout を保持するための QWidget を作成し、これを Pane のコンテンツとして設定
   auto mainContentWrapper = new QWidget(this); // 親を Pane (this) に
   mainContentWrapper->setLayout(mainLayout);
-  mainContentWrapper->setAutoFillBackground(false);
+  //mainContentWrapper->setAutoFillBackground(false);
   mainContentWrapper->setAttribute(Qt::WA_NoSystemBackground);
   mainContentWrapper->setAttribute(Qt::WA_TranslucentBackground);
   mainContentWrapper->setStyleSheet("background-color: transparent;");

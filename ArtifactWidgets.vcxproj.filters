@@ -133,6 +133,9 @@
     <Filter Include="ヘッダー ファイル\Utils">
       <UniqueIdentifier>{6d52e70b-a613-4c2f-b8fc-c13c1d2b32a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Search">
+      <UniqueIdentifier>{57a67e8d-67c4-44c1-bb69-70020675c70d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -367,6 +370,27 @@
     </ClCompile>
     <ClCompile Include="include\Utils\RevalFileManager.ixx">
       <Filter>ヘッダー ファイル\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Search\SearchWidget.ixx">
+      <Filter>ヘッダー ファイル\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\EditableLabel.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\EditableLabel.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\ClickableLabel.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\ClickableLabel.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CollapsibleSection.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\CollapsibleSection.cpp">
+      <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

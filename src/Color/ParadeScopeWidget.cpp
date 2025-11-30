@@ -12,6 +12,10 @@ namespace ArtifactWidgets {
 
  W_OBJECT_IMPL(ParadeScopeWidget)
 
+	class ParadeScopeWidget::Impl
+ {
+	 
+ };
 
   ParadeScopeWidget::ParadeScopeWidget(QWidget* parent /*= nullptr*/)
  {

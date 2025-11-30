@@ -37,6 +37,7 @@ export namespace ArtifactWidgets {
   ~RenderQueueManagerJobPanel();
  };
 
+	
  class WIDGET_LIBRARY_DLL_API RenderQueueManagerWidget :public QWidget {
   W_OBJECT(RenderQueueManagerWidget)
  private:

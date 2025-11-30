@@ -13,13 +13,14 @@ export  namespace ArtifactWidgets
  private:
   class Impl;
   Impl* impl_;
- public:
-  explicit ColorWheelWidget(QWidget* parent = nullptr);
-  ~ColorWheelWidget();
  protected:
   void paintEvent(QPaintEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
+ public:
+  explicit ColorWheelWidget(QWidget* parent = nullptr);
+  ~ColorWheelWidget();
+ 
 
 
  };
