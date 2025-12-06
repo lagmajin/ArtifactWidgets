@@ -13,21 +13,21 @@ namespace ArtifactCore {
  public:
   Impl();
   ~Impl();
-  QPushButton* playButton=nullptr;
-  QPushButton* stopButton=nullptr;
-
+  QPushButton* playButton_=nullptr;
+  QPushButton* stopButton_=nullptr;
+  QPushButton* backForward_ = nullptr;
  };
 
 
 
- PreviewControlWidget::PreviewControlWidget(QWidget* parent /*= nullptr*/):QWidget(parent)
+ PreviewControlWidget::PreviewControlWidget(QWidget* parent /*= nullptr*/):QWidget(parent),impl_(new Impl)
  {
 
  }
 
  PreviewControlWidget::~PreviewControlWidget()
  {
-
+  delete impl_;
  }
 
  void PreviewControlWidget::play()
@@ -36,6 +36,36 @@ namespace ArtifactCore {
  }
 
  void PreviewControlWidget::stop()
+ {
+
+ }
+
+ void PreviewControlWidget::seekStart()
+ {
+
+ }
+
+ void PreviewControlWidget::seekEnd()
+ {
+
+ }
+
+ void PreviewControlWidget::stepForward()
+ {
+
+ }
+
+ void PreviewControlWidget::stepBackward()
+ {
+
+ }
+
+ void PreviewControlWidget::setLoopEnabled(bool)
+ {
+
+ }
+
+ void PreviewControlWidget::setPreviewRange(int start, int end)
  {
 
  }

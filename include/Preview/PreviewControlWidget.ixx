@@ -12,14 +12,24 @@ export namespace ArtifactCore {
   Impl* impl_;
  public:
   explicit PreviewControlWidget(QWidget* parent = nullptr);
-  ~PreviewControlWidget();
+  virtual ~PreviewControlWidget();
   void play();
   void stop();
-  
+  void seekStart();     // 最初のフレームへ
+  void seekEnd();       // 最後のフレームへ（任意）
+  void stepForward();   // 1フレーム進む
+  void stepBackward();
+  void setLoopEnabled(bool);
+  void setPreviewRange(int start, int end);
+ public/*signals*/:
+ 	void playButtonClicked() W_SIGNAL(playButtonClicked)
+ 	void stopButtonClicked() W_SIGNAL(stopButtonClicked)
+ public/*slots*/:
+ 	
   W_SLOT(play)
+ 	W_SLOT(stop)
 
-  void playButtonClicked();
-  //W_SIGNAL(playButtonClicked, )
+
  };
 
 
