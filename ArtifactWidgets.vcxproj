@@ -181,12 +181,16 @@
     <ClCompile Include="include\Audio\AudioBusWidget.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="include\Button\ColorPickerButton.ixx" />
+    <ClCompile Include="include\Button\FloatColorPickerButton.ixx" />
     <ClCompile Include="include\Button\SubToolButton.ixx" />
     <ClCompile Include="include\Code\SyntaxHighlighter.ixx" />
     <ClCompile Include="include\Color\ColorWheel.ixx" />
     <ClCompile Include="include\Common\ClickableLabel.ixx" />
     <ClCompile Include="include\Common\CollapsibleSection.ixx" />
     <ClCompile Include="include\Common\EditableLabel.ixx" />
+    <ClCompile Include="include\Common\DragSpinBox.ixx" />
+    <ClCompile Include="include\Dialog\FloatColorPicker.ixx" />
     <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx" />
     <ClCompile Include="include\Dock\HeadPanel.ixx" />
     <ClCompile Include="include\Effect\WidgetGlowFrame.ixx" />
@@ -200,6 +204,8 @@
     <ClCompile Include="include\Search\SearchWidget.ixx" />
     <ClCompile Include="include\Utils\RevalFileManager.ixx" />
     <ClCompile Include="include\Web\WebBrowser.ixx" />
+    <ClCompile Include="src\Button\ColorPickerButton.cpp" />
+    <ClCompile Include="src\Button\FloatColorPickerButton.cpp" />
     <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
@@ -208,7 +214,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="src\Common\CollapsibleSection.cpp" />
-    <ClCompile Include="src\Common\EditableLabel.cpp" />
+    <ClCompile Include="src\Common\DragSpinBox.cpp" />
+    <ClCompile Include="src\Common\EditableLabel.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
+    <ClCompile Include="src\Dialog\FloatColorPicker.ixx" />
     <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
@@ -287,7 +297,9 @@
   <ItemGroup>
     <ClCompile Include="include\Common\WidgetCounter.ixx" />
     <ClCompile Include="include\Viewer\ContentViewer.ixx" />
-    <ClCompile Include="src\AbstractWidget.cpp" />
+    <ClCompile Include="src\AbstractWidget.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Color\ColorViewLabel.cpp" />
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\ParadeScopeWidget.cpp" />

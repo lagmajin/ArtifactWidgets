@@ -1,13 +1,14 @@
 ﻿module;
 #include <QWidget>
 #include <wobjectdefs.h>
+#include "../Define/DllExportMacro.hpp"
 export module Widget.Knob.Slider;
 
 export namespace ArtifactCore {
 
  //W_OBJECT(KnobSlider)
 
- class KnobSlider :public QWidget{
+ class WIDGET_LIBRARY_DLL_API KnobSlider :public QWidget{
   W_OBJECT(KnobSlider)
  private:
   class Impl;

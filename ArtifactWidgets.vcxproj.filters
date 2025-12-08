@@ -136,6 +136,9 @@
     <Filter Include="ヘッダー ファイル\Search">
       <UniqueIdentifier>{57a67e8d-67c4-44c1-bb69-70020675c70d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Button">
+      <UniqueIdentifier>{a6b7522a-6f55-4c9f-adf0-0e1b1fdce977}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -218,7 +221,7 @@
     <ClCompile Include="include\Color\ColorViewLabel.ixx">
       <Filter>ヘッダー ファイル\Color</Filter>
     </ClCompile>
-    <ClCompile Include="src\AbstractWidget.cpp">
+    <ClCompile Include="src\AbstractWidget.cppm">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\Color\ParadeScopeWidget.cpp">
@@ -377,7 +380,7 @@
     <ClCompile Include="include\Common\EditableLabel.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\Common\EditableLabel.cpp">
+    <ClCompile Include="src\Common\EditableLabel.cppm">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\Common\ClickableLabel.cppm">
@@ -391,6 +394,30 @@
     </ClCompile>
     <ClCompile Include="src\Common\CollapsibleSection.cpp">
       <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\DragSpinBox.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\DragSpinBox.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dialog\FloatColorPicker.ixx">
+      <Filter>ヘッダー ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dialog\FloatColorPicker.ixx">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\FloatColorPickerButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button\FloatColorPickerButton.cpp">
+      <Filter>ソース ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\ColorPickerButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button\ColorPickerButton.cpp">
+      <Filter>ソース ファイル\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

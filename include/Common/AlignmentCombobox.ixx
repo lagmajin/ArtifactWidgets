@@ -25,7 +25,7 @@ export namespace ArtifactWidgets {
   Qt::Alignment allignment() const;
   void setAlignment(const Qt::Alignment align);
 
-  
+  //void addItem(const QString& text);
 
  };
 
