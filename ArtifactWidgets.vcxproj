@@ -214,7 +214,9 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="src\Common\CollapsibleSection.cpp" />
-    <ClCompile Include="src\Common\DragSpinBox.cpp" />
+    <ClCompile Include="src\Common\DragSpinBox.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Common\EditableLabel.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
@@ -307,7 +309,9 @@
     <ClCompile Include="src\Common\AbstractDialog.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
-    <ClCompile Include="src\Common\AlignmentComboBox.cpp" />
+    <ClCompile Include="src\Common\AlignmentComboBox.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Common\CommandAction.cpp" />
     <ClCompile Include="src\Common\HeadPanel.cpp" />
     <ClCompile Include="src\Common\ToggleGlyphButton.cpp" />
@@ -333,7 +337,9 @@
     <None Include="include\Common\WinJumpList.ixx" />
     <None Include="src\Common\WidgetCounter.cpp" />
     <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm" />
-    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cpp" />
+    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cppm">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArtifactCore\ArtifactCore.vcxproj">

@@ -158,7 +158,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Common\AlignmentComboBox.cpp">
+    <ClCompile Include="src\Common\AlignmentComboBox.cppm">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="src\Color\VectorScopeWidget.cpp">
@@ -323,7 +323,7 @@
     <ClCompile Include="include\Knob\RotaryKnob.ixx">
       <Filter>ヘッダー ファイル\Knob</Filter>
     </ClCompile>
-    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cpp">
+    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cppm">
       <Filter>ソース ファイル\Knob</Filter>
     </ClCompile>
     <ClCompile Include="src\Viewer\ContentViewer.cpp">
@@ -398,7 +398,7 @@
     <ClCompile Include="include\Common\DragSpinBox.ixx">
       <Filter>ヘッダー ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\Common\DragSpinBox.cpp">
+    <ClCompile Include="src\Common\DragSpinBox.cppm">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
     <ClCompile Include="include\Dialog\FloatColorPicker.ixx">
