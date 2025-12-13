@@ -1,8 +1,9 @@
 module;
 #include <wobjectdefs.h>
 #include <QPushButton>
+#include "../Define/DllExportMacro.hpp"
 
-export module ColorPickerButton;
+export module FloatColorPickerButton;
 
 import Color.Float;
 

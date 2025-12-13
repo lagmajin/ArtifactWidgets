@@ -1,31 +1,35 @@
 module;
 #include <QPushButton>
-module ColorPickerButton;
+module FloatColorPickerButton;
 
 import Color.Float;
+import FloatColorPickerDialog;
 
 namespace ArtifactWidgets
 {
- class ColorPickerButton::Impl
+ class FloatColorPickerButton::Impl
  {
  private:
  	
  public:
   Impl();
   ~Impl();
+  void handleShowDialogRequest();
  };
 
- ColorPickerButton::Impl::Impl()
+ void FloatColorPickerButton::Impl::handleShowDialogRequest()
  {
+  //auto dialog=new 
+ 	
+ }
+
+ FloatColorPickerButton::FloatColorPickerButton(QWidget* parent /*= nullptr*/) :QPushButton(parent)
+ {
+ 	
 
  }
 
- ColorPickerButton::ColorPickerButton(QWidget* parent /*= nullptr*/) :QPushButton(parent)
- {
-
- }
-
- ColorPickerButton::~ColorPickerButton()
+ FloatColorPickerButton::~FloatColorPickerButton()
  {
   delete impl_;
  }

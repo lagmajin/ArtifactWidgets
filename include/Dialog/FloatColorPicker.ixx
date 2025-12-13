@@ -1,6 +1,6 @@
 module;
 
-export module FloatColorPicker;
+export module FloatColorPickerDialog;
 import Widgets.Dialog.Abstract;
 
 export namespace ArtifactWidgets

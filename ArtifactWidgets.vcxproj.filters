@@ -404,9 +404,6 @@
     <ClCompile Include="include\Dialog\FloatColorPicker.ixx">
       <Filter>ヘッダー ファイル\Dialog</Filter>
     </ClCompile>
-    <ClCompile Include="src\Dialog\FloatColorPicker.ixx">
-      <Filter>ソース ファイル\Dialog</Filter>
-    </ClCompile>
     <ClCompile Include="include\Button\FloatColorPickerButton.ixx">
       <Filter>ヘッダー ファイル\Button</Filter>
     </ClCompile>
@@ -415,9 +412,6 @@
     </ClCompile>
     <ClCompile Include="include\Button\ColorPickerButton.ixx">
       <Filter>ヘッダー ファイル\Button</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Button\ColorPickerButton.cpp">
-      <Filter>ソース ファイル\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

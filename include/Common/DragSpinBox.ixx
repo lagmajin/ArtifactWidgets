@@ -11,6 +11,10 @@ export namespace ArtifactWidgets
  private:
   class Impl;
   Impl* impl_;
+ protected:
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
  public:
   explicit DragSpinBox(QWidget* parent = nullptr);
   ~DragSpinBox();

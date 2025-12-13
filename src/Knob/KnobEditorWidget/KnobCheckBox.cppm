@@ -1,5 +1,6 @@
 ﻿module; 
 #include <QCheckBox>
+#include <QHBoxLayout>
 module Widgets.Knob.CheckBox;
 
 

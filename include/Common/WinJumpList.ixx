@@ -1,27 +1,25 @@
 module;
-
-
-
+#include <QString>
 export module WinJumpList;
 
 
 namespace ArtifactWidgets
 {
 
-	class WinJumpListPrivate;
+ class WinJumpListPrivate;
 
-	class WinJumpList
-	{
+ class WinJumpList
+ {
+ private:
+ public:
+  WinJumpList();
+  ~WinJumpList();
 
-	public:
-	 WinJumpList();
-	 ~WinJumpList();
-		
-	};
+ };
 
 
 
-	
+
 
 
 }
