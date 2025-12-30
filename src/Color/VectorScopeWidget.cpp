@@ -1,5 +1,5 @@
-//#include "../../../include/Color/VectorScopeWidget.hpp"
-
+﻿module;
+#include <QList>
 module VectorScopeWidget;
 
 

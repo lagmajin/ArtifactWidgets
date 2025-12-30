@@ -11,7 +11,7 @@ export module DockWidget;
 
 
 
-#pragma comment(lib,"qtadvanceddockingd.lib")
+//#pragma comment(lib,"qtadvanceddockingd.lib")
 
 export namespace ArtifactWidgets {
 

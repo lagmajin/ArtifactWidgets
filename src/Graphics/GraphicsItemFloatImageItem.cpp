@@ -1,9 +1,5 @@
-
-
-
-
-module;
-
+﻿module;
+#include <QList>
 module GraphicsFloatImageItem;
 
 

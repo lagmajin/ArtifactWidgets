@@ -1,4 +1,5 @@
-module;
+﻿module;
+#include <QList>
 //#include <DiligentCore/Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h>
 module ModelViewer;
 
