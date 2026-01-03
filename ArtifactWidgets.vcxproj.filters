@@ -139,6 +139,12 @@
     <Filter Include="ソース ファイル\Button">
       <UniqueIdentifier>{a6b7522a-6f55-4c9f-adf0-0e1b1fdce977}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Time">
+      <UniqueIdentifier>{a23fed31-ebd9-4636-b18e-de01997a675b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Time">
+      <UniqueIdentifier>{4fb617d0-65c8-46ef-8d76-ccc9310f283e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -412,6 +418,18 @@
     </ClCompile>
     <ClCompile Include="include\Button\ColorPickerButton.ixx">
       <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Time\TimeCodeEditor.ixx">
+      <Filter>ヘッダー ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Time\TimeCodeLabel.ixx">
+      <Filter>ヘッダー ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time\TimeCodeLabel.cpp">
+      <Filter>ソース ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time\TimeCodeEditor.cpp">
+      <Filter>ソース ファイル\Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

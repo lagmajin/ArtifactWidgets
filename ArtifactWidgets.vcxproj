@@ -205,6 +205,8 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Search\SearchWidget.ixx" />
+    <ClCompile Include="include\Time\TimeCodeEditor.ixx" />
+    <ClCompile Include="include\Time\TimeCodeLabel.ixx" />
     <ClCompile Include="include\Utils\RevalFileManager.ixx" />
     <ClCompile Include="include\Web\WebBrowser.ixx" />
     <ClCompile Include="src\Button\FloatColorPickerButton.cpp" />
@@ -228,6 +230,8 @@
     <ClCompile Include="src\Dock\Pane.cpp" />
     <ClCompile Include="src\Effect\WidgetGlowFrame.cpp" />
     <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp" />
+    <ClCompile Include="src\Time\TimeCodeEditor.cpp" />
+    <ClCompile Include="src\Time\TimeCodeLabel.cpp" />
     <ClCompile Include="src\Viewer\ContentViewer.cpp" />
     <ClCompile Include="src\Viewer\ModelViewer.cpp">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
