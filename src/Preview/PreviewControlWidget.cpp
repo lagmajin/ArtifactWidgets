@@ -1,11 +1,13 @@
 ﻿module;
 #include <QWidget>
 #include <QPushButton>
+#include <wobjectimpl.h>
 module Preview.ControlWidget;
 
 
-namespace ArtifactCore {
+namespace ArtifactWidgets {
 
+ W_OBJECT_IMPL(PreviewControlWidget)
 
  class PreviewControlWidget::Impl {
  private:
@@ -18,7 +20,15 @@ namespace ArtifactCore {
   QPushButton* backForward_ = nullptr;
  };
 
+ PreviewControlWidget::Impl::Impl()
+ {
 
+ }
+
+ PreviewControlWidget::Impl::~Impl()
+ {
+
+ }
 
  PreviewControlWidget::PreviewControlWidget(QWidget* parent /*= nullptr*/):QWidget(parent),impl_(new Impl)
  {

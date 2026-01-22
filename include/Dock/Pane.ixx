@@ -1,10 +1,13 @@
 ﻿module;
+#include "../Define/DllExportMacro.hpp"
 #include <DockWidget.h>
 #include <qboxlayout.h>
 #include <QLabel>
 #include <QPushButton>
 #include <wobjectdefs.h>
 #include <wobjectimpl.h>
+
+
 export module DockWidget;
 
 
@@ -15,7 +18,7 @@ export module DockWidget;
 
 export namespace ArtifactWidgets {
 
- class Pane : public ads::CDockWidget {
+ class WIDGET_LIBRARY_DLL_API Pane : public ads::CDockWidget {
   W_OBJECT(Pane)
  private:
   class Impl;

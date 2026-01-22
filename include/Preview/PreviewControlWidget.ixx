@@ -3,7 +3,7 @@
 #include <wobjectdefs.h>
 export module Preview.ControlWidget;
 
-export namespace ArtifactCore {
+export namespace ArtifactWidgets {
 
  class PreviewControlWidget :public QWidget{
   W_OBJECT(PreviewControlWidget)

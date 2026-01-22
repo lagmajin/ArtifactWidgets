@@ -28,6 +28,15 @@ namespace ArtifactWidgets {
   QGraphicsDropShadowEffect* shadowEffect = nullptr;
  };
 
+ AbstractDialog::Impl::Impl()
+ {
+
+ }
+
+ AbstractDialog::Impl::~Impl()
+ {
+
+ }
 
  AbstractDialog::AbstractDialog(QWidget* parent/*=nullptr*/) :QDialog(parent)
  {

@@ -3,7 +3,7 @@ module;
 #include <QWindow>
 
 #include "..\Define\DllExportMacro.hpp"
-export module ModelViewer;
+export module Widgets.ModelViewer;
 
 export namespace ArtifactWidgets {
 

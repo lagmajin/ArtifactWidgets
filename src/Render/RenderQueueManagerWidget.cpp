@@ -8,7 +8,6 @@
 #include <QVBoxLayout>
 #include <wobjectimpl.h>
 
-#include "../../../../../../../Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/ucrt/corecrt_io.h"
 
 module Widgets.Render.Queue;
 
