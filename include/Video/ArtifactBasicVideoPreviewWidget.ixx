@@ -26,6 +26,7 @@ export namespace ArtifactWidgets {
   virtual ~ArtifactBasicVideoPreviewWidget();
   void play();
   void stop();
+  void setVideoFilePath(const QString& path);
 
   QSize sizeHint() const override;
 
@@ -38,5 +39,6 @@ export namespace ArtifactWidgets {
 
 
 };
+
 
 
