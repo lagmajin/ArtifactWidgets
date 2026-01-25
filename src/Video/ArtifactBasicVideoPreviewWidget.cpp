@@ -45,7 +45,7 @@ namespace ArtifactWidgets {
    QAudioFormat audioFormat_;        // 再生するオーディオのフォーマット
    QBuffer audioBuffer_;             // 再生用のオーディオデータバッファ (例: デコード済みPCMデータ)
    QIODevice* audioDeviceIo_ = nullptr;
-   ArtifactCore::FFmpegDecoder* decoder_ = nullptr;
+   ArtifactCore::FFmpegVideoDecoder* decoder_ = nullptr;
    ArtifactCore::FFmpegThumbnailExtractor* thumbnailExtractor_ = nullptr;
    QString videoFilePath_;
    QGraphicsView* view_ = nullptr;
@@ -55,7 +55,7 @@ namespace ArtifactWidgets {
 
 
  ArtifactBasicVideoPreviewWidget::Impl::Impl()
- : decoder_(new ArtifactCore::FFmpegDecoder()),
+ : decoder_(new ArtifactCore::FFmpegVideoDecoder()),
    thumbnailExtractor_(new ArtifactCore::FFmpegThumbnailExtractor()),
    view_(new QGraphicsView(&scene_)),
    timer_(new QTimer())
@@ -157,4 +157,4 @@ namespace ArtifactWidgets {
   impl_->decoder_->closeFile();
  }
 
- };
+};
