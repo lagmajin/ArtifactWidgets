@@ -207,6 +207,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Search\SearchWidget.ixx" />
+    <ClCompile Include="include\Style\AccentDelegate.ixx" />
     <ClCompile Include="include\Time\TimeCodeEditor.ixx" />
     <ClCompile Include="include\Time\TimeCodeLabel.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>

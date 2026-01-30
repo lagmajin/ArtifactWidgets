@@ -145,6 +145,9 @@
     <Filter Include="ソース ファイル\Time">
       <UniqueIdentifier>{4fb617d0-65c8-46ef-8d76-ccc9310f283e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Style">
+      <UniqueIdentifier>{f47f9c17-1241-4bbd-9118-2fb3536a8073}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Knob\KnobDllImports.hpp">
@@ -430,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="src\Time\TimeCodeEditor.cpp">
       <Filter>ソース ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Style\AccentDelegate.ixx">
+      <Filter>ヘッダー ファイル\Style</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
