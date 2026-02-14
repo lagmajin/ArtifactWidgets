@@ -27,17 +27,21 @@ namespace ArtifactWidgets
   if (!focused_) return;
 
   QPainter p(this);
-  QColor glowColor = QColor(100, 180, 255, 180);  // 半透明の青
+  p.setRenderHint(QPainter::Antialiasing);
+  QColor glowColor = QColor(100, 180, 255, 180);
   p.setPen(QPen(glowColor, 3));
+  p.setBrush(Qt::NoBrush);
   p.drawRect(rect().adjusted(1, 1, -2, -2));
  }
 
  GlowFrame::GlowFrame(QWidget* parent /*= nullptr*/) : QWidget(parent), focused_(false)
  {
-  setAttribute(Qt::WA_TransparentForMouseEvents);
-  setAttribute(Qt::WA_NoSystemBackground);
-  setAttribute(Qt::WA_TranslucentBackground);
-  setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::BypassWindowManagerHint);
+  // 子ウィジェットとして透過オーバーレイにする
+  setAttribute(Qt::WA_TransparentForMouseEvents);  // マウスイベントを親に透過
+  setAttribute(Qt::WA_TranslucentBackground);       // 背景を透過描画
+  // ※ WA_NoSystemBackground と FramelessWindowHint は設定しない
+  // → 子ウィジェットとして親に重ねるだけ
+  raise();  // 最前面に表示
  }
 
  void GlowFrame::setFocused(bool f)

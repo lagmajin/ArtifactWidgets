@@ -3,6 +3,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QEvent>
+#include <QResizeEvent>
 
 #include <OpenImageIO/imagebuf.h>
 #include <QDragEnterEvent>
@@ -61,6 +62,7 @@ namespace ArtifactWidgets {
 
   impl_->glow = new GlowFrame(this);
   impl_->glow->setGeometry(rect());
+  impl_->glow->raise();  // 最前面に
   impl_->glow->show();
  }
 
@@ -192,6 +194,15 @@ namespace ArtifactWidgets {
  void BasicImageViewWidget::focusOutEvent(QFocusEvent*)
  {
   impl_->glow->setFocused(false);
+ }
+
+ void BasicImageViewWidget::resizeEvent(QResizeEvent* event)
+ {
+  QGraphicsView::resizeEvent(event);
+  // GlowFrame をリサイズに追従させる
+  if (impl_->glow) {
+   impl_->glow->setGeometry(rect());
+  }
  }
 
  void BasicImageViewWidget::soloMode()

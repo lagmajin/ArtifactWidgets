@@ -23,15 +23,9 @@ export namespace ArtifactWidgets {
  private:
   class Impl;
   Impl* impl_;
- protected:
-  void focusInEvent(QFocusEvent* event) override;
-  void focusOutEvent(QFocusEvent* event) override;
-  void resizeEvent(QResizeEvent* event) override;
  public:
   explicit Pane(const QString& title, QWidget* contentWidget, QWidget* parent = nullptr);
   ~Pane();
-
-
  };
 
 

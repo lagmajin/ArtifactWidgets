@@ -23,15 +23,12 @@ export namespace ArtifactWidgets {
   Impl* impl_;
  protected:
   void focusInEvent(QFocusEvent*) override;
-
   void focusOutEvent(QFocusEvent*) override;
+  void resizeEvent(QResizeEvent* event) override;
   void wheelEvent(QWheelEvent* event) override;
   void dragEnterEvent(QDragEnterEvent* event) override;
   void dropEvent(QDropEvent* event) override;
-
   void dragMoveEvent(QDragMoveEvent* event) override;
-
-
   void dragLeaveEvent(QDragLeaveEvent* event) override;
 
  public:
