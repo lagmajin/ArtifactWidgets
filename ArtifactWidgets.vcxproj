@@ -154,6 +154,7 @@
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
       <ForceFileOutput>Enabled</ForceFileOutput>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <IgnoreSpecificDefaultLibraries>Qt6AxServerd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <Lib>
       <AdditionalDependencies>Qt6Cored.lib;Qt6Guid.lib;Qt6Networkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
