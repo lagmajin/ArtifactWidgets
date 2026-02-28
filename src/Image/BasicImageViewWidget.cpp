@@ -60,10 +60,10 @@ namespace ArtifactWidgets {
   connect(this, &QWidget::customContextMenuRequested,
    this, &BasicImageViewWidget::showContextMenu);
 
-  impl_->glow = new GlowFrame(this);
-  impl_->glow->setGeometry(rect());
-  impl_->glow->raise();  // 最前面に
-  impl_->glow->show();
+  //impl_->glow = new GlowFrame(this);
+  //impl_->glow->setGeometry(rect());
+  //impl_->glow->raise();  // 最前面に
+  //impl_->glow->show();
  }
 
  BasicImageViewWidget::~BasicImageViewWidget()
@@ -188,12 +188,12 @@ namespace ArtifactWidgets {
 
  void BasicImageViewWidget::focusInEvent(QFocusEvent*)
  {
-  impl_->glow->setFocused(true);
+  //impl_->glow->setFocused(true);
  }
 
  void BasicImageViewWidget::focusOutEvent(QFocusEvent*)
  {
-  impl_->glow->setFocused(false);
+  //impl_->glow->setFocused(false);
  }
 
  void BasicImageViewWidget::resizeEvent(QResizeEvent* event)
