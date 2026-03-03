@@ -1,19 +1,21 @@
-﻿module;
+module;
 #include <QtWidgets/QWidget>
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
 #include <QtGui/QConicalGradient>
+#include <QtGui/QFont>
+#include <QtGui/QColor>
+#include <QtCore/QRect>
+#include <QtCore/QPoint>
 #include <algorithm>
 #include <cmath>
 #include <vector>
 
 module VectorScopeWidget;
 
-import std;
+import AbstractWidget;
 
 namespace ArtifactWidgets {
-
- W_OBJECT_IMPL(VectorScopeWidget)
 
  // ==================== Impl ====================
  class VectorScopeWidget::Impl {
@@ -232,4 +234,4 @@ namespace ArtifactWidgets {
   painter.drawText(margin, height() - 5, title);
  }
 
-};
+} // namespace ArtifactWidgets

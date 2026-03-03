@@ -170,9 +170,6 @@
     <ClCompile Include="src\Common\AlignmentComboBox.cppm">
       <Filter>ソース ファイル\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\Color\VectorScopeWidget.cpp">
-      <Filter>ソース ファイル\Color</Filter>
-    </ClCompile>
     <ClCompile Include="src\Color\ColorViewLabel.cpp">
       <Filter>ソース ファイル\Color</Filter>
     </ClCompile>
@@ -436,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="include\Style\AccentDelegate.ixx">
       <Filter>ヘッダー ファイル\Style</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\VectorScopeWidget.cppm">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
