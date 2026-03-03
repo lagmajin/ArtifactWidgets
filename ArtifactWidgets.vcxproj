@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -25,7 +25,6 @@
     <RootNamespace>ArtifactWidgets</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <Keyword>QtVS_v304</Keyword>
-    <!--<QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>-->
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -57,7 +56,6 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <!--<Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />-->
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -73,19 +71,15 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <!--<Import Project="$(QtMsBuild)\Qt.props" />-->
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <!--<Import Project="$(QtMsBuild)\Qt.props" />-->
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <!--<Import Project="$(QtMsBuild)\Qt.props" />-->
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <!--<Import Project="$(QtMsBuild)\Qt.props" />-->
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -184,37 +178,74 @@
     </ClCompile>
     <ClCompile Include="include\Audio\AudioBusWidget.ixx">
       <FileType>Document</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Button\ColorPickerButton.ixx" />
+    <ClCompile Include="include\Button\ColorPickerButton.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Button\FloatColorPickerButton.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Button\SubToolButton.ixx" />
-    <ClCompile Include="include\Code\SyntaxHighlighter.ixx" />
-    <ClCompile Include="include\Color\ColorWheel.ixx" />
-    <ClCompile Include="include\Common\ClickableLabel.ixx" />
-    <ClCompile Include="include\Common\CollapsibleSection.ixx" />
-    <ClCompile Include="include\Common\EditableLabel.ixx" />
-    <ClCompile Include="include\Common\DragSpinBox.ixx" />
-    <ClCompile Include="include\Dialog\FloatColorPicker.ixx" />
-    <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx" />
-    <ClCompile Include="include\Dock\HeadPanel.ixx" />
-    <ClCompile Include="include\Effect\WidgetGlowFrame.ixx" />
+    <ClCompile Include="include\Button\SubToolButton.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Code\SyntaxHighlighter.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Color\ColorWheel.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Common\ClickableLabel.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Common\CollapsibleSection.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Common\EditableLabel.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Common\DragSpinBox.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Dialog\FloatColorPicker.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Dock\HeadPanel.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Effect\WidgetGlowFrame.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Knob\RotaryKnob.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Panel\DraggableSplitter.ixx" />
+    <ClCompile Include="include\Panel\DraggableSplitter.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Search\SearchWidget.ixx" />
-    <ClCompile Include="include\Style\AccentDelegate.ixx" />
-    <ClCompile Include="include\Time\TimeCodeEditor.ixx" />
+    <ClCompile Include="include\Search\SearchWidget.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Style\AccentDelegate.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Time\TimeCodeEditor.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Time\TimeCodeLabel.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Utils\RevalFileManager.ixx" />
-    <ClCompile Include="include\Web\WebBrowser.ixx" />
+    <ClCompile Include="include\Utils\RevalFileManager.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Web\WebBrowser.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Button\FloatColorPickerButton.cpp" />
     <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
@@ -250,73 +281,109 @@
     <ClInclude Include="include\Audio\AudioDllImport.hpp" />
     <ClCompile Include="include\Audio\VolumeSlider.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClInclude Include="include\Audio\AudioInclude.hpp" />
     <ClCompile Include="include\Code\CodeEditor.ixx">
       <FileType>Document</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Color\ColorViewLabel.ixx" />
+    <ClCompile Include="include\Color\ColorViewLabel.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Color\HistgramWidget.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Color\ParadeScopeWidget.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Color\VectorScopeWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Common\AbstractDialog.ixx">
       <FileType>Document</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Common\AlignmentCombobox.ixx" />
-    <ClCompile Include="include\Common\CommandAction.ixx" />
+    <ClCompile Include="include\Common\AlignmentCombobox.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommandAction.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Common\AbstractWidget.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Common\CommonApplicationSignal.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Common\CommonImports.ixx" />
+    <ClCompile Include="include\Common\CommonImports.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="include\Defines.hpp" />
-    <ClCompile Include="include\Common\IClonableWidget.ixx" />
+    <ClCompile Include="include\Common\IClonableWidget.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Dock\Pane.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Common\ToggleGlyphButton.ixx" />
+    <ClCompile Include="include\Common\ToggleGlyphButton.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Image\BasicImageViewWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Console\ConsoleWidget.ixx" />
+    <ClCompile Include="include\Console\ConsoleWidget.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Knob\AbstractKnobEditor.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Knob\KnobCheckBox.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Interface\IViewer.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Knob\KnobColorPicker.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
       <FileType>CppHeader</FileType>
+      <CompileAs>CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClInclude Include="include\Define\DllExportMacro.hpp" />
     <ClInclude Include="include\Knob\KnobDllImports.hpp" />
-    <ClCompile Include="include\Knob\KnobSlider.ixx" />
+    <ClCompile Include="include\Knob\KnobSlider.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="include\Preview\PreviewControlWidget.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="include\Render\BackendSettingWidget.ixx" />
-    <ClCompile Include="include\Video\ArtifactBasicVideoPreviewWidget.ixx" />
+    <ClCompile Include="include\Render\BackendSettingWidget.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Video\ArtifactBasicVideoPreviewWidget.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\Common\WidgetCounter.ixx" />
-    <ClCompile Include="include\Viewer\ContentViewer.ixx" />
+    <ClCompile Include="include\Common\WidgetCounter.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="include\Viewer\ContentViewer.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\AbstractWidget.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
