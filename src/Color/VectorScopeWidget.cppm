@@ -1,4 +1,5 @@
 module;
+#include <QList>
 #include <QtWidgets/QWidget>
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
@@ -10,6 +11,7 @@ module;
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <wobjectimpl.h>
 
 module VectorScopeWidget;
 
@@ -17,6 +19,7 @@ import AbstractWidget;
 
 namespace ArtifactWidgets {
 
+ W_OBJECT_IMPL(VectorScopeWidget)
  // ==================== Impl ====================
  class VectorScopeWidget::Impl {
  public:

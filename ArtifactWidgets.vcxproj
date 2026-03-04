@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -416,9 +416,27 @@
     </ClCompile>
     <ClCompile Include="src\Render\BackendSettingWidget.cpp" />
     <ClCompile Include="src\Video\ArtifactBasicVideoPreviewWidget.cpp" />
+    <ClCompile Include="src\Common\WinJumpList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\Common\AppProgress_Win.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
+    <None Include="src\Common\AppProgress_Mac.mm" />
+    <None Include="src\Platform\Mac\TouchBar.mm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\Common\WinJumpList.ixx" />
+    <ClCompile Include="include\Common\WinJumpList.ixx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="include\Common\AppProgress.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <None Include="include\Platform\Mac\TouchBar.ixx">
+      <CompileAs>CompileAsCppModule</CompileAs>
+      <FileType>Document</FileType>
+    </None>
     <None Include="src\Common\WidgetCounter.cpp" />
     <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm" />
     <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cppm">

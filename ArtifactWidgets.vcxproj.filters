@@ -437,16 +437,30 @@
     <ClCompile Include="src\Color\VectorScopeWidget.cppm">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\Common\WinJumpList.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\AppProgress_Win.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AppProgress.ixx">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\WinJumpList.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Common\WidgetCounter.cpp">
       <Filter>ソース ファイル\Common</Filter>
     </None>
-    <None Include="include\Common\WinJumpList.ixx">
-      <Filter>ヘッダー ファイル\Common</Filter>
-    </None>
     <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm">
       <Filter>ソース ファイル\Knob</Filter>
+    </None>
+    <None Include="src\Common\AppProgress_Mac.mm" />
+    <None Include="src\Platform\Mac\TouchBar.mm" />
+    <None Include="include\Platform\Mac\TouchBar.ixx">
+      <Filter>ソース ファイル</Filter>
     </None>
   </ItemGroup>
 </Project>
