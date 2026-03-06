@@ -362,6 +362,9 @@
     <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
       <Filter>ヘッダー ファイル\Dialog</Filter>
     </ClCompile>
+    <ClCompile Include="src\Dialog\FloatColorPicker.cppm">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
     <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cppm">
       <Filter>ソース ファイル\Dialog</Filter>
     </ClCompile>
@@ -370,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="include\Code\SyntaxHighlighter.ixx">
       <Filter>ヘッダー ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Code\CodeEditor.cppm">
+      <Filter>ソース ファイル\Code</Filter>
     </ClCompile>
     <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
       <Filter>ソース ファイル\Code</Filter>
