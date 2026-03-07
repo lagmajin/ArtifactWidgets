@@ -44,6 +44,9 @@ target_link_libraries(ArtifactWidgets PUBLIC OpenMP::OpenMP_CXX)
 find_package(TBB REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC TBB::tbb)
 
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(ArtifactWidgets PUBLIC glm::glm)
+
 if(WIN32)
     target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
 endif()
