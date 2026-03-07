@@ -51,13 +51,6 @@ endforeach()
 # ---------------------------------------------------------------------------
 add_library(ArtifactWidgets SHARED)
 
-# C++23 と標準ライブラリモジュールを有効化
-set_target_properties(ArtifactWidgets PROPERTIES
-    CXX_STANDARD 23
-    CXX_STANDARD_REQUIRED ON
-    CXX_MODULE_STD ON
-)
-
 target_sources(ArtifactWidgets
     PRIVATE ${WIDGETS_IMPL}
     PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
