@@ -55,6 +55,9 @@ target_include_directories(ArtifactWidgets PUBLIC ${Stb_INCLUDE_DIR})
 find_package(assimp REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC assimp::assimp)
 
+find_package(EnTT CONFIG REQUIRED)
+target_link_libraries(ArtifactWidgets PUBLIC EnTT::EnTT)
+
 find_package(Boost REQUIRED COMPONENTS iostreams)
 target_link_libraries(ArtifactWidgets PUBLIC Boost::iostreams)
 
