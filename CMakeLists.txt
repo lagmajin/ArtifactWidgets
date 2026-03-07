@@ -4,15 +4,57 @@ project(ArtifactWidgets)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# VCPKG path removed for manifest mode
+# ---------------------------------------------------------------------------
+# ソース収集とモジュール分類
+# ---------------------------------------------------------------------------
+file(GLOB_RECURSE POTENTIAL_SOURCES CONFIGURE_DEPENDS 
+    "src/*.cpp" "src/*.cppm" "src/*.ixx"
+    "include/*.ixx" "include/*.cppm"
+)
 
-file(GLOB_RECURSE WIDGETS_IMPL CONFIGURE_DEPENDS "src/*.cpp")
-file(GLOB_RECURSE WIDGETS_MODULES CONFIGURE_DEPENDS "include/*.ixx" "src/*.ixx" "src/*.cppm")
+set(WIDGETS_MODULES "")
+set(WIDGETS_IMPL "")
+set(_PROVIDED_MODULES "")
 
+foreach(file_path ${POTENTIAL_SOURCES})
+    if(file_path MATCHES "\\.bak$")
+        continue()
+    endif()
+
+    file(READ "${file_path}" content LIMIT 4096)
+    
+    set(is_mod TRUE)
+    set(found_mod_name "")
+
+    if(content MATCHES "export[ \t\r\n]+module[ \t\r\n]+([a-zA-Z0-9\\._:]+)")
+        set(found_mod_name "${CMAKE_MATCH_1}")
+    elseif(content MATCHES "module[ \t\r\n]+([a-zA-Z0-9\\._]+:[a-zA-Z0-9\\._:]+)")
+        set(found_mod_name "${CMAKE_MATCH_1}")
+    else()
+        set(is_mod FALSE)
+    endif()
+
+    if(is_mod)
+        list(FIND _PROVIDED_MODULES "${found_mod_name}" _mod_idx)
+        if(_mod_idx EQUAL -1)
+            list(APPEND WIDGETS_MODULES "${file_path}")
+            list(APPEND _PROVIDED_MODULES "${found_mod_name}")
+        else()
+            list(APPEND WIDGETS_IMPL "${file_path}")
+        endif()
+    else()
+        list(APPEND WIDGETS_IMPL "${file_path}")
+    endif()
+endforeach()
+
+# ---------------------------------------------------------------------------
+# ターゲット定義
+# ---------------------------------------------------------------------------
 add_library(ArtifactWidgets SHARED)
 
 target_sources(ArtifactWidgets
-    PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES} ${WIDGETS_IMPL}
+    PRIVATE ${WIDGETS_IMPL}
+    PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
 )
 
 target_compile_definitions(ArtifactWidgets
@@ -28,7 +70,9 @@ target_include_directories(ArtifactWidgets
         "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/verdigris/src"
 )
 
+# ---------------------------------------------------------------------------
 # 依存関係
+# ---------------------------------------------------------------------------
 target_link_libraries(ArtifactWidgets PUBLIC ArtifactCore)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Multimedia)
