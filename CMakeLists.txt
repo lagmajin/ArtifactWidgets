@@ -1,11 +1,5 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.30)
 project(ArtifactWidgets)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Enable 'import std;' support
-set(CMAKE_CXX_MODULE_STD ON)
 
 # ---------------------------------------------------------------------------
 # ソース収集とモジュール分類
