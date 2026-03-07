@@ -13,9 +13,11 @@ module FloatColorPickerDialog;
 import Color.Float;
 import Widgets.Dialog.Abstract;
 import Widgets.ColorWheel;
-import Widgets.ColorViewLabel;
+import Widget.ColorViewLabel;
 
 namespace ArtifactWidgets {
+
+ W_OBJECT_IMPL(FloatColorPicker)
 
  class FloatColorPicker::Impl
  {
@@ -23,20 +25,20 @@ namespace ArtifactWidgets {
   Impl();
   ~Impl();
 
-  ColorFloat currentColor;
+  ArtifactCore::FloatColor currentColor;
   ColorWheelWidget* colorWheel = nullptr;
-  ColorViewLabel* colorPreview = nullptr;
-  QSlider* redSlider;
-  QSlider* greenSlider;
-  QSlider* blueSlider;
-  QSlider* alphaSlider;
-  QLabel* redLabel;
-  QLabel* greenLabel;
-  QLabel* blueLabel;
-  QLabel* alphaLabel;
-  QPushButton* okButton;
-  QPushButton* cancelButton;
-  QPushButton* moreColorsButton;
+  ::ArtifactWidgets::ColorViewLabel* colorPreview = nullptr;
+  QSlider* redSlider = nullptr;
+  QSlider* greenSlider = nullptr;
+  QSlider* blueSlider = nullptr;
+  QSlider* alphaSlider = nullptr;
+  QLabel* redLabel = nullptr;
+  QLabel* greenLabel = nullptr;
+  QLabel* blueLabel = nullptr;
+  QLabel* alphaLabel = nullptr;
+  QPushButton* okButton = nullptr;
+  QPushButton* cancelButton = nullptr;
+  QPushButton* moreColorsButton = nullptr;
 
   void updateSlidersFromColor();
   void updateColorFromSliders();
@@ -73,18 +75,20 @@ namespace ArtifactWidgets {
 
  void FloatColorPicker::Impl::updateSlidersFromColor()
  {
-  redSlider->setValue(static_cast<int>(currentColor.r * 255.0f));
-  greenSlider->setValue(static_cast<int>(currentColor.g * 255.0f));
-  blueSlider->setValue(static_cast<int>(currentColor.b * 255.0f));
-  alphaSlider->setValue(static_cast<int>(currentColor.a * 255.0f));
+  redSlider->setValue(static_cast<int>(currentColor.r() * 255.0f));
+  greenSlider->setValue(static_cast<int>(currentColor.g() * 255.0f));
+  blueSlider->setValue(static_cast<int>(currentColor.b() * 255.0f));
+  alphaSlider->setValue(static_cast<int>(currentColor.a() * 255.0f));
  }
 
  void FloatColorPicker::Impl::updateColorFromSliders()
  {
-  currentColor.r = redSlider->value() / 255.0f;
-  currentColor.g = greenSlider->value() / 255.0f;
-  currentColor.b = blueSlider->value() / 255.0f;
-  currentColor.a = alphaSlider->value() / 255.0f;
+  currentColor.setColor(
+      redSlider->value() / 255.0f,
+      greenSlider->value() / 255.0f,
+      blueSlider->value() / 255.0f,
+      alphaSlider->value() / 255.0f
+  );
  }
 
  FloatColorPicker::FloatColorPicker(QWidget* parent)
@@ -95,7 +99,7 @@ namespace ArtifactWidgets {
   setMinimumSize(400, 350);
 
   impl_->colorWheel = new ColorWheelWidget(this);
-  impl_->colorPreview = new ColorViewLabel(this);
+  impl_->colorPreview = new ColorViewLabel();
 
   QGroupBox* sliderGroup = new QGroupBox("RGBA", this);
 
@@ -159,18 +163,20 @@ namespace ArtifactWidgets {
 
   connect(impl_->moreColorsButton, &QPushButton::clicked, this, [this]() {
    QColorDialog dialog(this);
-   dialog.setCurrentColor(QColor(
-    static_cast<int>(impl_->currentColor.r * 255),
-    static_cast<int>(impl_->currentColor.g * 255),
-    static_cast<int>(impl_->currentColor.b * 255),
-    static_cast<int>(impl_->currentColor.a * 255)
+   dialog.setCurrentColor(QColor::fromRgbF(
+    impl_->currentColor.r(),
+    impl_->currentColor.g(),
+    impl_->currentColor.b(),
+    impl_->currentColor.a()
    ));
    if (dialog.exec() == QDialog::Accepted) {
     QColor color = dialog.currentColor();
-    impl_->currentColor.r = color.redF();
-    impl_->currentColor.g = color.greenF();
-    impl_->currentColor.b = color.blueF();
-    impl_->currentColor.a = color.alphaF();
+    impl_->currentColor.setColor(
+        color.redF(),
+        color.greenF(),
+        color.blueF(),
+        color.alphaF()
+    );
     impl_->updateSlidersFromColor();
     emit colorChanged(impl_->currentColor);
    }
@@ -226,12 +232,12 @@ namespace ArtifactWidgets {
   delete impl_;
  }
 
- ColorFloat FloatColorPicker::getColor() const
+ ArtifactCore::FloatColor FloatColorPicker::getColor() const
  {
   return impl_->currentColor;
  }
 
- void FloatColorPicker::setColor(const ColorFloat& color)
+ void FloatColorPicker::setColor(const ArtifactCore::FloatColor& color)
  {
   impl_->currentColor = color;
   impl_->updateSlidersFromColor();

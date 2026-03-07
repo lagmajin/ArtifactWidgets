@@ -143,7 +143,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(TargetName)d.lib</ImportLibrary>
       <ForceFileOutput>Enabled</ForceFileOutput>
@@ -269,9 +269,11 @@
     </ClCompile>
     <ClCompile Include="src\Code\CodeEditor.cppm">
       <CompileAs>CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="src\Dialog\FloatColorPicker.cppm">
       <CompileAs>CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="src\Dock\Pane.cpp">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
@@ -393,7 +395,9 @@
     <ClCompile Include="src\AbstractWidget.cppm">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
-    <ClCompile Include="src\Color\ColorViewLabel.cpp" />
+    <ClCompile Include="src\Color\ColorViewLabel.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\Color\HistgramWidget.cpp" />
     <ClCompile Include="src\Color\ParadeScopeWidget.cpp" />
     <ClCompile Include="src\Common\AbstractDialog.cppm">

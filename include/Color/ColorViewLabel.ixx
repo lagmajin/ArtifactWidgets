@@ -1,19 +1,17 @@
 module;
 
 
+#include <QWidget>
+
 export module Widget.ColorViewLabel;
 
+export namespace ArtifactWidgets {
 
-
-
-
-namespace ArtifactWidgets {
-
- class ColorViewLabel{
+ class ColorViewLabel : public QWidget {
  private:
 
  public:
-  ColorViewLabel();
+  ColorViewLabel(QWidget* parent = nullptr);
   ~ColorViewLabel();
 
 

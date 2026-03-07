@@ -1,13 +1,17 @@
 module;
 #include <QPainter>
 #include <QTextBlock>
-#include <wobjectimpl.h>
 #include <QScrollBar>
+#include <QPlainTextEdit>
+#include <QWidget>
+#include <wobjectimpl.h>
 module CodeEditor;
 
 import Code.SyntaxHighlighter;
 
 namespace ArtifactWidgets {
+
+ W_OBJECT_IMPL(CodeEditor)
 
  class CodeEditor::LineNumberArea : public QWidget
  {
@@ -35,7 +39,7 @@ namespace ArtifactWidgets {
   Impl(CodeEditor* editor);
   ~Impl();
   void lineNumberAreaPaintEvent(QPaintEvent* event);
-  int lineNumberAreaWidth();
+  int lineNumberAreaWidth() const;
 
   CodeEditor* editor;
   bool showLineNumbers = true;
@@ -79,7 +83,7 @@ namespace ArtifactWidgets {
   }
  }
 
- int CodeEditor::Impl::lineNumberAreaWidth()
+ int CodeEditor::Impl::lineNumberAreaWidth() const
  {
   if (!showLineNumbers) return 0;
 
@@ -96,15 +100,28 @@ namespace ArtifactWidgets {
 
  CodeEditor::CodeEditor(QWidget* parent)
   : QPlainTextEdit(parent)
-  , lineNumberArea(new LineNumberArea(this))
+  , lineNumberArea(new CodeEditor::LineNumberArea(this))
   , impl_(new Impl(this))
  {
   setViewportMargins(impl_->lineNumberAreaWidth(), 0, 0, 0);
 
   connect(this, &QPlainTextEdit::blockCountChanged,
-          this, &CodeEditor::updateLineNumberAreaWidth);
+          this, [this](int newBlockCount) {
+              setViewportMargins(impl_->lineNumberAreaWidth(), 0, 0, 0);
+          });
   connect(this, &QPlainTextEdit::updateRequest,
-          this, &CodeEditor::updateLineNumberArea);
+          this, [this](const QRect& rect, int dy) {
+              if (dy) {
+                  lineNumberArea->scroll(0, dy);
+              }
+              else {
+                  lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+              }
+
+              if (rect.contains(viewport()->rect().bottomRight())) {
+                  setViewportMargins(impl_->lineNumberAreaWidth(), 0, 0, 0);
+              }
+          });
   connect(this, &QPlainTextEdit::textChanged,
           this, [this]() { emit textChanged(this->toPlainText()); });
 
@@ -136,24 +153,9 @@ namespace ArtifactWidgets {
   return impl_->showLineNumbers;
  }
 
- void CodeEditor::updateLineNumberAreaWidth(int newBlockCount)
+ int CodeEditor::lineNumberAreaWidth() const
  {
-  Q_UNUSED(newBlockCount);
-  setViewportMargins(impl_->lineNumberAreaWidth(), 0, 0, 0);
- }
-
- void CodeEditor::updateLineNumberArea(const QRect& rect, int dy)
- {
-  if (dy) {
-   lineNumberArea->scroll(0, dy);
-  }
-  else {
-   lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
-  }
-
-  if (rect.contains(viewport()->rect().bottomRight())) {
-   updateLineNumberAreaWidth(0);
-  }
+  return impl_->lineNumberAreaWidth();
  }
 
  void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event)

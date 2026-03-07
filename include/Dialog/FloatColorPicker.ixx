@@ -5,7 +5,7 @@ module;
 
 export module FloatColorPickerDialog;
 
-import Widgets.Common.Abstract;
+import Widgets.Dialog.Abstract;
 import Color.Float;
 
 export namespace ArtifactWidgets
@@ -21,11 +21,11 @@ export namespace ArtifactWidgets
   explicit FloatColorPicker(QWidget* parent = nullptr);
   ~FloatColorPicker();
 
-  ColorFloat getColor() const;
-  void setColor(const ColorFloat& color);
+  ArtifactCore::FloatColor getColor() const;
+  void setColor(const ArtifactCore::FloatColor& color);
 
  signals:
-  void colorChanged(const ColorFloat& color) W_SIGNAL(colorChanged, color);
+  void colorChanged(const ArtifactCore::FloatColor& color) W_SIGNAL(colorChanged, color);
  public slots:
   void accept() override;
   void reject() override;

@@ -18,7 +18,7 @@ namespace ArtifactWidgets
   Impl();
   ~Impl();
   void handleShowDialogRequest();
-  ColorFloat currentColor;
+  ArtifactCore::FloatColor currentColor;
  };
 
  void FloatColorPickerButton::Impl::handleShowDialogRequest()
@@ -29,7 +29,7 @@ namespace ArtifactWidgets
 
  FloatColorPickerButton::Impl::Impl()
  {
-  currentColor = {1.0f, 1.0f, 1.0f, 1.0f}; // White by default
+  currentColor = ArtifactCore::FloatColor(1.0f, 1.0f, 1.0f, 1.0f); // White by default
  }
 
  FloatColorPickerButton::Impl::~Impl()
@@ -58,12 +58,12 @@ namespace ArtifactWidgets
   delete impl_;
  }
 
- ColorFloat FloatColorPickerButton::getColor() const
+ ArtifactCore::FloatColor FloatColorPickerButton::getColor() const
  {
   return impl_->currentColor;
  }
 
- void FloatColorPickerButton::setColor(const ColorFloat& color)
+ void FloatColorPickerButton::setColor(const ArtifactCore::FloatColor& color)
  {
   impl_->currentColor = color;
  }

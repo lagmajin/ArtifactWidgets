@@ -2,11 +2,11 @@ module;
 #include <wobjectdefs.h>
 #include <QPushButton>
 #include "../Define/DllExportMacro.hpp"
-#include "../Dialog/FloatColorPicker.ixx"
 
 export module FloatColorPickerButton;
 
 import Color.Float;
+import FloatColorPickerDialog;
 
 export namespace ArtifactWidgets
 {
@@ -16,12 +16,12 @@ export namespace ArtifactWidgets
   class Impl;
   Impl* impl_;
  signals:
-  void colorChanged(const ColorFloat& color) W_SIGNAL(colorChanged, color);
+  void colorChanged(const ArtifactCore::FloatColor& color) W_SIGNAL(colorChanged, color);
  public:
   explicit FloatColorPickerButton(QWidget* parent = nullptr);
   ~FloatColorPickerButton();
-  ColorFloat getColor() const;
-  void setColor(const ColorFloat& color);
+  ArtifactCore::FloatColor getColor() const;
+  void setColor(const ArtifactCore::FloatColor& color);
  };
 
 
