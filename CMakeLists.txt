@@ -47,8 +47,8 @@ target_link_libraries(ArtifactWidgets PUBLIC TBB::tbb)
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC glm::glm)
 
-find_package(stb CONFIG REQUIRED)
-target_link_libraries(ArtifactWidgets PUBLIC stb::stb)
+find_package(Stb REQUIRED)
+target_include_directories(ArtifactWidgets PUBLIC ${Stb_INCLUDE_DIR})
 
 find_package(Boost REQUIRED COMPONENTS iostreams)
 target_link_libraries(ArtifactWidgets PUBLIC Boost::iostreams)
