@@ -12,8 +12,7 @@ file(GLOB_RECURSE WIDGETS_MODULES CONFIGURE_DEPENDS "include/*.ixx" "src/*.ixx" 
 add_library(ArtifactWidgets SHARED)
 
 target_sources(ArtifactWidgets
-    PRIVATE ${WIDGETS_IMPL}
-    PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
+    PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES} ${WIDGETS_IMPL}
 )
 
 target_compile_definitions(ArtifactWidgets
