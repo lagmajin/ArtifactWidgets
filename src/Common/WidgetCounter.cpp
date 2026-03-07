@@ -3,8 +3,6 @@
 #include "QCoreApplication"
 
 
-module WidgetCounter;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -38,6 +36,8 @@ module WidgetCounter;
 #include <numeric>
 #include <regex>
 #include <random>
+module WidgetCounter;
+
 
 
 

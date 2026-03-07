@@ -1,7 +1,5 @@
 module;
 #include <QLabel>
-export module Widgets.TimeCodeLabel;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -35,6 +33,8 @@ export module Widgets.TimeCodeLabel;
 #include <numeric>
 #include <regex>
 #include <random>
+export module Widgets.TimeCodeLabel;
+
 
 
 

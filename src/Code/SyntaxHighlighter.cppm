@@ -2,8 +2,6 @@
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
 #include <QTextCharFormat>
-module Code.SyntaxHighlighter;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -37,6 +35,8 @@ module Code.SyntaxHighlighter;
 #include <numeric>
 #include <regex>
 #include <random>
+module Code.SyntaxHighlighter;
+
 
 
 

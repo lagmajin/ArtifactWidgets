@@ -6,8 +6,6 @@
 #include <wobjectdefs.h>
 #include <QtWidgets/QCheckBox>
 
-export module Widgets.Knob.CheckBox;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -41,6 +39,8 @@ export module Widgets.Knob.CheckBox;
 #include <numeric>
 #include <regex>
 #include <random>
+export module Widgets.Knob.CheckBox;
+
 
 
 

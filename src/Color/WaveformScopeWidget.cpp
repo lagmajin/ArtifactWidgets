@@ -7,8 +7,6 @@ module;
 #include <cmath>
 #include <vector>
 
-module WaveformScopeWidget;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -42,6 +40,8 @@ module WaveformScopeWidget;
 #include <numeric>
 #include <regex>
 #include <random>
+module WaveformScopeWidget;
+
 
 
 

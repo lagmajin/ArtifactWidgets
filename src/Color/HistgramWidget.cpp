@@ -6,8 +6,6 @@ module;
 #include <cmath>
 #include <array>
 
-module HistgramWidget;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -41,6 +39,8 @@ module HistgramWidget;
 #include <numeric>
 #include <regex>
 #include <random>
+module HistgramWidget;
+
 
 
 

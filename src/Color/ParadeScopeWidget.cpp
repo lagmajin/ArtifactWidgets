@@ -8,8 +8,6 @@ module;
 #include <cmath>
 #include <vector>
 
-module ParadeScopeWidget;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -43,6 +41,8 @@ module ParadeScopeWidget;
 #include <numeric>
 #include <regex>
 #include <random>
+module ParadeScopeWidget;
+
 
 
 

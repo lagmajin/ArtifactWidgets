@@ -11,9 +11,9 @@ module;
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <vector>
 module Widgets.EditableLabel;
 
-#include <vector>
 import Common.ClikableLabel;
 
 namespace ArtifactWidgets

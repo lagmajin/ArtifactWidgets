@@ -4,8 +4,6 @@ module;
 #include <wobjectimpl.h>
 #include <qevent.h>
 
-module AbstractWidget;
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -39,6 +37,8 @@ module AbstractWidget;
 #include <numeric>
 #include <regex>
 #include <random>
+module AbstractWidget;
+
 
 
 
