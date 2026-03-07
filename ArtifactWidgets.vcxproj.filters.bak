@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Video">
+      <UniqueIdentifier>{f884336d-cc02-43c1-87ac-9fa712c4c8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Image">
+      <UniqueIdentifier>{39924927-d7bc-4389-8092-ef9115300f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Audio">
+      <UniqueIdentifier>{710f0180-2ac1-4997-a9a0-24fbc8cbfe16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Color">
+      <UniqueIdentifier>{2ffe4135-6ebe-416d-ac72-4d5eb840e5d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Dock">
+      <UniqueIdentifier>{d7e7ca42-0132-4b42-8fda-5057351b3954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Common">
+      <UniqueIdentifier>{f3e7ba94-b9f3-40fd-9738-56e4067c5a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Video">
+      <UniqueIdentifier>{a65ebce9-271e-4dc1-bef7-cb09c9bfddf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Dock">
+      <UniqueIdentifier>{ecb5ecd6-8385-4bbb-b08b-84c08ad0b359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Common">
+      <UniqueIdentifier>{9c7919f5-1124-4e87-86eb-223f322f739d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Color">
+      <UniqueIdentifier>{726ecd7f-5a40-4de6-a41a-c0cea3d49f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Knob">
+      <UniqueIdentifier>{85d1cf19-6949-464a-90b3-cfbdea595cb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Image">
+      <UniqueIdentifier>{32ac3dd1-7435-437a-bf94-42891ca5024e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Audio">
+      <UniqueIdentifier>{2192db48-3e5c-4e0b-9d32-65527195b85b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Basis">
+      <UniqueIdentifier>{bf0c11f3-7339-486b-93eb-d3294a2cbef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code">
+      <UniqueIdentifier>{80a2ef1a-a224-494b-90b1-5ab6543dfe13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code">
+      <UniqueIdentifier>{18984407-badb-45a5-b164-995d17d0bdc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Graphics">
+      <UniqueIdentifier>{c2777b33-68a1-4700-9fc9-dbdda81857bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Define">
+      <UniqueIdentifier>{1405cd1d-0687-4bba-a601-1d94a782c962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Interface">
+      <UniqueIdentifier>{c0a28621-0b70-4402-bf79-0a2c5ec57d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Knob">
+      <UniqueIdentifier>{6f2b2b4b-81e5-4664-95a8-c3f3f1ab95c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Consle">
+      <UniqueIdentifier>{f7924d6b-9ad3-4921-8f2f-54ee7b49a1c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Console">
+      <UniqueIdentifier>{5fa2a3df-1f74-4ebf-93bc-49c4fa066e8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Render">
+      <UniqueIdentifier>{a8fc2362-60a7-4d34-85ee-82279440ea11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Render">
+      <UniqueIdentifier>{adb94e2c-800e-402d-8959-78841dd359a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Dialog">
+      <UniqueIdentifier>{e6483d41-6065-4cf3-9598-54aa59d29334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Animation">
+      <UniqueIdentifier>{10a8b981-afbd-4211-993e-43099ba1f977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Core">
+      <UniqueIdentifier>{954e6ce7-02b5-4647-a314-fafc7062a0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Preview">
+      <UniqueIdentifier>{711e436d-ce17-4067-8440-12c9e86bb097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Preview">
+      <UniqueIdentifier>{d8191fd7-d119-4071-8edc-dd54a53a8ec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{faa7a57d-080e-4eba-948b-43336e313744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Viewer">
+      <UniqueIdentifier>{c69f552f-62b6-4587-a009-6f5cad9ef377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Viewer">
+      <UniqueIdentifier>{877b2aa7-3c1d-4e9a-af97-f18c0c18a99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effects">
+      <UniqueIdentifier>{45922bbf-9398-4e31-8ade-70afe8984300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{4a3bf74d-c893-4127-96e8-d41cfc340bd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Panel">
+      <UniqueIdentifier>{03d8bd85-950e-4418-91f3-6594b9b761ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Control">
+      <UniqueIdentifier>{30525b5c-6922-4d59-ba7a-1a818ba0af40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Button">
+      <UniqueIdentifier>{77351b59-832b-4b89-9efc-8037c33eb9e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Dialog">
+      <UniqueIdentifier>{7967081c-4bb5-4f86-a6aa-9d7c99449e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Web">
+      <UniqueIdentifier>{a189b738-d4d7-4360-a8e1-1d292bcf8e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Utils">
+      <UniqueIdentifier>{6d52e70b-a613-4c2f-b8fc-c13c1d2b32a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Search">
+      <UniqueIdentifier>{57a67e8d-67c4-44c1-bb69-70020675c70d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Button">
+      <UniqueIdentifier>{a6b7522a-6f55-4c9f-adf0-0e1b1fdce977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Time">
+      <UniqueIdentifier>{a23fed31-ebd9-4636-b18e-de01997a675b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Time">
+      <UniqueIdentifier>{4fb617d0-65c8-46ef-8d76-ccc9310f283e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Style">
+      <UniqueIdentifier>{f47f9c17-1241-4bbd-9118-2fb3536a8073}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Knob\KnobDllImports.hpp">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioDllImport.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Defines.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Audio\AudioInclude.hpp">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Define\DllExportMacro.hpp">
+      <Filter>ヘッダー ファイル\Define</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Common\AlignmentComboBox.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ColorViewLabel.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Image\BasicImageViewWidget.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\CommandAction.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\VolumeSlider.cppm">
+      <Filter>ソース ファイル\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\HistgramWidget.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\ArtifactBasicVideoPreviewWidget.cpp">
+      <Filter>ソース ファイル\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\AbstractKnobEditor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GraphicsItemFloatImageItem.cpp">
+      <Filter>ソース ファイル\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\NodeWireGraphicItem.cpp">
+      <Filter>ソース ファイル\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\WidgetCounter.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobCheckBox.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\AbstractKnobEditor.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AbstractDialog.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Video\ArtifactBasicVideoPreviewWidget.ixx">
+      <Filter>ヘッダー ファイル\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AbstractWidget.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AlignmentCombobox.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommandAction.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobEditorWidget.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\ColorViewLabel.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AbstractWidget.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ParadeScopeWidget.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\ParadeScopeWidget.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Graphics\GraphicsItemFloatImageItem.ixx">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Interface\IViewer.ixx">
+      <Filter>ヘッダー ファイル\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobColorPicker.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\VectorScopeWidget.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Audio\VolumeSlider.ixx">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\HistgramWidget.ixx">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Console\ConsoleWidget.ixx">
+      <Filter>ヘッダー ファイル\Consle</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Image\BasicImageViewWidget.ixx">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Console\ConsoleWidget.cpp">
+      <Filter>ソース ファイル\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobEditorWidget\KnobEditorWidget.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommonApplicationSignal.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Code\CodeEditor.ixx">
+      <Filter>ヘッダー ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Audio\AudioBusWidget.ixx">
+      <Filter>ヘッダー ファイル\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CommonImports.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\BackendSettingWidget.cpp">
+      <Filter>ソース ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Render\BackendSettingWidget.ixx">
+      <Filter>ヘッダー ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\ToggleGlyphButton.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\ToggleGlyphButton.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\HeadPanel.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dock\Pane.ixx">
+      <Filter>ヘッダー ファイル\Dock</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\IClonableWidget.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\KnobSlider.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobSlider.cpp">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Preview\PreviewControlWidget.ixx">
+      <Filter>ヘッダー ファイル\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Preview\PreviewControlWidget.cpp">
+      <Filter>ソース ファイル\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="include\3D\ModelViewer.ixx">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Viewer\ContentViewer.ixx">
+      <Filter>ヘッダー ファイル\Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewer\ModelViewer.cpp">
+      <Filter>ソース ファイル\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Render\RenderQueueManagerWidget.ixx">
+      <Filter>ヘッダー ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render\RenderQueueManagerWidget.cpp">
+      <Filter>ソース ファイル\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Knob\RotaryKnob.ixx">
+      <Filter>ヘッダー ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Knob\KnobEditorWidget\RotaryKnob.cppm">
+      <Filter>ソース ファイル\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewer\ContentViewer.cpp">
+      <Filter>ソース ファイル\Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dock\HeadPanel.ixx">
+      <Filter>ヘッダー ファイル\Dock</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Effect\WidgetGlowFrame.ixx">
+      <Filter>ヘッダー ファイル\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\WidgetGlowFrame.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dock\Pane.cpp">
+      <Filter>ソース ファイル\Dock</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Panel\DraggableSplitter.ixx">
+      <Filter>ヘッダー ファイル\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\SubToolButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Color\ColorWheel.ixx">
+      <Filter>ヘッダー ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\ColorWheel.cpp">
+      <Filter>ソース ファイル\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dialog\KeyboardOverlayDialog.ixx">
+      <Filter>ヘッダー ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dialog\FloatColorPicker.cppm">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dialog\KeyboardOverlayDialog.cppm">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Web\WebBrowser.ixx">
+      <Filter>ヘッダー ファイル\Web</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Code\SyntaxHighlighter.ixx">
+      <Filter>ヘッダー ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Code\CodeEditor.cppm">
+      <Filter>ソース ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Code\SyntaxHighlighter.cppm">
+      <Filter>ソース ファイル\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\AbstractDialog.cppm">
+      <Filter>ソース ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Utils\RevalFileManager.ixx">
+      <Filter>ヘッダー ファイル\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Search\SearchWidget.ixx">
+      <Filter>ヘッダー ファイル\Search</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\EditableLabel.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\EditableLabel.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\ClickableLabel.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\ClickableLabel.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\CollapsibleSection.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\CollapsibleSection.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\DragSpinBox.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\DragSpinBox.cppm">
+      <Filter>ソース ファイル\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Dialog\FloatColorPicker.ixx">
+      <Filter>ヘッダー ファイル\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\FloatColorPickerButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button\FloatColorPickerButton.cpp">
+      <Filter>ソース ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Button\ColorPickerButton.ixx">
+      <Filter>ヘッダー ファイル\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Time\TimeCodeEditor.ixx">
+      <Filter>ヘッダー ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Time\TimeCodeLabel.ixx">
+      <Filter>ヘッダー ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time\TimeCodeLabel.cpp">
+      <Filter>ソース ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time\TimeCodeEditor.cpp">
+      <Filter>ソース ファイル\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Style\AccentDelegate.ixx">
+      <Filter>ヘッダー ファイル\Style</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Color\VectorScopeWidget.cppm">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\WinJumpList.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common\AppProgress_Win.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\AppProgress.ixx">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Common\WinJumpList.ixx">
+      <Filter>ヘッダー ファイル\Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Common\WidgetCounter.cpp">
+      <Filter>ソース ファイル\Common</Filter>
+    </None>
+    <None Include="src\Knob\KnobEditorWidget\KnobCheckBox.cppm">
+      <Filter>ソース ファイル\Knob</Filter>
+    </None>
+    <None Include="src\Common\AppProgress_Mac.mm" />
+    <None Include="src\Platform\Mac\TouchBar.mm" />
+    <None Include="include\Platform\Mac\TouchBar.ixx">
+      <Filter>ソース ファイル</Filter>
+    </None>
+  </ItemGroup>
+</Project>

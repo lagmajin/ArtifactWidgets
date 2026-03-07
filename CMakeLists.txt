@@ -18,16 +18,22 @@ foreach(file_path ${POTENTIAL_SOURCES})
         continue()
     endif()
 
-    file(READ "${file_path}" raw_content LIMIT 4096)
+    # 以前の 4096 バイト制限では、大量の include の後に export module がある場合に
+    # 検出に失敗することがあったため、制限を 32KB に拡大します。
+    file(READ "${file_path}" raw_content LIMIT 32768)
+    
+    # コメントを除去して誤判定を防ぐ
     string(REGEX REPLACE "//[^\n]*" "" content "${raw_content}")
     string(REGEX REPLACE "/\\*.*\\*/" "" content "${content}")
     
     set(is_mod_interface_or_partition FALSE)
     set(found_mod_name "")
 
+    # 1. インターフェース判定: export module M;
     if(content MATCHES "export[ \t\r\n]+module[ \t\r\n]+([a-zA-Z0-9\\._:]+)[ \t\r\n]*;")
         set(is_mod_interface_or_partition TRUE)
         set(found_mod_name "${CMAKE_MATCH_1}")
+    # 2. パーティション判定: module M:P; (コロンを含む)
     elseif(content MATCHES "module[ \t\r\n]+([a-zA-Z0-9\\._]+:[a-zA-Z0-9\\._:]+)[ \t\r\n]*;")
         set(is_mod_interface_or_partition TRUE)
         set(found_mod_name "${CMAKE_MATCH_1}")
@@ -40,6 +46,7 @@ foreach(file_path ${POTENTIAL_SOURCES})
             list(APPEND _PROVIDED_MODULES "${found_mod_name}")
         else()
             list(APPEND WIDGETS_IMPL "${file_path}")
+            message(WARNING "Duplicate module name detected: ${found_mod_name} in ${file_path}")
         endif()
     else()
         list(APPEND WIDGETS_IMPL "${file_path}")
@@ -50,6 +57,12 @@ endforeach()
 # ターゲット定義
 # ---------------------------------------------------------------------------
 add_library(ArtifactWidgets SHARED)
+
+set_target_properties(ArtifactWidgets PROPERTIES
+    CXX_STANDARD 23
+    CXX_STANDARD_REQUIRED ON
+    CXX_MODULE_STD ON
+)
 
 target_sources(ArtifactWidgets
     PRIVATE ${WIDGETS_IMPL}
@@ -64,9 +77,8 @@ target_compile_definitions(ArtifactWidgets
 target_include_directories(ArtifactWidgets
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
     PRIVATE 
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/third_party"
         "${CMAKE_CURRENT_SOURCE_DIR}/../third_party"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/verdigris/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../libs/DiligentEngine"
 )
 
 # ---------------------------------------------------------------------------
