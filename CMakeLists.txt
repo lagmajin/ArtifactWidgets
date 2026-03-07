@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.28)
+project(ArtifactWidgets)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# VCPKG path removed for manifest mode
+
+file(GLOB_RECURSE WIDGETS_IMPL CONFIGURE_DEPENDS "src/*.cpp")
+file(GLOB_RECURSE WIDGETS_MODULES CONFIGURE_DEPENDS "include/*.ixx" "src/*.ixx" "src/*.cppm")
+
+add_library(ArtifactWidgets SHARED)
+
+target_sources(ArtifactWidgets
+    PRIVATE ${WIDGETS_IMPL}
+    PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
+)
+
+target_compile_definitions(ArtifactWidgets
+    PRIVATE WIDGET_LIBRARY_DLL_EXPORT
+    INTERFACE WIDGET_LIBRARY_DLL_IMPORT
+)
+
+target_include_directories(ArtifactWidgets
+    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    PRIVATE 
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/third_party"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/verdigris/src"
+)
+
+# 依存関係
+target_link_libraries(ArtifactWidgets PUBLIC ArtifactCore)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Multimedia)
+target_link_libraries(ArtifactWidgets PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Multimedia)
+
+find_package(qtadvanceddocking-qt6 REQUIRED)
+target_link_libraries(ArtifactWidgets PRIVATE ads::qtadvanceddocking-qt6)
+
+find_package(OpenMP REQUIRED)
+target_link_libraries(ArtifactWidgets PUBLIC OpenMP::OpenMP_CXX)
+
+if(WIN32)
+    target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
+endif()
