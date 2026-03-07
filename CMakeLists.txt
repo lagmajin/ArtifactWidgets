@@ -41,6 +41,9 @@ target_link_libraries(ArtifactWidgets PRIVATE ads::qtadvanceddocking-qt6)
 find_package(OpenMP REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC OpenMP::OpenMP_CXX)
 
+find_package(TBB REQUIRED)
+target_link_libraries(ArtifactWidgets PUBLIC TBB::tbb)
+
 if(WIN32)
     target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
 endif()
