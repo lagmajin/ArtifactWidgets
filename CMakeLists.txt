@@ -47,6 +47,12 @@ target_link_libraries(ArtifactWidgets PUBLIC TBB::tbb)
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC glm::glm)
 
+find_package(stb CONFIG REQUIRED)
+target_link_libraries(ArtifactWidgets PUBLIC stb::stb)
+
+find_package(Boost REQUIRED COMPONENTS iostreams)
+target_link_libraries(ArtifactWidgets PUBLIC Boost::iostreams)
+
 if(WIN32)
     target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
 endif()
