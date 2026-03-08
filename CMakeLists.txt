@@ -72,12 +72,12 @@ set_target_properties(ArtifactWidgets PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
 
-if(MSVC)
+if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE /WX-)
 endif()
 
-# MSVC のみ: 未解決シンボル/重複定義があってもリンク出力を強制
-target_link_options(ArtifactWidgets PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/FORCE>")
+# MSVC-style linker only: force output even with unresolved/duplicate symbols
+target_link_options(ArtifactWidgets PRIVATE "$<$<BOOL:${ARTIFACT_FRONTEND_MSVC}>:/FORCE>")
 
 target_sources(ArtifactWidgets
     PRIVATE ${WIDGETS_IMPL}
