@@ -1,7 +1,7 @@
 module;
 #include <QWidget>
 #include <QString>
-#include "../Define/DllExportMacro.hpp"
+#include "../../Define/DllExportMacro.hpp"
 
 export module Platform.Mac.TouchBar;
 

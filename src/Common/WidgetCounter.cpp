@@ -1,7 +1,6 @@
-﻿module;
-#include <QHash>
+﻿#include <QHash>
 #include "QCoreApplication"
-
+#include "../../../ArtifactWidgets/include/Common/WidgetCounter.ixx"
 
 #include <iostream>
 #include <vector>
@@ -36,12 +35,11 @@
 #include <numeric>
 #include <regex>
 #include <random>
-module WidgetCounter;
-
-
-
+#include <wobjectimpl.h>
 
 namespace ArtifactWidgets {
+
+	W_OBJECT_IMPL(WidgetCounter)
 
 class WidgetCounter::Impl{
 private:

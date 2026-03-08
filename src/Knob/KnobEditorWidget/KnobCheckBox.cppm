@@ -1,10 +1,6 @@
-﻿module; 
-#include <QCheckBox>
+﻿#include <QCheckBox>
 #include <QHBoxLayout>
-module Widgets.Knob.CheckBox;
-
-
-
+#include "../../../include/Knob/KnobCheckBox.ixx"
 
 
 namespace ArtifactWidgets {
@@ -18,16 +14,12 @@ namespace ArtifactWidgets {
 			: layout(), checkbox(parent) {
 			layout.setContentsMargins(0, 0, 0, 0);
 			layout.addWidget(&checkbox);
-
-			QObject::connect(&checkbox, &QCheckBox::toggled, parent, [this](bool checked) {
-				emit static_cast<KnobCheckBox*>(checkbox.parent())->valueChanged(checked);
-				});
 		}
 	};
 
 	// コンストラクタ & デストラクタ
 	KnobCheckBox::KnobCheckBox(QWidget* parent)
-		: QWidget(parent), d(new Impl(this)) {
+		: QCheckBox(parent), d(new Impl(this)) {
 		setLayout(&d->layout);
 	}
 
@@ -40,7 +32,7 @@ namespace ArtifactWidgets {
 		d->checkbox.setChecked(checked);
 	}
 
-	bool KnobCheckBox::value() const {
+	bool KnobCheckBox::checkBox() const {
 		return d->checkbox.isChecked();
 	}
 

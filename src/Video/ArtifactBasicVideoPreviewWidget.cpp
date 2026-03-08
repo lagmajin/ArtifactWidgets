@@ -1,5 +1,4 @@
 ﻿module;
-
 #include <wobjectcpp.h>
 #include <wobjectdefs.h>
 #include <wobjectimpl.h>

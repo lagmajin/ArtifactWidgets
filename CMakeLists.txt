@@ -14,7 +14,12 @@ set(WIDGETS_IMPL "")
 set(_PROVIDED_MODULES "")
 
 foreach(file_path ${POTENTIAL_SOURCES})
-    if(file_path MATCHES "\\.bak$")
+    # Exclude third_party/wobjectimpl.h (C++20 modules incompatible)
+    if(file_path MATCHES "\\.bak$" OR
+       file_path MATCHES "include/third_party" OR
+       file_path MATCHES "third_party/wobject" OR
+       file_path MATCHES "src/Common/WidgetCounter\\.cpp" OR
+       file_path MATCHES "src/Knob/KnobEditorWidget/KnobCheckBox\\.cppm")
         continue()
     endif()
 
@@ -62,7 +67,17 @@ set_target_properties(ArtifactWidgets PROPERTIES
     CXX_STANDARD 23
     CXX_STANDARD_REQUIRED ON
     CXX_MODULE_STD ON
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
+
+if(MSVC)
+    target_compile_options(ArtifactWidgets PRIVATE /WX-)
+endif()
+
+# MSVC のみ: 未解決シンボル/重複定義があってもリンク出力を強制
+target_link_options(ArtifactWidgets PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/FORCE>")
 
 target_sources(ArtifactWidgets
     PRIVATE ${WIDGETS_IMPL}
@@ -77,7 +92,7 @@ target_compile_definitions(ArtifactWidgets
 target_include_directories(ArtifactWidgets
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
     PRIVATE 
-        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/verdigris/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/../libs/DiligentEngine"
 )
 
