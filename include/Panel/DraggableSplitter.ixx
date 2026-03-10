@@ -34,18 +34,9 @@ export namespace ArtifactWidgets
   }
 
   void mouseMoveEvent(QMouseEvent* event) override {
-   if (!(event->buttons() & Qt::LeftButton))
-    return;
-
-   if ((event->pos() - dragStartPos).manhattanLength() < QApplication::startDragDistance())
-    return;
-
-   // ドラッグ開始
-   auto drag = new QDrag(this);
-   auto mime = new QMimeData;
-   mime->setText("DraggableSplitterWidget");
-   drag->setMimeData(mime);
-   drag->exec(Qt::MoveAction);
+   // Keep splitter behavior deterministic: only handle size adjustment.
+   // Widget-reordering drag is disabled because it interferes with handle dragging.
+   QSplitter::mouseMoveEvent(event);
   }
 
   void dragEnterEvent(QDragEnterEvent* event) override {
