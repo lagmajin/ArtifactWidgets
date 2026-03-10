@@ -76,9 +76,6 @@ if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE /WX-)
 endif()
 
-# MSVC-style linker only: force output even with unresolved/duplicate symbols
-target_link_options(ArtifactWidgets PRIVATE "$<$<BOOL:${ARTIFACT_FRONTEND_MSVC}>:/FORCE>")
-
 target_sources(ArtifactWidgets
     PRIVATE ${WIDGETS_IMPL}
     PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
