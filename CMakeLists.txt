@@ -66,11 +66,14 @@ add_library(ArtifactWidgets SHARED)
 set_target_properties(ArtifactWidgets PROPERTIES
     CXX_STANDARD 23
     CXX_STANDARD_REQUIRED ON
-    CXX_MODULE_STD ON
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
+
+if(TARGET __CMAKE::CXX23)
+    set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD ON)
+endif()
 
 if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE /WX-)
