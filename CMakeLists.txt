@@ -75,8 +75,11 @@ if(TARGET __CMAKE::CXX23)
     set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD ON)
 endif()
 
+# MSVC specific C++ modules settings
 if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE /WX-)
+    # Enable C++ modules support for MSVC
+    target_compile_options(ArtifactWidgets PRIVATE /experimental:module /module:external-)
 endif()
 
 target_sources(ArtifactWidgets
