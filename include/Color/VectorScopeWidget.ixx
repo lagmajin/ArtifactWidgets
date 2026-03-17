@@ -48,3 +48,5 @@ export namespace ArtifactWidgets {
  };
 
 }
+
+W_REGISTER_ARGTYPE(ArtifactWidgets::VectorScopeMode)

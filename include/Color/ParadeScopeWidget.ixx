@@ -5,6 +5,8 @@ module;
 #include <QtWidgets/QWidget>
 #include <QtGui/QImage>
 #include <wobjectdefs.h>
+//#include <Wobject>
+
 export module ParadeScopeWidget;
 import AbstractWidget;
 export namespace ArtifactWidgets {
@@ -44,3 +46,5 @@ export namespace ArtifactWidgets {
  };
 
 };
+
+W_REGISTER_ARGTYPE(ArtifactWidgets::ParadeMode)
