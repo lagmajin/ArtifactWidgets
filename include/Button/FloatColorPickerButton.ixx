@@ -15,6 +15,7 @@ export namespace ArtifactWidgets
  private:
   class Impl;
   Impl* impl_;
+  void updateButtonStyle();
  signals:
   void colorChanged(const ArtifactCore::FloatColor& color) W_SIGNAL(colorChanged, color);
  public:

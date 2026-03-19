@@ -1,107 +1,210 @@
 ﻿module;
-#include <QWidget>
+#include <QConicalGradient>
+#include <QMouseEvent>
 #include <QPainter>
-#include "qevent.h"
+#include <QRadialGradient>
+#include <QWidget>
+#include <cmath>
+#include <wobjectimpl.h>
+
 module Widgets.ColorWheel;
 
+import Color.Float;
 
+namespace ArtifactWidgets {
 
-namespace ArtifactWidgets
-{
- class ColorWheelWidget::Impl
- {
- private:
+W_OBJECT_IMPL(ColorWheelWidget)
 
- public:
-  void drawColorWheel(QPainter& painter, const QRect& rect);
-  QPointF hsvToPoint(double hue, double sat, int radius);
-  void updateHSFromMouse(const QPoint& pos);
-  float currentHue = 0.0f;
-  float currentSat = 0.0f;
- };
+class ColorWheelWidget::Impl {
+public:
+  Impl() = default;
+  ~Impl() = default;
 
- void ColorWheelWidget::Impl::drawColorWheel(QPainter& painter, const QRect& rect)
- {
-  QImage img(rect.size(), QImage::Format_ARGB32);
-  QPoint center = rect.center();
-  int radius = rect.width() / 2;
+  ArtifactCore::FloatColor currentColor{1.0f, 1.0f, 1.0f, 1.0f};
+  bool isDragging = false;
 
-  for (int y = 0; y < rect.height(); ++y) {
-   for (int x = 0; x < rect.width(); ++x) {
-    int dx = x - rect.width() / 2;
-    int dy = y - rect.height() / 2;
-    double r = std::sqrt(dx * dx + dy * dy);
+  void updateColorFromPosition(const QPoint &pos, const QRect &wheelRect) {
+    QPointF center = wheelRect.center();
+    QPointF delta = QPointF(pos) - center;
+    double radius = wheelRect.width() / 2.0;
 
-    if (r <= radius) {
-     double angle = std::atan2(dy, dx) * 180.0 / M_PI;
-     if (angle < 0) angle += 360;
+    double distance = std::sqrt(delta.x() * delta.x() + delta.y() * delta.y());
+    double sat = std::min(1.0, distance / radius);
 
-     double sat = r / radius;  // 0=中心, 1=外周
-     QColor c = QColor::fromHsv(angle, sat * 255, 200); // V=200ぐらいに固定
-     img.setPixel(x, y, c.rgb());
+    double angle = std::atan2(delta.y(), delta.x()) * 180.0 / M_PI;
+    if (angle < 0)
+      angle += 360.0;
+
+    // HSVからRGBに変換
+    double h = angle;
+    double s = sat;
+    double v = 1.0;
+
+    int hi = static_cast<int>(h / 60.0) % 6;
+    double f = h / 60.0 - hi;
+    double p = v * (1.0 - s);
+    double q = v * (1.0 - f * s);
+    double t = v * (1.0 - (1.0 - f) * s);
+
+    double r, g, b;
+    switch (hi) {
+    case 0:
+      r = v;
+      g = t;
+      b = p;
+      break;
+    case 1:
+      r = q;
+      g = v;
+      b = p;
+      break;
+    case 2:
+      r = p;
+      g = v;
+      b = t;
+      break;
+    case 3:
+      r = p;
+      g = q;
+      b = v;
+      break;
+    case 4:
+      r = t;
+      g = p;
+      b = v;
+      break;
+    default:
+      r = v;
+      g = p;
+      b = q;
+      break;
     }
-    else {
-     img.setPixel(x, y, qRgba(0, 0, 0, 0));
-    }
-   }
+
+    currentColor.setColor(static_cast<float>(r), static_cast<float>(g),
+                          static_cast<float>(b), currentColor.a());
   }
-  painter.drawImage(rect.topLeft(), img);
- }
 
- QPointF ColorWheelWidget::Impl::hsvToPoint(double hue, double sat, int radius)
- {
-  double rad = hue * M_PI / 180.0;
-  double r = sat * radius;
-  return QPointF(std::cos(rad) * r, std::sin(rad) * r);
- }
+  QPointF getPositionFromColor(const QRect &wheelRect) const {
+    // HSVから位置を計算
+    double h, s, v;
+    double r = currentColor.r();
+    double g = currentColor.g();
+    double b = currentColor.b();
 
- void ColorWheelWidget::Impl::updateHSFromMouse(const QPoint& pos)
- {
-    /*
-  QPointF delta = pos - QPointF(width() / 2, height() / 2);
-  double angle = std::atan2(delta.y(), delta.x()) * 180.0 / M_PI;
-  if (angle < 0) angle += 360;
+    double max = std::max({r, g, b});
+    double min = std::min({r, g, b});
+    v = max;
+    double d = max - min;
+    s = max == 0 ? 0 : d / max;
 
-  double r = std::sqrt(delta.x() * delta.x() + delta.y() * delta.y());
-  double sat = std::min(1.0, r / (width() / 2.0));
+    if (d == 0) {
+      h = 0;
+    } else {
+      if (max == r)
+        h = 60 * (fmod((g - b) / d, 6));
+      else if (max == g)
+        h = 60 * ((b - r) / d + 2);
+      else
+        h = 60 * ((r - g) / d + 4);
+      if (h < 0)
+        h += 360;
+    }
 
-  currentHue = angle;
-  currentSat = sat;
-  update(); // 再描画
-  emit colorChanged(QColor::fromHsv(currentHue, currentSat * 255, 255));
-  */
- }
+    double radius = wheelRect.width() / 2.0;
+    double rad = h * M_PI / 180.0;
+    double dist = s * radius;
 
- ColorWheelWidget::ColorWheelWidget(QWidget* parent /*= nullptr*/) : QWidget(parent),impl_(new Impl)
- {
+    QPointF center = wheelRect.center();
+    return center + QPointF(std::cos(rad) * dist, std::sin(rad) * dist);
+  }
+};
+
+ColorWheelWidget::ColorWheelWidget(QWidget *parent)
+    : QWidget(parent), impl_(new Impl()) {
   setMinimumSize(150, 150);
- }
-
- ColorWheelWidget::~ColorWheelWidget()
- {
-  delete impl_;
- }
-
- void ColorWheelWidget::mousePressEvent(QMouseEvent* event)
- {
-  //updateHSFromMouse(event->pos());
- }
-
- void ColorWheelWidget::mouseMoveEvent(QMouseEvent* event)
- {
-  if (event->buttons() & Qt::LeftButton)
-  {
-   //updateHSFromMouse(event->pos());
-  }
-   
- }
-
-
- void ColorWheelWidget::paintEvent(QPaintEvent* event)
- {
-
-
- }
-
 }
 
+ColorWheelWidget::~ColorWheelWidget() { delete impl_; }
+
+ArtifactCore::FloatColor ColorWheelWidget::getColor() const {
+  return impl_->currentColor;
+}
+
+void ColorWheelWidget::setColor(const ArtifactCore::FloatColor &color) {
+  impl_->currentColor = color;
+  update();
+}
+
+void ColorWheelWidget::paintEvent(QPaintEvent *event) {
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+
+  QRect wheelRect = rect().adjusted(10, 10, -10, -10);
+  int radius = wheelRect.width() / 2;
+  QPointF center = wheelRect.center();
+
+  // カラーホイールを描画
+  for (int angle = 0; angle < 360; ++angle) {
+    double rad = angle * M_PI / 180.0;
+    QConicalGradient gradient(center, angle);
+    gradient.setColorAt(0, QColor::fromHsv(angle, 0, 255));
+    gradient.setColorAt(1, QColor::fromHsv(angle, 255, 255));
+
+    painter.save();
+    painter.setClipRect(wheelRect);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(gradient);
+    painter.drawEllipse(center, radius, radius);
+    painter.restore();
+  }
+
+  // 中心から外周への彩度グラデーション
+  QRadialGradient satGradient(center, radius);
+  satGradient.setColorAt(0, Qt::white);
+  satGradient.setColorAt(1, Qt::transparent);
+
+  painter.save();
+  painter.setClipRect(wheelRect);
+  painter.setPen(Qt::NoPen);
+  painter.setBrush(satGradient);
+  painter.drawEllipse(center, radius, radius);
+  painter.restore();
+
+  // 現在の色の位置にマーカーを描画
+  QPointF markerPos = impl_->getPositionFromColor(wheelRect);
+  painter.setPen(QPen(Qt::black, 2));
+  painter.setBrush(Qt::NoBrush);
+  painter.drawEllipse(markerPos, 8, 8);
+  painter.setPen(Qt::NoPen);
+  painter.setBrush(QColor::fromRgbF(impl_->currentColor.r(),
+                                    impl_->currentColor.g(),
+                                    impl_->currentColor.b()));
+  painter.drawEllipse(markerPos, 6, 6);
+}
+
+void ColorWheelWidget::mousePressEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+    QRect wheelRect = rect().adjusted(10, 10, -10, -10);
+    impl_->updateColorFromPosition(event->pos(), wheelRect);
+    impl_->isDragging = true;
+    update();
+    emit colorChanged(impl_->currentColor);
+  }
+}
+
+void ColorWheelWidget::mouseMoveEvent(QMouseEvent *event) {
+  if (impl_->isDragging && (event->buttons() & Qt::LeftButton)) {
+    QRect wheelRect = rect().adjusted(10, 10, -10, -10);
+    impl_->updateColorFromPosition(event->pos(), wheelRect);
+    update();
+    emit colorChanged(impl_->currentColor);
+  }
+}
+
+void ColorWheelWidget::mouseReleaseEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+    impl_->isDragging = false;
+  }
+}
+
+} // namespace ArtifactWidgets
