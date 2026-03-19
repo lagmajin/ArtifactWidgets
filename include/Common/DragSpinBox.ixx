@@ -28,6 +28,10 @@ export namespace ArtifactWidgets
  public:
   explicit DoubleDragSpinBox(QWidget* parent = nullptr);
   ~DoubleDragSpinBox();
+ protected:
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
  };
 
 
