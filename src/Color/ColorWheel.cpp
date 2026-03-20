@@ -1,9 +1,11 @@
 ﻿module;
 #include <QConicalGradient>
+#include <QImage>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QRadialGradient>
 #include <QWidget>
+#include <algorithm>
 #include <cmath>
 #include <wobjectimpl.h>
 
@@ -22,11 +24,13 @@ public:
 
   ArtifactCore::FloatColor currentColor{1.0f, 1.0f, 1.0f, 1.0f};
   bool isDragging = false;
+  QImage wheelImage;
+  QSize wheelImageSize;
 
   void updateColorFromPosition(const QPoint &pos, const QRect &wheelRect) {
     QPointF center = wheelRect.center();
     QPointF delta = QPointF(pos) - center;
-    double radius = wheelRect.width() / 2.0;
+    double radius = std::min(wheelRect.width(), wheelRect.height()) / 2.0;
 
     double distance = std::sqrt(delta.x() * delta.x() + delta.y() * delta.y());
     double sat = std::min(1.0, distance / radius);
@@ -110,7 +114,7 @@ public:
         h += 360;
     }
 
-    double radius = wheelRect.width() / 2.0;
+    double radius = std::min(wheelRect.width(), wheelRect.height()) / 2.0;
     double rad = h * M_PI / 180.0;
     double dist = s * radius;
 
@@ -137,38 +141,55 @@ void ColorWheelWidget::setColor(const ArtifactCore::FloatColor &color) {
 
 void ColorWheelWidget::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
-  painter.setRenderHint(QPainter::Antialiasing);
+  painter.setRenderHint(QPainter::Antialiasing, true);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
   QRect wheelRect = rect().adjusted(10, 10, -10, -10);
-  int radius = wheelRect.width() / 2;
-  QPointF center = wheelRect.center();
-
-  // カラーホイールを描画
-  for (int angle = 0; angle < 360; ++angle) {
-    double rad = angle * M_PI / 180.0;
-    QConicalGradient gradient(center, angle);
-    gradient.setColorAt(0, QColor::fromHsv(angle, 0, 255));
-    gradient.setColorAt(1, QColor::fromHsv(angle, 255, 255));
-
-    painter.save();
-    painter.setClipRect(wheelRect);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(gradient);
-    painter.drawEllipse(center, radius, radius);
-    painter.restore();
+  const int side = std::min(wheelRect.width(), wheelRect.height());
+  wheelRect.setSize(QSize(side, side));
+  wheelRect.moveCenter(rect().center());
+  if (side <= 0) {
+    return;
   }
 
-  // 中心から外周への彩度グラデーション
-  QRadialGradient satGradient(center, radius);
-  satGradient.setColorAt(0, Qt::white);
-  satGradient.setColorAt(1, Qt::transparent);
+  const qreal dpr = devicePixelRatioF();
+  const QSize pixelSize(std::max(1, static_cast<int>(std::round(side * dpr))),
+                        std::max(1, static_cast<int>(std::round(side * dpr))));
+  if (impl_->wheelImage.isNull() || impl_->wheelImageSize != pixelSize) {
+    impl_->wheelImage = QImage(pixelSize, QImage::Format_ARGB32_Premultiplied);
+    impl_->wheelImage.setDevicePixelRatio(dpr);
+    impl_->wheelImageSize = pixelSize;
 
-  painter.save();
-  painter.setClipRect(wheelRect);
-  painter.setPen(Qt::NoPen);
-  painter.setBrush(satGradient);
-  painter.drawEllipse(center, radius, radius);
-  painter.restore();
+    const int w = impl_->wheelImage.width();
+    const int h = impl_->wheelImage.height();
+    const float cx = (w - 1) * 0.5f;
+    const float cy = (h - 1) * 0.5f;
+    const float radius = std::min(w, h) * 0.5f - 1.0f;
+
+    for (int y = 0; y < h; ++y) {
+      QRgb* line = reinterpret_cast<QRgb*>(impl_->wheelImage.scanLine(y));
+      for (int x = 0; x < w; ++x) {
+        const float dx = (static_cast<float>(x) - cx);
+        const float dy = (static_cast<float>(y) - cy);
+        const float dist = std::sqrt(dx * dx + dy * dy);
+        if (dist > radius) {
+          line[x] = qRgba(0, 0, 0, 0);
+          continue;
+        }
+
+        float hue = std::atan2(dy, dx) * 180.0f / static_cast<float>(M_PI);
+        if (hue < 0.0f) hue += 360.0f;
+        const float sat = std::clamp(dist / radius, 0.0f, 1.0f);
+        const QColor c = QColor::fromHsvF(hue / 360.0f, sat, 1.0f, 1.0f);
+        line[x] = c.rgba();
+      }
+    }
+  }
+
+  painter.drawImage(wheelRect, impl_->wheelImage);
+  painter.setPen(QPen(QColor(20, 20, 20, 220), 1.0));
+  painter.setBrush(Qt::NoBrush);
+  painter.drawEllipse(wheelRect);
 
   // 現在の色の位置にマーカーを描画
   QPointF markerPos = impl_->getPositionFromColor(wheelRect);

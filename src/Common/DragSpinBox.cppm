@@ -30,10 +30,11 @@ void DragSpinBox::mousePressEvent(QMouseEvent* event) {
         impl_->pressPos = event->globalPosition().toPoint();
         impl_->startValue = value();
         impl_->dragging = false;
-        event->accept();
-    } else {
+        // Keep normal spinbox focus/text-edit behavior on click.
         QSpinBox::mousePressEvent(event);
+        return;
     }
+    QSpinBox::mousePressEvent(event);
 }
 
 void DragSpinBox::mouseMoveEvent(QMouseEvent* event) {
@@ -89,10 +90,11 @@ void DoubleDragSpinBox::mousePressEvent(QMouseEvent* event) {
         impl_->pressPos = event->globalPosition().toPoint();
         impl_->startValue = value();
         impl_->dragging = false;
-        event->accept();
-    } else {
+        // Keep normal spinbox focus/text-edit behavior on click.
         QDoubleSpinBox::mousePressEvent(event);
+        return;
     }
+    QDoubleSpinBox::mousePressEvent(event);
 }
 
 void DoubleDragSpinBox::mouseMoveEvent(QMouseEvent* event) {

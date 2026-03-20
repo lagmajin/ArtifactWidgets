@@ -5,10 +5,12 @@ module;
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QDial>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QSignalBlocker>
+#include <QAbstractSlider>
 #include <QSlider>
 #include <QSpinBox>
 #include <QVBoxLayout>
@@ -53,10 +55,10 @@ public:
   QLabel *blueLabel = nullptr;
   QLabel *alphaLabel = nullptr;
 
-  // HSVスライダー
+  // HSV controls
   QSlider *hueSlider = nullptr;
   QSlider *saturationSlider = nullptr;
-  QSlider *valueSlider = nullptr;
+  QDial *valueDial = nullptr;
   QSpinBox *hueSpin = nullptr;
   QSpinBox *saturationSpin = nullptr;
   QSpinBox *valueSpin = nullptr;
@@ -95,7 +97,7 @@ FloatColorPicker::Impl::Impl()
       greenLabel(new QLabel("G")), blueLabel(new QLabel("B")),
       alphaLabel(new QLabel("A")), hueSlider(new QSlider(Qt::Horizontal)),
       saturationSlider(new QSlider(Qt::Horizontal)),
-      valueSlider(new QSlider(Qt::Horizontal)), hueLabel(new QLabel("H")),
+      valueDial(new QDial()), hueLabel(new QLabel("H")),
       saturationLabel(new QLabel("S")), valueLabel(new QLabel("V")),
       hexInput(new QLineEdit()), hexLabel(new QLabel("#")),
       okButton(new QPushButton("OK")), cancelButton(new QPushButton("Cancel")) {
@@ -119,7 +121,10 @@ FloatColorPicker::Impl::Impl()
 
   hueSlider->setRange(0, 360);
   saturationSlider->setRange(0, 100);
-  valueSlider->setRange(0, 100);
+  valueDial->setRange(0, 100);
+  valueDial->setNotchesVisible(false);
+  valueDial->setWrapping(false);
+  valueDial->setFixedSize(72, 72);
   hueSpin->setRange(0, 360);
   saturationSpin->setRange(0, 100);
   valueSpin->setRange(0, 100);
@@ -261,13 +266,13 @@ void FloatColorPicker::Impl::updateSlidersFromColor() {
   {
     const QSignalBlocker b1(hueSlider);
     const QSignalBlocker b2(saturationSlider);
-    const QSignalBlocker b3(valueSlider);
+    const QSignalBlocker b3(valueDial);
     const QSignalBlocker b4(hueSpin);
     const QSignalBlocker b5(saturationSpin);
     const QSignalBlocker b6(valueSpin);
     hueSlider->setValue(ih);
     saturationSlider->setValue(is);
-    valueSlider->setValue(iv);
+    valueDial->setValue(iv);
     hueSpin->setValue(ih);
     saturationSpin->setValue(is);
     valueSpin->setValue(iv);
@@ -295,7 +300,7 @@ void FloatColorPicker::Impl::updateColorFromHSVSliders() {
 
   float h = hueSlider->value();
   float s = saturationSlider->value() / 100.0f;
-  float v = valueSlider->value() / 100.0f;
+  float v = valueDial->value() / 100.0f;
 
   float r, g, b;
   hsvToRGB(h, s, v, r, g, b);
@@ -442,7 +447,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
 
   QHBoxLayout *valLayout = new QHBoxLayout();
   valLayout->addWidget(impl_->valueLabel);
-  valLayout->addWidget(impl_->valueSlider, 1);
+  valLayout->addWidget(impl_->valueDial);
   valLayout->addWidget(impl_->valueSpin);
 
   QVBoxLayout *hsvLayout = new QVBoxLayout();
@@ -535,9 +540,9 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
     impl_->updateColorFromHSVSliders();
     reflectAndEmit();
   });
-  connect(impl_->valueSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
+  connect(impl_->valueDial, QOverload<int>::of(&QAbstractSlider::valueChanged), this, [this, reflectAndEmit]() {
     const QSignalBlocker blocker(impl_->valueSpin);
-    impl_->valueSpin->setValue(impl_->valueSlider->value());
+    impl_->valueSpin->setValue(impl_->valueDial->value());
     impl_->updateColorFromHSVSliders();
     reflectAndEmit();
   });
@@ -547,7 +552,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   connect(impl_->saturationSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
           [this](int value) { impl_->saturationSlider->setValue(value); });
   connect(impl_->valueSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->valueSlider->setValue(value); });
+          [this](int value) { impl_->valueDial->setValue(value); });
 
   connect(impl_->hexInput, &QLineEdit::editingFinished, this, [this, reflectAndEmit]() {
     impl_->updateColorFromHex();
