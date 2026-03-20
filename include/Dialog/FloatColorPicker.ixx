@@ -11,7 +11,7 @@ import Color.Float;
 export namespace ArtifactWidgets
 {
 
- class FloatColorPicker : public AbstractDialog
+ class WIDGET_LIBRARY_DLL_API FloatColorPicker : public AbstractDialog
  {
   W_OBJECT(FloatColorPicker)
  private:

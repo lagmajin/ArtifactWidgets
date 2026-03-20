@@ -40,6 +40,7 @@ namespace ArtifactWidgets {
 
  AbstractDialog::AbstractDialog(QWidget* parent/*=nullptr*/) :QDialog(parent)
  {
+  impl_ = new Impl();
   setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
  }
 
@@ -50,11 +51,14 @@ namespace ArtifactWidgets {
 
  void AbstractDialog::keyPressEvent(QKeyEvent* event)
  {
-  if (event->key() == Qt::Key_Escape) {
+  if (event->key() == Qt::Key_Escape && impl_->rejectOnEscape) {
    reject(); // Cancel 相当
+   event->accept();
   }
-  else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+  else if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) &&
+           impl_->acceptOnEnter) {
    accept(); // OK 相当
+   event->accept();
   }
   else {
    QDialog::keyPressEvent(event);
@@ -66,40 +70,49 @@ namespace ArtifactWidgets {
   if (event->button() == Qt::LeftButton) {
    impl_->dragging = true;
    impl_->dragPos = event->globalPosition().toPoint() - frameGeometry().topLeft();
+   event->accept();
+   return;
   }
+  QDialog::mousePressEvent(event);
  }
 
  void AbstractDialog::mouseMoveEvent(QMouseEvent* event)
  {
   if (impl_->dragging && (event->buttons() & Qt::LeftButton)) {
    move(event->globalPosition().toPoint() - impl_->dragPos);
+   event->accept();
+   return;
   }
+  QDialog::mouseMoveEvent(event);
  }
 
  void AbstractDialog::mouseReleaseEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
    impl_->dragging = false;
+   event->accept();
+   return;
   }
+  QDialog::mouseReleaseEvent(event);
  }
 
  void AbstractDialog::setAcceptOnEnter(bool enabled /*= true*/)
  {
-
+  impl_->acceptOnEnter = enabled;
  }
 
  void AbstractDialog::setRejectOnEscape(bool enabled /*= true*/)
  {
-
+  impl_->rejectOnEscape = enabled;
  }
 
  void AbstractDialog::focusInEvent(QFocusEvent* event)
  {
-  throw std::logic_error("The method or operation is not implemented.");
+  QDialog::focusInEvent(event);
  }
 
  void AbstractDialog::focusOutEvent(QFocusEvent* event)
  {
-  throw std::logic_error("The method or operation is not implemented.");
+  QDialog::focusOutEvent(event);
  }
 
  void AbstractDialog::setAlwaysOnTop(bool enabled)
