@@ -40,10 +40,21 @@ export namespace ArtifactWidgets
   }
 
   void dragEnterEvent(QDragEnterEvent* event) override {
+   // レイヤー並べ替えやその他のカスタム MIME を無視し、子に委譲する
+   const QMimeData* mime = event->mimeData();
+   if (mime && mime->hasFormat("application/x-artifact-layer-reorder")) {
+    event->ignore();
+    return;
+   }
    event->acceptProposedAction();
   }
 
   void dragMoveEvent(QDragMoveEvent* event) override {
+   const QMimeData* mime = event->mimeData();
+   if (mime && mime->hasFormat("application/x-artifact-layer-reorder")) {
+    event->ignore();
+    return;
+   }
    event->acceptProposedAction();
   }
 
