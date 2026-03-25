@@ -1,19 +1,26 @@
 module;
 #include <QDialog>
 #include <QGridLayout>
+#include <QFrame>
+#include <QFormLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QDial>
+#include <QMouseEvent>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
+#include <QResizeEvent>
 #include <QSignalBlocker>
 #include <QAbstractSlider>
 #include <QSlider>
 #include <QSpinBox>
+#include <QTabWidget>
 #include <QVBoxLayout>
+#include <QPainter>
+#include <QImage>
 #include <cmath>
 #include <wobjectimpl.h>
 
@@ -27,6 +34,251 @@ import Widget.ColorViewLabel;
 
 namespace ArtifactWidgets {
 
+namespace {
+
+static void rgbToHSVHelper(float r, float g, float b, float &h, float &s, float &v) {
+  float max = std::max({r, g, b});
+  float min = std::min({r, g, b});
+  float d = max - min;
+
+  v = max;
+  s = max == 0 ? 0 : d / max;
+
+  if (d == 0) {
+    h = 0;
+  } else {
+    if (max == r)
+      h = 60 * fmod((g - b) / d, 6);
+    else if (max == g)
+      h = 60 * ((b - r) / d + 2);
+    else
+      h = 60 * ((r - g) / d + 4);
+    if (h < 0)
+      h += 360;
+  }
+}
+
+static void hsvToRGBHelper(float h, float s, float v, float &r, float &g, float &b) {
+  int hi = static_cast<int>(h / 60) % 6;
+  float f = h / 60 - hi;
+  float p = v * (1 - s);
+  float q = v * (1 - f * s);
+  float t = v * (1 - (1 - f) * s);
+
+  switch (hi) {
+  case 0:
+    r = v;
+    g = t;
+    b = p;
+    break;
+  case 1:
+    r = q;
+    g = v;
+    b = p;
+    break;
+  case 2:
+    r = p;
+    g = v;
+    b = t;
+    break;
+  case 3:
+    r = p;
+    g = q;
+    b = v;
+    break;
+  case 4:
+    r = t;
+    g = p;
+    b = v;
+    break;
+  default:
+    r = v;
+    g = p;
+    b = q;
+    break;
+  }
+}
+
+} // namespace
+
+class ColorSvPadWidget : public QWidget {
+  W_OBJECT(ColorSvPadWidget)
+public:
+  class Impl;
+  Impl *impl_;
+
+  explicit ColorSvPadWidget(QWidget *parent = nullptr);
+  ~ColorSvPadWidget();
+
+  ArtifactCore::FloatColor getColor() const;
+  void setColor(const ArtifactCore::FloatColor &color);
+
+signals:
+  void colorChanged(const ArtifactCore::FloatColor &color) W_SIGNAL(colorChanged, color);
+
+protected:
+  void paintEvent(QPaintEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
+};
+
+class ColorSvPadWidget::Impl {
+public:
+  ArtifactCore::FloatColor currentColor{1.0f, 1.0f, 1.0f, 1.0f};
+  bool isDragging = false;
+  QImage cacheImage;
+  QSize cacheSize;
+  qreal cacheDpr = 1.0;
+
+  float hueFromColor() const {
+    float h = 0.0f;
+    float s = 0.0f;
+    float v = 0.0f;
+    rgbToHSVHelper(currentColor.r(), currentColor.g(), currentColor.b(), h, s, v);
+    return h;
+  }
+
+  void setColorFromPosition(const QPoint &pos, const QRect &padRect) {
+    if (!padRect.isValid()) {
+      return;
+    }
+    const float x = std::clamp<float>(static_cast<float>(pos.x() - padRect.left()) /
+                                           std::max(1, padRect.width() - 1),
+                                       0.0f, 1.0f);
+    const float y = std::clamp<float>(static_cast<float>(pos.y() - padRect.top()) /
+                                           std::max(1, padRect.height() - 1),
+                                       0.0f, 1.0f);
+    const float saturation = x;
+    const float value = 1.0f - y;
+    float r = 1.0f;
+    float g = 1.0f;
+    float b = 1.0f;
+    hsvToRGBHelper(hueFromColor(), saturation, value, r, g, b);
+    currentColor.setColor(r, g, b, currentColor.a());
+  }
+
+  QPointF markerFromColor(const QRect &padRect) const {
+    float h = 0.0f;
+    float s = 0.0f;
+    float v = 0.0f;
+    rgbToHSVHelper(currentColor.r(), currentColor.g(), currentColor.b(), h, s, v);
+    const qreal x = padRect.left() + s * padRect.width();
+    const qreal y = padRect.top() + (1.0f - v) * padRect.height();
+    return QPointF(x, y);
+  }
+};
+
+W_OBJECT_IMPL(ColorSvPadWidget)
+
+ColorSvPadWidget::ColorSvPadWidget(QWidget *parent)
+    : QWidget(parent), impl_(new Impl()) {
+  setMinimumSize(280, 280);
+  setCursor(Qt::CrossCursor);
+}
+
+ColorSvPadWidget::~ColorSvPadWidget() { delete impl_; }
+
+ArtifactCore::FloatColor ColorSvPadWidget::getColor() const {
+  return impl_->currentColor;
+}
+
+void ColorSvPadWidget::setColor(const ArtifactCore::FloatColor &color) {
+  impl_->currentColor = color;
+  update();
+}
+
+void ColorSvPadWidget::paintEvent(QPaintEvent *event) {
+  Q_UNUSED(event);
+
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing, true);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+  QRect padRect = rect().adjusted(12, 12, -12, -12);
+  if (padRect.width() <= 0 || padRect.height() <= 0) {
+    return;
+  }
+
+  const qreal dpr = devicePixelRatioF();
+  const QSize pixelSize(std::max(1, static_cast<int>(std::round(padRect.width() * dpr))),
+                        std::max(1, static_cast<int>(std::round(padRect.height() * dpr))));
+  if (impl_->cacheImage.isNull() || impl_->cacheSize != pixelSize || !qFuzzyCompare(impl_->cacheDpr, dpr)) {
+    impl_->cacheImage = QImage(pixelSize, QImage::Format_ARGB32_Premultiplied);
+    impl_->cacheImage.setDevicePixelRatio(dpr);
+    impl_->cacheSize = pixelSize;
+    impl_->cacheDpr = dpr;
+
+    float h = 0.0f;
+    float s = 0.0f;
+    float v = 0.0f;
+    rgbToHSVHelper(impl_->currentColor.r(), impl_->currentColor.g(), impl_->currentColor.b(), h, s, v);
+
+    const int w = impl_->cacheImage.width();
+    const int hpx = impl_->cacheImage.height();
+    for (int y = 0; y < hpx; ++y) {
+      QRgb *line = reinterpret_cast<QRgb *>(impl_->cacheImage.scanLine(y));
+      const float value = 1.0f - static_cast<float>(y) / std::max(1, hpx - 1);
+      for (int x = 0; x < w; ++x) {
+        const float saturation = static_cast<float>(x) / std::max(1, w - 1);
+        float r = 1.0f;
+        float g = 1.0f;
+        float b = 1.0f;
+        hsvToRGBHelper(h, saturation, value, r, g, b);
+        line[x] = QColor::fromRgbF(r, g, b, 1.0f).rgba();
+      }
+    }
+  }
+
+  painter.fillRect(padRect.adjusted(-1, -1, 1, 1), QColor(26, 26, 28));
+  painter.setPen(QPen(QColor(70, 70, 78), 1));
+  painter.setBrush(Qt::NoBrush);
+  painter.drawRoundedRect(padRect.adjusted(-1, -1, 1, 1), 10, 10);
+
+  painter.drawImage(padRect, impl_->cacheImage);
+
+  painter.setPen(QPen(QColor(255, 255, 255, 220), 2));
+  painter.setBrush(Qt::NoBrush);
+  const QPointF marker = impl_->markerFromColor(padRect);
+  painter.drawEllipse(marker, 8, 8);
+  painter.setPen(QPen(QColor(0, 0, 0, 160), 1));
+  painter.drawEllipse(marker, 9, 9);
+}
+
+void ColorSvPadWidget::mousePressEvent(QMouseEvent *event) {
+  if (event->button() != Qt::LeftButton) {
+    return;
+  }
+  const QRect padRect = rect().adjusted(12, 12, -12, -12);
+  impl_->setColorFromPosition(event->pos(), padRect);
+  impl_->isDragging = true;
+  update();
+  emit colorChanged(impl_->currentColor);
+}
+
+void ColorSvPadWidget::mouseMoveEvent(QMouseEvent *event) {
+  if (!impl_->isDragging || !(event->buttons() & Qt::LeftButton)) {
+    return;
+  }
+  const QRect padRect = rect().adjusted(12, 12, -12, -12);
+  impl_->setColorFromPosition(event->pos(), padRect);
+  update();
+  emit colorChanged(impl_->currentColor);
+}
+
+void ColorSvPadWidget::mouseReleaseEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+    impl_->isDragging = false;
+  }
+}
+
+void ColorSvPadWidget::resizeEvent(QResizeEvent *event) {
+  QWidget::resizeEvent(event);
+  impl_->cacheImage = QImage();
+  impl_->cacheSize = QSize();
+}
+
 W_OBJECT_IMPL(FloatColorPicker)
 
 class FloatColorPicker::Impl {
@@ -36,6 +288,7 @@ public:
 
   ArtifactCore::FloatColor currentColor;
   ArtifactCore::FloatColor initialColor;
+  ColorSvPadWidget *svPad = nullptr;
   ColorWheelWidget *colorWheel = nullptr;
   ::ArtifactWidgets::ColorViewLabel *colorPreview = nullptr;
   ::ArtifactWidgets::ColorViewLabel *originalPreview = nullptr;
@@ -277,6 +530,13 @@ void FloatColorPicker::Impl::updateSlidersFromColor() {
     saturationSpin->setValue(is);
     valueSpin->setValue(iv);
   }
+
+  if (svPad) {
+    svPad->setColor(currentColor);
+  }
+  if (colorWheel) {
+    colorWheel->setColor(currentColor);
+  }
 }
 
 void FloatColorPicker::Impl::updateColorFromRGBSliders() {
@@ -363,16 +623,74 @@ void FloatColorPicker::Impl::updateColorFromHex() {
 void FloatColorPicker::Impl::updateAllFromColor() {
   updateSlidersFromColor();
   updateHexFromColor();
+  if (colorPreview) {
+    colorPreview->setColor(currentColor);
+  }
+  if (originalPreview) {
+    originalPreview->setColor(initialColor);
+  }
 }
 
 FloatColorPicker::FloatColorPicker(QWidget *parent)
     : AbstractDialog(parent), impl_(new Impl()) {
   setWindowTitle("Color Picker");
-  setMinimumSize(520, 560);
+  setMinimumSize(820, 560);
   setFrameless(false);
   setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                  Qt::WindowCloseButtonHint);
+  setStyleSheet(R"(
+    FloatColorPicker {
+      background: #252528;
+    }
+    QGroupBox {
+      color: #f0f0f0;
+      border: 1px solid #3b3b40;
+      border-radius: 10px;
+      margin-top: 12px;
+      padding-top: 8px;
+      background: #2b2b30;
+    }
+    QGroupBox::title {
+      subcontrol-origin: margin;
+      left: 10px;
+      padding: 0 4px;
+    }
+    QLineEdit, QSpinBox, QTabWidget::pane {
+      background: #1f1f22;
+      border: 1px solid #404048;
+      border-radius: 6px;
+      color: #f4f4f4;
+    }
+    QPushButton {
+      background: #34343a;
+      border: 1px solid #4a4a52;
+      border-radius: 8px;
+      padding: 6px 12px;
+      color: #f4f4f4;
+    }
+    QPushButton:hover {
+      background: #3f3f46;
+    }
+    QPushButton:pressed {
+      background: #2a2a2f;
+    }
+    QTabBar::tab {
+      background: #2a2a2f;
+      border: 1px solid #404048;
+      border-bottom: none;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      padding: 6px 10px;
+      color: #dcdcdc;
+      margin-right: 2px;
+    }
+    QTabBar::tab:selected {
+      background: #38383f;
+      color: #ffffff;
+    }
+  )");
 
+  impl_->svPad = new ColorSvPadWidget(this);
   impl_->colorWheel = new ColorWheelWidget(this);
   impl_->colorPreview = new ColorViewLabel(this);
   impl_->originalPreview = new ColorViewLabel(this);
@@ -380,21 +698,28 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   impl_->colorPreview->setMinimumHeight(64);
   impl_->originalPreview->setMinimumHeight(64);
 
-  // カラーホイールとプレビューのレイアウト
-  QHBoxLayout *topLayout = new QHBoxLayout();
-  QVBoxLayout *previewLayout = new QVBoxLayout();
+  impl_->svPad->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  impl_->colorWheel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+  impl_->colorWheel->setFixedWidth(176);
+
   auto *prevLabel = new QLabel(QStringLiteral("Previous"), this);
   auto *currLabel = new QLabel(QStringLiteral("Current"), this);
-  previewLayout->addWidget(prevLabel);
-  previewLayout->addWidget(impl_->originalPreview);
-  previewLayout->addSpacing(4);
-  previewLayout->addWidget(currLabel);
-  previewLayout->addWidget(impl_->colorPreview);
-  previewLayout->addStretch();
-  previewLayout->addWidget(impl_->revertButton);
-
-  topLayout->addWidget(impl_->colorWheel, 3);
-  topLayout->addLayout(previewLayout, 2);
+  auto *previewCard = new QFrame(this);
+  previewCard->setObjectName("PreviewCard");
+  previewCard->setFrameShape(QFrame::StyledPanel);
+  auto *previewLayout = new QVBoxLayout(previewCard);
+  previewLayout->setContentsMargins(10, 10, 10, 10);
+  auto *previewRow = new QHBoxLayout();
+  previewRow->addWidget(prevLabel);
+  previewRow->addWidget(impl_->originalPreview, 1);
+  previewRow->addSpacing(8);
+  previewRow->addWidget(currLabel);
+  previewRow->addWidget(impl_->colorPreview, 1);
+  previewLayout->addLayout(previewRow);
+  auto *previewButtons = new QHBoxLayout();
+  previewButtons->addStretch();
+  previewButtons->addWidget(impl_->revertButton);
+  previewLayout->addLayout(previewButtons);
 
   // HEX入力
   QHBoxLayout *hexLayout = new QHBoxLayout();
@@ -470,27 +795,61 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   buttonLayout->addWidget(impl_->okButton);
   buttonLayout->addWidget(impl_->cancelButton);
 
-  // メインレイアウト
+  auto *rgbaTab = new QWidget(this);
+  auto *rgbaTabLayout = new QVBoxLayout(rgbaTab);
+  rgbaTabLayout->addWidget(rgbaGroup);
+  rgbaTabLayout->addStretch();
+
+  auto *hsvTab = new QWidget(this);
+  auto *hsvTabLayout = new QVBoxLayout(hsvTab);
+  hsvTabLayout->addWidget(hsvGroup);
+  hsvTabLayout->addStretch();
+
+  auto *presetTab = new QWidget(this);
+  auto *presetTabLayout = new QVBoxLayout(presetTab);
+  presetTabLayout->addWidget(presetGroup);
+  presetTabLayout->addStretch();
+
+  auto *detailsTabs = new QTabWidget(this);
+  detailsTabs->addTab(rgbaTab, QStringLiteral("RGB"));
+  detailsTabs->addTab(hsvTab, QStringLiteral("HSV"));
+  detailsTabs->addTab(presetTab, QStringLiteral("Presets"));
+
+  auto *middleColumn = new QVBoxLayout();
+  middleColumn->addWidget(previewCard);
+  middleColumn->addLayout(hexLayout);
+  middleColumn->addWidget(detailsTabs, 1);
+  middleColumn->addLayout(buttonLayout);
+
+  auto *contentLayout = new QHBoxLayout();
+  contentLayout->addWidget(impl_->svPad, 4);
+  contentLayout->addLayout(middleColumn, 3);
+  contentLayout->addWidget(impl_->colorWheel, 0, Qt::AlignTop);
+
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->addLayout(topLayout);
-  mainLayout->addLayout(hexLayout);
-  mainLayout->addWidget(rgbaGroup);
-  mainLayout->addWidget(hsvGroup);
-  mainLayout->addWidget(presetGroup);
-  mainLayout->addLayout(buttonLayout);
+  mainLayout->setContentsMargins(14, 14, 14, 14);
+  mainLayout->setSpacing(12);
+  mainLayout->addLayout(contentLayout, 1);
 
   // シグナル接続
   auto reflectAndEmit = [this]() {
+    impl_->svPad->setColor(impl_->currentColor);
     impl_->colorWheel->setColor(impl_->currentColor);
     impl_->colorPreview->setColor(impl_->currentColor);
     emit colorChanged(impl_->currentColor);
   };
 
+  connect(impl_->svPad, &ColorSvPadWidget::colorChanged, this,
+          [this](const ArtifactCore::FloatColor &color) {
+            impl_->currentColor = color;
+            impl_->updateAllFromColor();
+            emit colorChanged(color);
+          });
+
   connect(impl_->colorWheel, &ColorWheelWidget::colorChanged, this,
           [this](const ArtifactCore::FloatColor &color) {
             impl_->currentColor = color;
             impl_->updateAllFromColor();
-            impl_->colorPreview->setColor(color);
             emit colorChanged(color);
           });
 
