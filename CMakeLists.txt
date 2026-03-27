@@ -98,6 +98,7 @@ target_include_directories(ArtifactWidgets
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
     PRIVATE 
         "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/verdigris/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../third_party"
         "${CMAKE_CURRENT_SOURCE_DIR}/../libs/DiligentEngine"
 )
 
