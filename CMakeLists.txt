@@ -136,6 +136,27 @@ target_link_libraries(ArtifactWidgets PUBLIC magic_enum::magic_enum)
 find_package(Boost REQUIRED COMPONENTS iostreams)
 target_link_libraries(ArtifactWidgets PUBLIC Boost::iostreams)
 
+find_package(ffmpeg REQUIRED)
+if(ffmpeg_FOUND)
+    target_include_directories(ArtifactWidgets PUBLIC ${FFMPEG_INCLUDE_DIR})
+    target_link_libraries(ArtifactWidgets PUBLIC
+        ${FFMPEG_AVCODEC_LIBRARY}
+        ${FFMPEG_AVFORMAT_LIBRARY}
+        ${FFMPEG_AVUTIL_LIBRARY}
+        ${FFMPEG_SWSCALE_LIBRARY}
+        ${FFMPEG_SWRESAMPLE_LIBRARY}
+    )
+else()
+    target_link_libraries(ArtifactWidgets PUBLIC
+        "${VCPKG_INSTALLED}/lib/avcodec.lib"
+        "${VCPKG_INSTALLED}/lib/avformat.lib"
+        "${VCPKG_INSTALLED}/lib/avutil.lib"
+        "${VCPKG_INSTALLED}/lib/swscale.lib"
+        "${VCPKG_INSTALLED}/lib/swresample.lib"
+    )
+    target_include_directories(ArtifactWidgets PUBLIC "${VCPKG_INSTALLED}/include")
+endif()
+
 if(WIN32)
     target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
 endif()
