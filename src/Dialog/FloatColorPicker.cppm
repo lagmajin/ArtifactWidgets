@@ -605,6 +605,13 @@ ArtifactCore::FloatColor FloatColorPicker::getColor() const {
 }
 
 void FloatColorPicker::setColor(const ArtifactCore::FloatColor &color) {
+  impl_->currentColor = color;
+  impl_->updateAllFromColor();
+  impl_->colorWheel->setColor(color);
+  impl_->colorPreview->setColor(color);
+}
+
+void FloatColorPicker::setInitialColor(const ArtifactCore::FloatColor &color) {
   impl_->initialColor = color;
   impl_->currentColor = color;
   impl_->updateAllFromColor();

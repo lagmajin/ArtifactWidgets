@@ -23,6 +23,7 @@ export namespace ArtifactWidgets
 
   ArtifactCore::FloatColor getColor() const;
   void setColor(const ArtifactCore::FloatColor& color);
+  void setInitialColor(const ArtifactCore::FloatColor& color);
 
  signals:
   void colorChanged(const ArtifactCore::FloatColor& color) W_SIGNAL(colorChanged, color);

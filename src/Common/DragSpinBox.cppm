@@ -108,8 +108,13 @@ void DoubleDragSpinBox::mouseMoveEvent(QMouseEvent* event) {
         if (impl_->dragging) {
             double step = singleStep();
             if (event->modifiers() & Qt::ShiftModifier) step *= 10.0;
-            if (event->modifiers() & Qt::ControlModifier) step *= 0.1;
+            // High precision: Control provides 0.1x step, Control+Shift provides 0.01x step
+            if (event->modifiers() & Qt::ControlModifier) {
+                if (event->modifiers() & Qt::ShiftModifier) step *= 0.01; // Overrides the shift *= 10
+                else step *= 0.1;
+            }
 
+            // High-resolution delta: 1 pixel = 1 step
             double newValue = impl_->startValue + (delta.x() * step);
             setValue(newValue);
             event->accept();
