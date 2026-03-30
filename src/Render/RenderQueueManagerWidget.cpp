@@ -93,7 +93,7 @@ namespace ArtifactWidgets {
 
  RenderQueueManagerJobPanel::RenderQueueManagerJobPanel(QWidget* parent/*=nullptr*/) :QTreeView(parent)
  {
-  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+  auto style = getDCCStyleSheetPreset(DccStylePreset::StudioStyle);
 
   setStyleSheet(style);
 
@@ -135,7 +135,7 @@ namespace ArtifactWidgets {
  RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget* parent /*= nullptr*/) :QWidget(parent), impl_(new Impl())
  {
   setEnabled(false);
-  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
+  auto style = getDCCStyleSheetPreset(DccStylePreset::StudioStyle);
 
   setStyleSheet(style);
   auto& manager = RendererQueueManager::instance();
