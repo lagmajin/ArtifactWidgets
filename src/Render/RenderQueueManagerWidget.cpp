@@ -5,18 +5,25 @@ module;
 #include <QTreeView>
 #include <QPushButton>
 #include <QProgressBar>
+#include <QLineEdit>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QAction>
 #include <QDragEnterEvent>
+#include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QMimeData>
 #include <QDrag>
 #include <QApplication>
 #include <QClipboard>
+#include <QContextMenuEvent>
+#include <QDataStream>
+#include <QIODevice>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QElapsedTimer>
+#include <QInputDialog>
 #include <QUrl>
 #include <QFileInfo>
 #include <QTimer>
@@ -24,6 +31,7 @@ module;
 #include <QStyledItemDelegate>
 #include <QPainter>
 #include <QStyleOptionProgressBar>
+#include <algorithm>
 #include <wobjectimpl.h>
 #include <QDebug>
 
@@ -116,8 +124,11 @@ namespace ArtifactWidgets {
  // Progress Bar Delegate
  // ─────────────────────────────────────────────────────────
 
- class RenderJobProgressDelegate : public QStyledItemDelegate {
- public:
+class RenderJobProgressDelegate : public QStyledItemDelegate {
+public:
+  explicit RenderJobProgressDelegate(QObject* parent = nullptr)
+    : QStyledItemDelegate(parent) {}
+
   void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
     if (index.column() == 2) { // Progress column
       int progress = index.data(Qt::DisplayRole).toInt();
@@ -225,7 +236,7 @@ namespace ArtifactWidgets {
   QMetaObject::invokeMethod(impl_->service_, "jobCount", Qt::DirectConnection,
     Q_RETURN_ARG(int, jobCount));
 
-  auto* model = qobject_cast<RenderJobModel*>(this->model());
+  auto* model = static_cast<RenderJobModel*>(this->model());
   if (!model) return;
 
   model->clearJobs();
