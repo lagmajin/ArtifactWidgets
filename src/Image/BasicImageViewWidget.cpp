@@ -73,8 +73,9 @@ namespace ArtifactWidgets {
 
  void BasicImageViewWidget::Clear()
  {
-
-  //fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+  impl_->scene_->clear();
+  impl_->pixmap_ = nullptr;
+  impl_->scene_->setSceneRect(QRectF());
  }
 
  void BasicImageViewWidget::setImage(const QImage& image)
@@ -93,11 +94,9 @@ namespace ArtifactWidgets {
   }
 
   auto pix = new QGraphicsPixmapItem(pixmap);
+  impl_->pixmap_ = pix;
   impl_->scene_->addItem(pix);
   pix->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-
-  // シーンのサイズを画像に合わせて設定
-  impl_->scene_->setSceneRect(pix->boundingRect());
 
   // 画像がビュー全体に収まるように調整
   fitInView(pix->boundingRect(), Qt::KeepAspectRatio);

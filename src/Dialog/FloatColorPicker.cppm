@@ -1,18 +1,17 @@
 module;
 #include <QDialog>
-#include <QGridLayout>
-#include <QGroupBox>
+#include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QDial>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QSignalBlocker>
-#include <QAbstractSlider>
 #include <QSlider>
 #include <QSpinBox>
+#include <QStackedWidget>
+#include <QTabBar>
 #include <QVBoxLayout>
 #include <cmath>
 #include <wobjectimpl.h>
@@ -29,573 +28,702 @@ namespace ArtifactWidgets {
 
 W_OBJECT_IMPL(FloatColorPicker)
 
+// ---- helper: make a labeled slider row ---------------------------------
+// Returns the containing QHBoxLayout; all widgets are parented to parent.
+static QHBoxLayout *makeSliderRow(const QString &labelText,
+                                  QSlider *slider,
+                                  QWidget *spinbox,
+                                  QWidget *parent,
+                                  QLabel **outLabel = nullptr,
+                                  bool addDegreeLabel = false) {
+  auto *row = new QHBoxLayout();
+  auto *lbl = new QLabel(labelText, parent);
+  lbl->setFixedWidth(14);
+  if (outLabel)
+    *outLabel = lbl;
+  row->addWidget(lbl);
+  row->addWidget(slider, 1);
+  row->addWidget(spinbox);
+  if (addDegreeLabel) {
+    auto *deg = new QLabel(QStringLiteral("°"), parent);
+    row->addWidget(deg);
+  }
+  return row;
+}
+
+// ---- Impl --------------------------------------------------------------
+
 class FloatColorPicker::Impl {
 public:
-  Impl();
-  ~Impl();
-
   ArtifactCore::FloatColor currentColor;
   ArtifactCore::FloatColor initialColor;
-  ColorWheelWidget *colorWheel = nullptr;
-  ::ArtifactWidgets::ColorViewLabel *colorPreview = nullptr;
-  ::ArtifactWidgets::ColorViewLabel *originalPreview = nullptr;
-  QPushButton *revertButton = nullptr;
 
-  // RGBAスライダー
-  QSlider *redSlider = nullptr;
-  QSlider *greenSlider = nullptr;
-  QSlider *blueSlider = nullptr;
-  QSlider *alphaSlider = nullptr;
-  QSpinBox *redSpin = nullptr;
-  QSpinBox *greenSpin = nullptr;
-  QSpinBox *blueSpin = nullptr;
-  QSpinBox *alphaSpin = nullptr;
-  QLabel *redLabel = nullptr;
-  QLabel *greenLabel = nullptr;
-  QLabel *blueLabel = nullptr;
-  QLabel *alphaLabel = nullptr;
+  ColorWheelWidget         *colorWheel        = nullptr;
+  QSlider                  *brightnessSlider  = nullptr;
+  ::ArtifactWidgets::ColorViewLabel *colorPreviewBar = nullptr;
 
-  // HSV controls
-  QSlider *hueSlider = nullptr;
-  QSlider *saturationSlider = nullptr;
-  QDial *valueDial = nullptr;
-  QSpinBox *hueSpin = nullptr;
-  QSpinBox *saturationSpin = nullptr;
-  QSpinBox *valueSpin = nullptr;
-  QLabel *hueLabel = nullptr;
-  QLabel *saturationLabel = nullptr;
-  QLabel *valueLabel = nullptr;
+  QTabBar        *tabBar     = nullptr;
+  QStackedWidget *tabContent = nullptr;
 
-  // HEX入力
-  QLineEdit *hexInput = nullptr;
-  QLabel *hexLabel = nullptr;
+  // HSB tab
+  QSlider       *hSlider  = nullptr;
+  QSlider       *sSlider  = nullptr;
+  QSlider       *bSlider  = nullptr;
+  QSpinBox      *hSpin    = nullptr;
+  QDoubleSpinBox *sSpin   = nullptr;
+  QDoubleSpinBox *bSpin   = nullptr;
 
-  // プリセットカラーパレット
-  QPushButton *presetButtons[16] = {nullptr};
+  // RGB tab
+  QSlider        *rSlider    = nullptr;
+  QSlider        *gSlider    = nullptr;
+  QSlider        *rgbBSlider = nullptr;
+  QDoubleSpinBox *rSpin      = nullptr;
+  QDoubleSpinBox *gSpin      = nullptr;
+  QDoubleSpinBox *rgbBSpin   = nullptr;
 
-  // ボタン
-  QPushButton *okButton = nullptr;
+  // HSL tab
+  QSlider        *hslHSlider = nullptr;
+  QSlider        *hslSSlider = nullptr;
+  QSlider        *hslLSlider = nullptr;
+  QSpinBox       *hslHSpin   = nullptr;
+  QDoubleSpinBox *hslSSpin   = nullptr;
+  QDoubleSpinBox *hslLSpin   = nullptr;
+
+  // Shared alpha
+  QSlider        *aSlider = nullptr;
+  QDoubleSpinBox *aSpin   = nullptr;
+
+  QLineEdit   *hexInput     = nullptr;
+  QPushButton *resetButton  = nullptr;
+  QPushButton *okButton     = nullptr;
   QPushButton *cancelButton = nullptr;
 
   bool updatingFromColor = false;
 
-  void updateSlidersFromColor();
+  void rgbToHSV(float r, float g, float b, float &h, float &s, float &v);
+  void hsvToRGB(float h, float s, float v, float &r, float &g, float &b);
+  void rgbToHSL(float r, float g, float b, float &h, float &s, float &l);
+  void hslToRGB(float h, float s, float l, float &r, float &g, float &b);
+
+  void updateColorFromHSBSliders();
   void updateColorFromRGBSliders();
-  void updateColorFromHSVSliders();
+  void updateColorFromHSLSliders();
   void updateHexFromColor();
   void updateColorFromHex();
   void updateAllFromColor();
-  void rgbToHSV(float r, float g, float b, float &h, float &s, float &v);
-  void hsvToRGB(float h, float s, float v, float &r, float &g, float &b);
 };
 
-FloatColorPicker::Impl::Impl()
-    : redSlider(new QSlider(Qt::Horizontal)),
-      greenSlider(new QSlider(Qt::Horizontal)),
-      blueSlider(new QSlider(Qt::Horizontal)),
-      alphaSlider(new QSlider(Qt::Horizontal)), redLabel(new QLabel("R")),
-      greenLabel(new QLabel("G")), blueLabel(new QLabel("B")),
-      alphaLabel(new QLabel("A")), hueSlider(new QSlider(Qt::Horizontal)),
-      saturationSlider(new QSlider(Qt::Horizontal)),
-      valueDial(new QDial()), hueLabel(new QLabel("H")),
-      saturationLabel(new QLabel("S")), valueLabel(new QLabel("V")),
-      hexInput(new QLineEdit()), hexLabel(new QLabel("#")),
-      okButton(new QPushButton("OK")), cancelButton(new QPushButton("Cancel")) {
-  initialColor = currentColor;
-  redSpin = new QSpinBox();
-  greenSpin = new QSpinBox();
-  blueSpin = new QSpinBox();
-  alphaSpin = new QSpinBox();
-  hueSpin = new QSpinBox();
-  saturationSpin = new QSpinBox();
-  valueSpin = new QSpinBox();
+// ---- math helpers -------------------------------------------------------
 
-  redSlider->setRange(0, 255);
-  greenSlider->setRange(0, 255);
-  blueSlider->setRange(0, 255);
-  alphaSlider->setRange(0, 255);
-  redSpin->setRange(0, 255);
-  greenSpin->setRange(0, 255);
-  blueSpin->setRange(0, 255);
-  alphaSpin->setRange(0, 255);
-
-  hueSlider->setRange(0, 360);
-  saturationSlider->setRange(0, 100);
-  valueDial->setRange(0, 100);
-  valueDial->setNotchesVisible(false);
-  valueDial->setWrapping(false);
-  valueDial->setFixedSize(72, 72);
-  hueSpin->setRange(0, 360);
-  saturationSpin->setRange(0, 100);
-  valueSpin->setRange(0, 100);
-
-  redSlider->setValue(255);
-  greenSlider->setValue(255);
-  blueSlider->setValue(255);
-  alphaSlider->setValue(255);
-  redSpin->setValue(255);
-  greenSpin->setValue(255);
-  blueSpin->setValue(255);
-  alphaSpin->setValue(255);
-
-  hexInput->setMaxLength(9);
-  hexInput->setFixedWidth(96);
-  hexInput->setPlaceholderText(QStringLiteral("#RRGGBB or #RRGGBBAA"));
-  hexInput->setValidator(
-      new QRegularExpressionValidator(QRegularExpression("^#?[0-9A-Fa-f]{0,8}$"),
-                                      hexInput));
-
-  for (QSpinBox *spin : {redSpin, greenSpin, blueSpin, alphaSpin, hueSpin,
-                         saturationSpin, valueSpin}) {
-    spin->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    spin->setFixedWidth(56);
-  }
-
-  // プリセットカラー
-  const char *presetColors[] = {"#FF0000", "#FF8000", "#FFFF00", "#80FF00",
-                                "#00FF00", "#00FF80", "#00FFFF", "#0080FF",
-                                "#0000FF", "#8000FF", "#FF00FF", "#FF0080",
-                                "#FFFFFF", "#C0C0C0", "#808080", "#000000"};
-
-  for (int i = 0; i < 16; ++i) {
-    presetButtons[i] = new QPushButton();
-    presetButtons[i]->setFixedSize(24, 24);
-    presetButtons[i]->setStyleSheet(
-        QString("background-color: %1; border: 1px solid #3E3E42;")
-            .arg(presetColors[i]));
-  }
-}
-
-FloatColorPicker::Impl::~Impl() {}
-
-void FloatColorPicker::Impl::rgbToHSV(float r, float g, float b, float &h,
-                                      float &s, float &v) {
-  float max = std::max({r, g, b});
-  float min = std::min({r, g, b});
-  float d = max - min;
-
-  v = max;
-  s = max == 0 ? 0 : d / max;
-
-  if (d == 0) {
-    h = 0;
+void FloatColorPicker::Impl::rgbToHSV(float r, float g, float b,
+                                       float &h, float &s, float &v) {
+  float mx = std::max({r, g, b});
+  float mn = std::min({r, g, b});
+  float d  = mx - mn;
+  v = mx;
+  s = (mx == 0.0f) ? 0.0f : d / mx;
+  if (d == 0.0f) {
+    h = 0.0f;
   } else {
-    if (max == r)
-      h = 60 * fmod((g - b) / d, 6);
-    else if (max == g)
-      h = 60 * ((b - r) / d + 2);
+    if (mx == r)
+      h = 60.0f * std::fmod((g - b) / d, 6.0f);
+    else if (mx == g)
+      h = 60.0f * ((b - r) / d + 2.0f);
     else
-      h = 60 * ((r - g) / d + 4);
-    if (h < 0)
-      h += 360;
+      h = 60.0f * ((r - g) / d + 4.0f);
+    if (h < 0.0f)
+      h += 360.0f;
   }
 }
 
-void FloatColorPicker::Impl::hsvToRGB(float h, float s, float v, float &r,
-                                      float &g, float &b) {
-  int hi = static_cast<int>(h / 60) % 6;
-  float f = h / 60 - hi;
-  float p = v * (1 - s);
-  float q = v * (1 - f * s);
-  float t = v * (1 - (1 - f) * s);
-
+void FloatColorPicker::Impl::hsvToRGB(float h, float s, float v,
+                                       float &r, float &g, float &b) {
+  int   hi = static_cast<int>(h / 60.0f) % 6;
+  float f  = h / 60.0f - static_cast<int>(h / 60.0f);
+  float p  = v * (1.0f - s);
+  float q  = v * (1.0f - f * s);
+  float t  = v * (1.0f - (1.0f - f) * s);
   switch (hi) {
-  case 0:
-    r = v;
-    g = t;
-    b = p;
-    break;
-  case 1:
-    r = q;
-    g = v;
-    b = p;
-    break;
-  case 2:
-    r = p;
-    g = v;
-    b = t;
-    break;
-  case 3:
-    r = p;
-    g = q;
-    b = v;
-    break;
-  case 4:
-    r = t;
-    g = p;
-    b = v;
-    break;
-  default:
-    r = v;
-    g = p;
-    b = q;
-    break;
+  case 0: r = v; g = t; b = p; break;
+  case 1: r = q; g = v; b = p; break;
+  case 2: r = p; g = v; b = t; break;
+  case 3: r = p; g = q; b = v; break;
+  case 4: r = t; g = p; b = v; break;
+  default: r = v; g = p; b = q; break;
   }
 }
 
-void FloatColorPicker::Impl::updateSlidersFromColor() {
-  const int r = static_cast<int>(std::round(currentColor.r() * 255.0f));
-  const int g = static_cast<int>(std::round(currentColor.g() * 255.0f));
-  const int b = static_cast<int>(std::round(currentColor.b() * 255.0f));
-  const int a = static_cast<int>(std::round(currentColor.a() * 255.0f));
-
-  {
-    const QSignalBlocker b1(redSlider);
-    const QSignalBlocker b2(greenSlider);
-    const QSignalBlocker b3(blueSlider);
-    const QSignalBlocker b4(alphaSlider);
-    const QSignalBlocker b5(redSpin);
-    const QSignalBlocker b6(greenSpin);
-    const QSignalBlocker b7(blueSpin);
-    const QSignalBlocker b8(alphaSpin);
-    redSlider->setValue(r);
-    greenSlider->setValue(g);
-    blueSlider->setValue(b);
-    alphaSlider->setValue(a);
-    redSpin->setValue(r);
-    greenSpin->setValue(g);
-    blueSpin->setValue(b);
-    alphaSpin->setValue(a);
-  }
-
-  float h, s, v;
-  rgbToHSV(currentColor.r(), currentColor.g(), currentColor.b(), h, s, v);
-  const int ih = static_cast<int>(std::round(h));
-  const int is = static_cast<int>(std::round(s * 100.0f));
-  const int iv = static_cast<int>(std::round(v * 100.0f));
-  {
-    const QSignalBlocker b1(hueSlider);
-    const QSignalBlocker b2(saturationSlider);
-    const QSignalBlocker b3(valueDial);
-    const QSignalBlocker b4(hueSpin);
-    const QSignalBlocker b5(saturationSpin);
-    const QSignalBlocker b6(valueSpin);
-    hueSlider->setValue(ih);
-    saturationSlider->setValue(is);
-    valueDial->setValue(iv);
-    hueSpin->setValue(ih);
-    saturationSpin->setValue(is);
-    valueSpin->setValue(iv);
+void FloatColorPicker::Impl::rgbToHSL(float r, float g, float b,
+                                       float &h, float &s, float &l) {
+  float mx = std::max({r, g, b});
+  float mn = std::min({r, g, b});
+  float d  = mx - mn;
+  l = (mx + mn) / 2.0f;
+  if (d == 0.0f) {
+    h = 0.0f;
+    s = 0.0f;
+  } else {
+    s = d / (1.0f - std::fabs(2.0f * l - 1.0f));
+    if (mx == r)
+      h = 60.0f * std::fmod((g - b) / d, 6.0f);
+    else if (mx == g)
+      h = 60.0f * ((b - r) / d + 2.0f);
+    else
+      h = 60.0f * ((r - g) / d + 4.0f);
+    if (h < 0.0f)
+      h += 360.0f;
   }
 }
 
-void FloatColorPicker::Impl::updateColorFromRGBSliders() {
-  if (updatingFromColor)
-    return;
-  updatingFromColor = true;
-
-  currentColor.setColor(
-      redSlider->value() / 255.0f, greenSlider->value() / 255.0f,
-      blueSlider->value() / 255.0f, alphaSlider->value() / 255.0f);
-
-  updateSlidersFromColor();
-  updateHexFromColor();
-  updatingFromColor = false;
+void FloatColorPicker::Impl::hslToRGB(float h, float s, float l,
+                                       float &r, float &g, float &b) {
+  float c  = (1.0f - std::fabs(2.0f * l - 1.0f)) * s;
+  float hp = h / 60.0f;
+  float x  = c * (1.0f - std::fabs(std::fmod(hp, 2.0f) - 1.0f));
+  float m  = l - c / 2.0f;
+  if      (hp < 1.0f) { r = c; g = x; b = 0; }
+  else if (hp < 2.0f) { r = x; g = c; b = 0; }
+  else if (hp < 3.0f) { r = 0; g = c; b = x; }
+  else if (hp < 4.0f) { r = 0; g = x; b = c; }
+  else if (hp < 5.0f) { r = x; g = 0; b = c; }
+  else                { r = c; g = 0; b = x; }
+  r += m; g += m; b += m;
 }
 
-void FloatColorPicker::Impl::updateColorFromHSVSliders() {
-  if (updatingFromColor)
-    return;
-  updatingFromColor = true;
-
-  float h = hueSlider->value();
-  float s = saturationSlider->value() / 100.0f;
-  float v = valueDial->value() / 100.0f;
-
-  float r, g, b;
-  hsvToRGB(h, s, v, r, g, b);
-
-  currentColor.setColor(r, g, b, currentColor.a());
-
-  updateSlidersFromColor();
-  updateHexFromColor();
-  updatingFromColor = false;
-}
+// ---- update helpers -----------------------------------------------------
 
 void FloatColorPicker::Impl::updateHexFromColor() {
-  int r = static_cast<int>(std::round(currentColor.r() * 255));
-  int g = static_cast<int>(std::round(currentColor.g() * 255));
-  int b = static_cast<int>(std::round(currentColor.b() * 255));
-  int a = static_cast<int>(std::round(currentColor.a() * 255));
-
-  const QSignalBlocker blocker(hexInput);
-  if (a < 255) {
-    hexInput->setText(QString("#%1%2%3%4")
-                          .arg(r, 2, 16, QChar('0'))
-                          .arg(g, 2, 16, QChar('0'))
-                          .arg(b, 2, 16, QChar('0'))
-                          .arg(a, 2, 16, QChar('0'))
-                          .toUpper());
-  } else {
-    hexInput->setText(QString("#%1%2%3")
-                          .arg(r, 2, 16, QChar('0'))
-                          .arg(g, 2, 16, QChar('0'))
-                          .arg(b, 2, 16, QChar('0'))
-                          .toUpper());
-  }
+  int r = static_cast<int>(std::round(currentColor.r() * 255.0f));
+  int g = static_cast<int>(std::round(currentColor.g() * 255.0f));
+  int b = static_cast<int>(std::round(currentColor.b() * 255.0f));
+  int a = static_cast<int>(std::round(currentColor.a() * 255.0f));
+  const QSignalBlocker bl(hexInput);
+  hexInput->setText(QString("%1%2%3%4")
+                        .arg(r, 2, 16, QChar('0'))
+                        .arg(g, 2, 16, QChar('0'))
+                        .arg(b, 2, 16, QChar('0'))
+                        .arg(a, 2, 16, QChar('0'))
+                        .toUpper());
 }
 
 void FloatColorPicker::Impl::updateColorFromHex() {
   QString hex = hexInput->text().remove('#');
-  if (hex.length() == 6 || hex.length() == 8) {
-    bool ok;
-    int r = hex.mid(0, 2).toInt(&ok, 16);
-    if (!ok)
-      return;
-    int g = hex.mid(2, 2).toInt(&ok, 16);
-    if (!ok)
-      return;
-    int b = hex.mid(4, 2).toInt(&ok, 16);
-    if (!ok)
-      return;
-    int a = 255;
-    if (hex.length() == 8) {
-      a = hex.mid(6, 2).toInt(&ok, 16);
-      if (!ok)
-        return;
-    }
-
-    currentColor.setColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-    updateSlidersFromColor();
+  if (hex.length() != 6 && hex.length() != 8)
+    return;
+  bool ok;
+  int r = hex.mid(0, 2).toInt(&ok, 16); if (!ok) return;
+  int g = hex.mid(2, 2).toInt(&ok, 16); if (!ok) return;
+  int b = hex.mid(4, 2).toInt(&ok, 16); if (!ok) return;
+  int a = 255;
+  if (hex.length() == 8) {
+    a = hex.mid(6, 2).toInt(&ok, 16);
+    if (!ok) return;
   }
+  currentColor.setColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 }
 
 void FloatColorPicker::Impl::updateAllFromColor() {
-  updateSlidersFromColor();
+  if (updatingFromColor)
+    return;
+  updatingFromColor = true;
+
+  // HSB panel
+  float h, s, v;
+  rgbToHSV(currentColor.r(), currentColor.g(), currentColor.b(), h, s, v);
+  {
+    const QSignalBlocker b1(hSlider),  b2(sSlider),  b3(bSlider);
+    const QSignalBlocker b4(hSpin),    b5(sSpin),    b6(bSpin);
+    hSlider->setValue(static_cast<int>(std::round(h)));
+    sSlider->setValue(static_cast<int>(std::round(s * 1000.0f)));
+    bSlider->setValue(static_cast<int>(std::round(v * 1000.0f)));
+    hSpin->setValue(static_cast<int>(std::round(h)));
+    sSpin->setValue(static_cast<double>(s));
+    bSpin->setValue(static_cast<double>(v));
+  }
+
+  // brightness slider (V channel)
+  {
+    const QSignalBlocker b(brightnessSlider);
+    brightnessSlider->setValue(static_cast<int>(std::round(v * 1000.0f)));
+  }
+
+  // RGB panel
+  {
+    const QSignalBlocker b1(rSlider),   b2(gSlider),   b3(rgbBSlider);
+    const QSignalBlocker b4(rSpin),     b5(gSpin),     b6(rgbBSpin);
+    rSlider->setValue(static_cast<int>(std::round(currentColor.r() * 1000.0f)));
+    gSlider->setValue(static_cast<int>(std::round(currentColor.g() * 1000.0f)));
+    rgbBSlider->setValue(static_cast<int>(std::round(currentColor.b() * 1000.0f)));
+    rSpin->setValue(static_cast<double>(currentColor.r()));
+    gSpin->setValue(static_cast<double>(currentColor.g()));
+    rgbBSpin->setValue(static_cast<double>(currentColor.b()));
+  }
+
+  // HSL panel
+  float hl, sl, l;
+  rgbToHSL(currentColor.r(), currentColor.g(), currentColor.b(), hl, sl, l);
+  {
+    const QSignalBlocker b1(hslHSlider), b2(hslSSlider), b3(hslLSlider);
+    const QSignalBlocker b4(hslHSpin),   b5(hslSSpin),   b6(hslLSpin);
+    hslHSlider->setValue(static_cast<int>(std::round(hl)));
+    hslSSlider->setValue(static_cast<int>(std::round(sl * 1000.0f)));
+    hslLSlider->setValue(static_cast<int>(std::round(l  * 1000.0f)));
+    hslHSpin->setValue(static_cast<int>(std::round(hl)));
+    hslSSpin->setValue(static_cast<double>(sl));
+    hslLSpin->setValue(static_cast<double>(l));
+  }
+
+  // Alpha (shared)
+  {
+    const QSignalBlocker b1(aSlider), b2(aSpin);
+    aSlider->setValue(static_cast<int>(std::round(currentColor.a() * 1000.0f)));
+    aSpin->setValue(static_cast<double>(currentColor.a()));
+  }
+
   updateHexFromColor();
+
+  updatingFromColor = false;
 }
+
+void FloatColorPicker::Impl::updateColorFromHSBSliders() {
+  float h = static_cast<float>(hSlider->value());
+  float s = static_cast<float>(sSlider->value()) / 1000.0f;
+  float v = static_cast<float>(bSlider->value()) / 1000.0f;
+  float r, g, b;
+  hsvToRGB(h, s, v, r, g, b);
+  currentColor.setColor(r, g, b, currentColor.a());
+}
+
+void FloatColorPicker::Impl::updateColorFromRGBSliders() {
+  currentColor.setColor(
+      rSlider->value()    / 1000.0f,
+      gSlider->value()    / 1000.0f,
+      rgbBSlider->value() / 1000.0f,
+      currentColor.a());
+}
+
+void FloatColorPicker::Impl::updateColorFromHSLSliders() {
+  float h = static_cast<float>(hslHSlider->value());
+  float s = static_cast<float>(hslSSlider->value()) / 1000.0f;
+  float l = static_cast<float>(hslLSlider->value()) / 1000.0f;
+  float r, g, b;
+  hslToRGB(h, s, l, r, g, b);
+  currentColor.setColor(r, g, b, currentColor.a());
+}
+
+// ---- Constructor --------------------------------------------------------
 
 FloatColorPicker::FloatColorPicker(QWidget *parent)
     : AbstractDialog(parent), impl_(new Impl()) {
-  setWindowTitle("Color Picker");
-  setMinimumSize(520, 560);
+  setWindowTitle(QStringLiteral("カラーピッカー — float"));
+  setMinimumSize(560, 460);
   setFrameless(false);
   setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                  Qt::WindowCloseButtonHint);
 
-  impl_->colorWheel = new ColorWheelWidget(this);
-  impl_->colorPreview = new ColorViewLabel(this);
-  impl_->originalPreview = new ColorViewLabel(this);
-  impl_->revertButton = new QPushButton(QStringLiteral("Revert"), this);
-  impl_->colorPreview->setMinimumHeight(64);
-  impl_->originalPreview->setMinimumHeight(64);
+  auto &d = *impl_;
 
-  // カラーホイールとプレビューのレイアウト
-  QHBoxLayout *topLayout = new QHBoxLayout();
-  QVBoxLayout *previewLayout = new QVBoxLayout();
-  auto *prevLabel = new QLabel(QStringLiteral("Previous"), this);
-  auto *currLabel = new QLabel(QStringLiteral("Current"), this);
-  previewLayout->addWidget(prevLabel);
-  previewLayout->addWidget(impl_->originalPreview);
-  previewLayout->addSpacing(4);
-  previewLayout->addWidget(currLabel);
-  previewLayout->addWidget(impl_->colorPreview);
-  previewLayout->addStretch();
-  previewLayout->addWidget(impl_->revertButton);
+  // ---- widgets -----------------------------------------------------------
 
-  topLayout->addWidget(impl_->colorWheel, 3);
-  topLayout->addLayout(previewLayout, 2);
+  d.colorWheel = new ColorWheelWidget(this);
+  d.colorWheel->setFixedSize(280, 280);
 
-  // HEX入力
-  QHBoxLayout *hexLayout = new QHBoxLayout();
-  auto *hexText = new QLabel(QStringLiteral("Hex"), this);
-  hexLayout->addWidget(hexText);
-  hexLayout->addWidget(impl_->hexLabel);
-  hexLayout->addWidget(impl_->hexInput);
-  hexLayout->addStretch();
+  d.brightnessSlider = new QSlider(Qt::Vertical, this);
+  d.brightnessSlider->setRange(0, 1000);
+  d.brightnessSlider->setValue(1000);
+  d.brightnessSlider->setFixedWidth(22);
+  d.brightnessSlider->setFixedHeight(280);
+  d.brightnessSlider->setInvertedAppearance(true);
 
-  // RGBAスライダーグループ
-  QGroupBox *rgbaGroup = new QGroupBox("RGBA", this);
-  QHBoxLayout *redLayout = new QHBoxLayout();
-  redLayout->addWidget(impl_->redLabel);
-  redLayout->addWidget(impl_->redSlider, 1);
-  redLayout->addWidget(impl_->redSpin);
+  d.colorPreviewBar = new ColorViewLabel(this);
+  d.colorPreviewBar->setFixedHeight(45);
 
-  QHBoxLayout *greenLayout = new QHBoxLayout();
-  greenLayout->addWidget(impl_->greenLabel);
-  greenLayout->addWidget(impl_->greenSlider, 1);
-  greenLayout->addWidget(impl_->greenSpin);
+  d.tabBar = new QTabBar(this);
+  d.tabBar->addTab(QStringLiteral("HSB"));
+  d.tabBar->addTab(QStringLiteral("RGB"));
+  d.tabBar->addTab(QStringLiteral("HSL"));
+  d.tabBar->setCurrentIndex(0);
 
-  QHBoxLayout *blueLayout = new QHBoxLayout();
-  blueLayout->addWidget(impl_->blueLabel);
-  blueLayout->addWidget(impl_->blueSlider, 1);
-  blueLayout->addWidget(impl_->blueSpin);
+  d.tabContent = new QStackedWidget(this);
 
-  QHBoxLayout *alphaLayout = new QHBoxLayout();
-  alphaLayout->addWidget(impl_->alphaLabel);
-  alphaLayout->addWidget(impl_->alphaSlider, 1);
-  alphaLayout->addWidget(impl_->alphaSpin);
-
-  QVBoxLayout *rgbaLayout = new QVBoxLayout();
-  rgbaLayout->addLayout(redLayout);
-  rgbaLayout->addLayout(greenLayout);
-  rgbaLayout->addLayout(blueLayout);
-  rgbaLayout->addLayout(alphaLayout);
-  rgbaGroup->setLayout(rgbaLayout);
-
-  // HSVスライダーグループ
-  QGroupBox *hsvGroup = new QGroupBox("HSV", this);
-  QHBoxLayout *hueLayout = new QHBoxLayout();
-  hueLayout->addWidget(impl_->hueLabel);
-  hueLayout->addWidget(impl_->hueSlider, 1);
-  hueLayout->addWidget(impl_->hueSpin);
-
-  QHBoxLayout *satLayout = new QHBoxLayout();
-  satLayout->addWidget(impl_->saturationLabel);
-  satLayout->addWidget(impl_->saturationSlider, 1);
-  satLayout->addWidget(impl_->saturationSpin);
-
-  QHBoxLayout *valLayout = new QHBoxLayout();
-  valLayout->addWidget(impl_->valueLabel);
-  valLayout->addWidget(impl_->valueDial);
-  valLayout->addWidget(impl_->valueSpin);
-
-  QVBoxLayout *hsvLayout = new QVBoxLayout();
-  hsvLayout->addLayout(hueLayout);
-  hsvLayout->addLayout(satLayout);
-  hsvLayout->addLayout(valLayout);
-  hsvGroup->setLayout(hsvLayout);
-
-  // プリセットカラーパレット
-  QGroupBox *presetGroup = new QGroupBox("Presets", this);
-  QGridLayout *presetLayout = new QGridLayout();
-  for (int i = 0; i < 16; ++i) {
-    presetLayout->addWidget(impl_->presetButtons[i], i / 8, i % 8);
-  }
-  presetGroup->setLayout(presetLayout);
-
-  // ボタンレイアウト
-  QHBoxLayout *buttonLayout = new QHBoxLayout();
-  buttonLayout->addStretch();
-  buttonLayout->addWidget(impl_->okButton);
-  buttonLayout->addWidget(impl_->cancelButton);
-
-  // メインレイアウト
-  QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->addLayout(topLayout);
-  mainLayout->addLayout(hexLayout);
-  mainLayout->addWidget(rgbaGroup);
-  mainLayout->addWidget(hsvGroup);
-  mainLayout->addWidget(presetGroup);
-  mainLayout->addLayout(buttonLayout);
-
-  // シグナル接続
-  auto reflectAndEmit = [this]() {
-    impl_->colorWheel->setColor(impl_->currentColor);
-    impl_->colorPreview->setColor(impl_->currentColor);
-    emit colorChanged(impl_->currentColor);
+  // helper lambda: create a QDoubleSpinBox with 3 decimals [0,1]
+  auto makeDblSpin = [this](double lo, double hi) -> QDoubleSpinBox * {
+    auto *sp = new QDoubleSpinBox(this);
+    sp->setRange(lo, hi);
+    sp->setDecimals(3);
+    sp->setSingleStep(0.001);
+    sp->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    sp->setFixedWidth(60);
+    return sp;
+  };
+  // helper lambda: create an int QSpinBox
+  auto makeIntSpin = [this](int lo, int hi) -> QSpinBox * {
+    auto *sp = new QSpinBox(this);
+    sp->setRange(lo, hi);
+    sp->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    sp->setFixedWidth(60);
+    return sp;
+  };
+  // helper lambda: create a horizontal slider
+  auto makeHSlider = [this](int lo, int hi) -> QSlider * {
+    auto *sl = new QSlider(Qt::Horizontal, this);
+    sl->setRange(lo, hi);
+    return sl;
   };
 
-  connect(impl_->colorWheel, &ColorWheelWidget::colorChanged, this,
-          [this](const ArtifactCore::FloatColor &color) {
-            impl_->currentColor = color;
-            impl_->updateAllFromColor();
-            impl_->colorPreview->setColor(color);
-            emit colorChanged(color);
-          });
+  // --- HSB panel ----------------------------------------------------------
+  d.hSlider = makeHSlider(0, 360);
+  d.sSlider = makeHSlider(0, 1000);
+  d.bSlider = makeHSlider(0, 1000);
+  d.hSpin   = makeIntSpin(0, 360);
+  d.sSpin   = makeDblSpin(0.0, 1.0);
+  d.bSpin   = makeDblSpin(0.0, 1.0);
 
-  connect(impl_->redSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->redSpin);
-    impl_->redSpin->setValue(impl_->redSlider->value());
-    impl_->updateColorFromRGBSliders();
-    reflectAndEmit();
-  });
-  connect(impl_->greenSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->greenSpin);
-    impl_->greenSpin->setValue(impl_->greenSlider->value());
-    impl_->updateColorFromRGBSliders();
-    reflectAndEmit();
-  });
-  connect(impl_->blueSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->blueSpin);
-    impl_->blueSpin->setValue(impl_->blueSlider->value());
-    impl_->updateColorFromRGBSliders();
-    reflectAndEmit();
-  });
-  connect(impl_->alphaSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->alphaSpin);
-    impl_->alphaSpin->setValue(impl_->alphaSlider->value());
-    impl_->updateColorFromRGBSliders();
-    reflectAndEmit();
-  });
+  // Alpha (shared, created once and re-used via pointer — placed on HSB panel
+  // but connected globally)
+  d.aSlider = makeHSlider(0, 1000);
+  d.aSpin   = makeDblSpin(0.0, 1.0);
 
-  connect(impl_->redSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->redSlider->setValue(value); });
-  connect(impl_->greenSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->greenSlider->setValue(value); });
-  connect(impl_->blueSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->blueSlider->setValue(value); });
-  connect(impl_->alphaSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->alphaSlider->setValue(value); });
+  auto *hsbWidget = new QWidget(this);
+  auto *hsbLayout = new QVBoxLayout(hsbWidget);
+  hsbLayout->setContentsMargins(0, 0, 0, 0);
+  hsbLayout->addLayout(makeSliderRow("H", d.hSlider, d.hSpin,   this, nullptr, true));
+  hsbLayout->addLayout(makeSliderRow("S", d.sSlider, d.sSpin,   this));
+  hsbLayout->addLayout(makeSliderRow("B", d.bSlider, d.bSpin,   this));
+  hsbLayout->addLayout(makeSliderRow("A", d.aSlider, d.aSpin,   this));
+  hsbLayout->addStretch();
 
-  connect(impl_->hueSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->hueSpin);
-    impl_->hueSpin->setValue(impl_->hueSlider->value());
-    impl_->updateColorFromHSVSliders();
-    reflectAndEmit();
-  });
-  connect(impl_->saturationSlider, &QSlider::valueChanged, this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->saturationSpin);
-    impl_->saturationSpin->setValue(impl_->saturationSlider->value());
-    impl_->updateColorFromHSVSliders();
-    reflectAndEmit();
-  });
-  connect(impl_->valueDial, QOverload<int>::of(&QAbstractSlider::valueChanged), this, [this, reflectAndEmit]() {
-    const QSignalBlocker blocker(impl_->valueSpin);
-    impl_->valueSpin->setValue(impl_->valueDial->value());
-    impl_->updateColorFromHSVSliders();
-    reflectAndEmit();
-  });
+  // --- RGB panel ----------------------------------------------------------
+  d.rSlider    = makeHSlider(0, 1000);
+  d.gSlider    = makeHSlider(0, 1000);
+  d.rgbBSlider = makeHSlider(0, 1000);
+  d.rSpin      = makeDblSpin(0.0, 1.0);
+  d.gSpin      = makeDblSpin(0.0, 1.0);
+  d.rgbBSpin   = makeDblSpin(0.0, 1.0);
 
-  connect(impl_->hueSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->hueSlider->setValue(value); });
-  connect(impl_->saturationSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->saturationSlider->setValue(value); });
-  connect(impl_->valueSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int value) { impl_->valueDial->setValue(value); });
+  // Alpha row duplicates for RGB/HSL panels (same underlying widgets via proxy)
+  // We reuse aSlider/aSpin by embedding them only once (in HSB panel).
+  // For the other panels we create proxy rows that share the same widgets.
+  // To avoid Qt ownership issues we embed the shared alpha widgets into a
+  // container per-panel that simply references them without re-parenting.
+  auto makeAlphaRow = [&]() -> QHBoxLayout * {
+    auto *row = new QHBoxLayout();
+    auto *lbl = new QLabel(QStringLiteral("A"), this);
+    lbl->setFixedWidth(14);
+    row->addWidget(lbl);
+    row->addWidget(d.aSlider, 1);
+    row->addWidget(d.aSpin);
+    return row;
+  };
 
-  connect(impl_->hexInput, &QLineEdit::editingFinished, this, [this, reflectAndEmit]() {
-    impl_->updateColorFromHex();
-    reflectAndEmit();
-  });
-  connect(impl_->hexInput, &QLineEdit::returnPressed, this, [this, reflectAndEmit]() {
-    impl_->updateColorFromHex();
-    reflectAndEmit();
-  });
+  auto *rgbWidget = new QWidget(this);
+  auto *rgbLayout = new QVBoxLayout(rgbWidget);
+  rgbLayout->setContentsMargins(0, 0, 0, 0);
+  rgbLayout->addLayout(makeSliderRow("R", d.rSlider,    d.rSpin,    this));
+  rgbLayout->addLayout(makeSliderRow("G", d.gSlider,    d.gSpin,    this));
+  rgbLayout->addLayout(makeSliderRow("B", d.rgbBSlider, d.rgbBSpin, this));
+  rgbLayout->addLayout(makeAlphaRow());
+  rgbLayout->addStretch();
 
-  connect(impl_->revertButton, &QPushButton::clicked, this, [this, reflectAndEmit]() {
-    impl_->currentColor = impl_->initialColor;
-    impl_->updateAllFromColor();
-    reflectAndEmit();
-  });
+  // --- HSL panel ----------------------------------------------------------
+  d.hslHSlider = makeHSlider(0, 360);
+  d.hslSSlider = makeHSlider(0, 1000);
+  d.hslLSlider = makeHSlider(0, 1000);
+  d.hslHSpin   = makeIntSpin(0, 360);
+  d.hslSSpin   = makeDblSpin(0.0, 1.0);
+  d.hslLSpin   = makeDblSpin(0.0, 1.0);
 
-  connect(impl_->okButton, &QPushButton::clicked, this, &QDialog::accept);
-  connect(impl_->cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+  auto *hslWidget = new QWidget(this);
+  auto *hslLayout = new QVBoxLayout(hslWidget);
+  hslLayout->setContentsMargins(0, 0, 0, 0);
+  hslLayout->addLayout(makeSliderRow("H", d.hslHSlider, d.hslHSpin, this, nullptr, true));
+  hslLayout->addLayout(makeSliderRow("S", d.hslSSlider, d.hslSSpin, this));
+  hslLayout->addLayout(makeSliderRow("L", d.hslLSlider, d.hslLSpin, this));
+  hslLayout->addLayout(makeAlphaRow());
+  hslLayout->addStretch();
 
-  // プリセットボタンの接続
-  const char *presetColors[] = {"#FF0000", "#FF8000", "#FFFF00", "#80FF00",
-                                "#00FF00", "#00FF80", "#00FFFF", "#0080FF",
-                                "#0000FF", "#8000FF", "#FF00FF", "#FF0080",
-                                "#FFFFFF", "#C0C0C0", "#808080", "#000000"};
+  d.tabContent->addWidget(hsbWidget);  // index 0
+  d.tabContent->addWidget(rgbWidget);  // index 1
+  d.tabContent->addWidget(hslWidget);  // index 2
 
-  for (int i = 0; i < 16; ++i) {
-    connect(impl_->presetButtons[i], &QPushButton::clicked, this,
-            [this, presetColors, i, reflectAndEmit]() {
-              QString hex = presetColors[i];
-              bool ok;
-              int r = hex.mid(1, 2).toInt(&ok, 16);
-              int g = hex.mid(3, 2).toInt(&ok, 16);
-              int b = hex.mid(5, 2).toInt(&ok, 16);
-              impl_->currentColor.setColor(r / 255.0f, g / 255.0f, b / 255.0f,
-                                           impl_->currentColor.a());
-              impl_->updateAllFromColor();
-              reflectAndEmit();
-            });
+  // --- Hex row ------------------------------------------------------------
+  d.hexInput = new QLineEdit(this);
+  d.hexInput->setMaxLength(8);
+  d.hexInput->setFixedWidth(120);
+  d.hexInput->setValidator(
+      new QRegularExpressionValidator(
+          QRegularExpression("^[0-9A-Fa-f]{0,8}$"), d.hexInput));
+
+  auto *hexHashLabel  = new QLabel(QStringLiteral("#"), this);
+  auto *hexHintLabel  = new QLabel(QStringLiteral("8桁でアルファ含む"), this);
+  {
+    QFont f = hexHintLabel->font();
+    f.setPointSizeF(f.pointSizeF() * 0.85);
+    hexHintLabel->setFont(f);
+    hexHintLabel->setStyleSheet(QStringLiteral("color: gray;"));
   }
 
-  impl_->colorPreview->setColor(impl_->currentColor);
-  impl_->originalPreview->setColor(impl_->initialColor);
+  auto *hexRow = new QHBoxLayout();
+  hexRow->addWidget(hexHashLabel);
+  hexRow->addWidget(d.hexInput);
+  hexRow->addWidget(hexHintLabel);
+  hexRow->addStretch();
 
+  // --- Buttons ------------------------------------------------------------
+  d.resetButton  = new QPushButton(QStringLiteral("リセット"),    this);
+  d.cancelButton = new QPushButton(QStringLiteral("キャンセル"),  this);
+  d.okButton     = new QPushButton(QStringLiteral("OK"),          this);
+
+  auto *buttonRow = new QHBoxLayout();
+  buttonRow->addWidget(d.resetButton);
+  buttonRow->addStretch();
+  buttonRow->addWidget(d.cancelButton);
+  buttonRow->addWidget(d.okButton);
+
+  // ---- layout assembly ---------------------------------------------------
+
+  auto *leftLayout = new QVBoxLayout();
+  leftLayout->setContentsMargins(0, 0, 0, 0);
+  leftLayout->addWidget(d.colorWheel);
+
+  auto *middleLayout = new QHBoxLayout();
+  middleLayout->addLayout(leftLayout);
+  middleLayout->addWidget(d.brightnessSlider);
+
+  auto *rightLayout = new QVBoxLayout();
+  rightLayout->setContentsMargins(0, 0, 0, 0);
+  rightLayout->addWidget(d.colorPreviewBar);
+  rightLayout->addWidget(d.tabContent);
+  rightLayout->addLayout(hexRow);
+
+  middleLayout->addLayout(rightLayout, 1);
+
+  auto *mainLayout = new QVBoxLayout(this);
+  mainLayout->addWidget(d.tabBar);
+  mainLayout->addLayout(middleLayout);
+  mainLayout->addLayout(buttonRow);
+
+  // ---- signal connections ------------------------------------------------
+
+  auto emitChanged = [this]() { emit colorChanged(impl_->currentColor); };
+
+  // Tab switching
+  connect(d.tabBar, &QTabBar::currentChanged,
+          d.tabContent, &QStackedWidget::setCurrentIndex);
+
+  // Color wheel → H + S
+  connect(d.colorWheel, &ColorWheelWidget::colorChanged, this,
+          [this, emitChanged](const ArtifactCore::FloatColor &wc) {
+            if (impl_->updatingFromColor)
+              return;
+            // Adopt H and S from wheel; keep current V and A
+            float h, s, v;
+            impl_->rgbToHSV(wc.r(), wc.g(), wc.b(), h, s, v);
+            float cv;
+            float dummy;
+            impl_->rgbToHSV(impl_->currentColor.r(),
+                            impl_->currentColor.g(),
+                            impl_->currentColor.b(),
+                            dummy, dummy, cv);
+            float r, g, b;
+            impl_->hsvToRGB(h, s, cv, r, g, b);
+            impl_->currentColor.setColor(r, g, b, impl_->currentColor.a());
+            impl_->updateAllFromColor();
+            impl_->colorPreviewBar->setColor(impl_->currentColor);
+            emitChanged();
+          });
+
+  // Brightness slider → V
+  connect(d.brightnessSlider, &QSlider::valueChanged, this,
+          [this, emitChanged](int val) {
+            if (impl_->updatingFromColor)
+              return;
+            float h, s, v;
+            impl_->rgbToHSV(impl_->currentColor.r(),
+                            impl_->currentColor.g(),
+                            impl_->currentColor.b(), h, s, v);
+            v = val / 1000.0f;
+            float r, g, b;
+            impl_->hsvToRGB(h, s, v, r, g, b);
+            impl_->currentColor.setColor(r, g, b, impl_->currentColor.a());
+            impl_->updateAllFromColor();
+            impl_->colorPreviewBar->setColor(impl_->currentColor);
+            emitChanged();
+          });
+
+  // HSB sliders → color
+  auto hsbSliderChanged = [this, emitChanged]() {
+    if (impl_->updatingFromColor) return;
+    impl_->updateColorFromHSBSliders();
+    impl_->updateAllFromColor();
+    impl_->colorWheel->setColor(impl_->currentColor);
+    impl_->colorPreviewBar->setColor(impl_->currentColor);
+    emitChanged();
+  };
+  connect(d.hSlider, &QSlider::valueChanged, this, [this, hsbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->hSpin);
+    impl_->hSpin->setValue(v);
+    hsbSliderChanged();
+  });
+  connect(d.sSlider, &QSlider::valueChanged, this, [this, hsbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->sSpin);
+    impl_->sSpin->setValue(v / 1000.0);
+    hsbSliderChanged();
+  });
+  connect(d.bSlider, &QSlider::valueChanged, this, [this, hsbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->bSpin);
+    impl_->bSpin->setValue(v / 1000.0);
+    hsbSliderChanged();
+  });
+
+  // HSB spinboxes → sliders
+  connect(d.hSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
+          [this](int v) {
+            const QSignalBlocker bl(impl_->hSlider);
+            impl_->hSlider->setValue(v);
+          });
+  connect(d.sSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->sSlider);
+            impl_->sSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+  connect(d.bSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->bSlider);
+            impl_->bSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+
+  // RGB sliders → color
+  auto rgbSliderChanged = [this, emitChanged]() {
+    if (impl_->updatingFromColor) return;
+    impl_->updateColorFromRGBSliders();
+    impl_->updateAllFromColor();
+    impl_->colorWheel->setColor(impl_->currentColor);
+    impl_->colorPreviewBar->setColor(impl_->currentColor);
+    emitChanged();
+  };
+  connect(d.rSlider, &QSlider::valueChanged, this, [this, rgbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->rSpin);
+    impl_->rSpin->setValue(v / 1000.0);
+    rgbSliderChanged();
+  });
+  connect(d.gSlider, &QSlider::valueChanged, this, [this, rgbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->gSpin);
+    impl_->gSpin->setValue(v / 1000.0);
+    rgbSliderChanged();
+  });
+  connect(d.rgbBSlider, &QSlider::valueChanged, this, [this, rgbSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->rgbBSpin);
+    impl_->rgbBSpin->setValue(v / 1000.0);
+    rgbSliderChanged();
+  });
+
+  // RGB spinboxes → sliders
+  connect(d.rSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->rSlider);
+            impl_->rSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+  connect(d.gSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->gSlider);
+            impl_->gSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+  connect(d.rgbBSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->rgbBSlider);
+            impl_->rgbBSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+
+  // HSL sliders → color
+  auto hslSliderChanged = [this, emitChanged]() {
+    if (impl_->updatingFromColor) return;
+    impl_->updateColorFromHSLSliders();
+    impl_->updateAllFromColor();
+    impl_->colorWheel->setColor(impl_->currentColor);
+    impl_->colorPreviewBar->setColor(impl_->currentColor);
+    emitChanged();
+  };
+  connect(d.hslHSlider, &QSlider::valueChanged, this, [this, hslSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->hslHSpin);
+    impl_->hslHSpin->setValue(v);
+    hslSliderChanged();
+  });
+  connect(d.hslSSlider, &QSlider::valueChanged, this, [this, hslSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->hslSSpin);
+    impl_->hslSSpin->setValue(v / 1000.0);
+    hslSliderChanged();
+  });
+  connect(d.hslLSlider, &QSlider::valueChanged, this, [this, hslSliderChanged](int v) {
+    const QSignalBlocker bl(impl_->hslLSpin);
+    impl_->hslLSpin->setValue(v / 1000.0);
+    hslSliderChanged();
+  });
+
+  // HSL spinboxes → sliders
+  connect(d.hslHSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
+          [this](int v) {
+            const QSignalBlocker bl(impl_->hslHSlider);
+            impl_->hslHSlider->setValue(v);
+          });
+  connect(d.hslSSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->hslSSlider);
+            impl_->hslSSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+  connect(d.hslLSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->hslLSlider);
+            impl_->hslLSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+
+  // Alpha slider
+  connect(d.aSlider, &QSlider::valueChanged, this,
+          [this, emitChanged](int val) {
+            if (impl_->updatingFromColor) return;
+            impl_->currentColor.setColor(
+                impl_->currentColor.r(), impl_->currentColor.g(),
+                impl_->currentColor.b(), val / 1000.0f);
+            {
+              const QSignalBlocker bl(impl_->aSpin);
+              impl_->aSpin->setValue(val / 1000.0);
+            }
+            impl_->updateHexFromColor();
+            impl_->colorPreviewBar->setColor(impl_->currentColor);
+            emitChanged();
+          });
+  connect(d.aSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          [this](double v) {
+            const QSignalBlocker bl(impl_->aSlider);
+            impl_->aSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+          });
+
+  // Hex input
+  auto hexFinished = [this, emitChanged]() {
+    impl_->updateColorFromHex();
+    impl_->updateAllFromColor();
+    impl_->colorWheel->setColor(impl_->currentColor);
+    impl_->colorPreviewBar->setColor(impl_->currentColor);
+    emitChanged();
+  };
+  connect(d.hexInput, &QLineEdit::editingFinished, this, hexFinished);
+  connect(d.hexInput, &QLineEdit::returnPressed,   this, hexFinished);
+
+  // Reset / OK / Cancel
+  connect(d.resetButton, &QPushButton::clicked, this,
+          [this, emitChanged]() {
+            impl_->currentColor = impl_->initialColor;
+            impl_->updateAllFromColor();
+            impl_->colorWheel->setColor(impl_->currentColor);
+            impl_->colorPreviewBar->setColor(impl_->currentColor);
+            emitChanged();
+          });
+  connect(d.okButton,     &QPushButton::clicked, this, &QDialog::accept);
+  connect(d.cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+
+  // Initial display
+  d.updateAllFromColor();
+  d.colorPreviewBar->setColor(d.currentColor);
 }
 
 FloatColorPicker::~FloatColorPicker() { delete impl_; }
@@ -608,7 +736,7 @@ void FloatColorPicker::setColor(const ArtifactCore::FloatColor &color) {
   impl_->currentColor = color;
   impl_->updateAllFromColor();
   impl_->colorWheel->setColor(color);
-  impl_->colorPreview->setColor(color);
+  impl_->colorPreviewBar->setColor(color);
 }
 
 void FloatColorPicker::setInitialColor(const ArtifactCore::FloatColor &color) {
@@ -616,8 +744,7 @@ void FloatColorPicker::setInitialColor(const ArtifactCore::FloatColor &color) {
   impl_->currentColor = color;
   impl_->updateAllFromColor();
   impl_->colorWheel->setColor(color);
-  impl_->colorPreview->setColor(color);
-  impl_->originalPreview->setColor(color);
+  impl_->colorPreviewBar->setColor(color);
 }
 
 void FloatColorPicker::accept() { QDialog::accept(); }
