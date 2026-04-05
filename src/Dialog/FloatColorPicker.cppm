@@ -477,8 +477,8 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   auto *buttonRow = new QHBoxLayout();
   buttonRow->addWidget(d.resetButton);
   buttonRow->addStretch();
-  buttonRow->addWidget(d.cancelButton);
   buttonRow->addWidget(d.okButton);
+  buttonRow->addWidget(d.cancelButton);
 
   // ---- layout assembly ---------------------------------------------------
 
