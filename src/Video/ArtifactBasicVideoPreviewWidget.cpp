@@ -17,6 +17,8 @@
 
 module Widgets.VideoPreview;
 
+import std;
+
 import Codec.FFmpegVideoDecoder;
 import Codec.Thumbnail.FFmpeg;
 

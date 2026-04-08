@@ -3,13 +3,14 @@
 #include <wobjectcpp.h>
 #include <wobjectdefs.h>
 
-#include <QtCore/QtCore>
+#include <QString>
 #include <QWidget>
-#include <QGraphicsView>
+//#include <QGraphicsView>
 //#include "../Image/BasicImageViewWidget.hpp"
 
 export module Widgets.VideoPreview;
 
+import std;
 import AbstractWidget;
 
 export namespace ArtifactWidgets {

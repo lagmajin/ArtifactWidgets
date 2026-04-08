@@ -34,3 +34,5 @@ signals:
 };
 
 } // namespace ArtifactWidgets
+
+W_REGISTER_ARGTYPE(ArtifactCore::FloatColor)
