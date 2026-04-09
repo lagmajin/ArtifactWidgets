@@ -434,10 +434,17 @@ public:
   return QSize(500, QWidget::sizeHint().height());
  }
 
- void RenderQueueManagerWidget::setFloatingMode(bool isFloating) {
-  Q_UNUSED(isFloating);
-  // TODO: Adjust layout for floating mode
- }
+void RenderQueueManagerWidget::setFloatingMode(bool isFloating) {
+    if (impl_->progressBar) {
+        impl_->progressBar->setVisible(!isFloating);
+    }
+    if (impl_->renderingStartButton) {
+        impl_->renderingStartButton->setVisible(!isFloating);
+    }
+    if (impl_->clearAllRenderQueueButton) {
+        impl_->clearAllRenderQueueButton->setVisible(!isFloating);
+    }
+}
 
  void RenderQueueManagerWidget::setService(QObject* service) {
   impl_->service_ = service;
@@ -503,18 +510,13 @@ public:
       QFileInfo fi(outputPath);
       QDesktopServices::openUrl(QUrl::fromLocalFile(fi.absolutePath()));
     }
-  } else if (chosen == settingsAction) {
-    // TODO: Open ArtifactRenderOutputSettingDialog
-    QMessageBox::information(this, "Output Settings", "Output settings dialog coming soon.");
-  } else if (chosen == resetAction) {
-    QMetaObject::invokeMethod(impl_->service_, "resetJobForRerun", Qt::QueuedConnection,
-      Q_ARG(int, jobIndex));
-    impl_->jobPanel_->refreshJobList();
-  } else if (chosen == removeAction) {
-    QMetaObject::invokeMethod(impl_->service_, "removeRenderQueueAt", Qt::QueuedConnection,
-      Q_ARG(int, jobIndex));
-    impl_->jobPanel_->refreshJobList();
-  }
+} else if (chosen == settingsAction) {
+    // Open ArtifactRenderOutputSettingDialog
+    auto dialog = new ArtifactRenderOutputSettingDialog(this);
+    dialog->setAttribute(Qt::WA_DeleteOnWindowClose);
+    dialog->setModal(true);
+    dialog->show();
+}
  }
 
  void RenderQueueManagerWidget::updateInfoPanel() {
