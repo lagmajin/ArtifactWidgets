@@ -6,6 +6,8 @@ module;
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <QtConcurrent>
+#include <QFutureWatcher>
 
 #include <iostream>
 #include <vector>
@@ -56,28 +58,35 @@ namespace ArtifactWidgets {
   Impl();
   ~Impl();
 
-  void rebuildScopeImage(int width, int height);
+  QImage computeScopeImage(int width, int height) const;
+  void rebuildScopeImageAsync(int width, int height);
 
   QImage currentFrame_;
   QImage scopeImage_;          // Pre-rendered scope image
+  QImage pendingScopeImage_;   // Image being computed
   WaveformMode mode_ = WaveformMode::Luma;
   float intensity_ = 0.6f;
   bool dirty_ = true;
+  bool computing_ = false;     // True while background computation is running
+  QFutureWatcher<QImage>* watcher_ = nullptr;
  };
 
- WaveformScopeWidget::Impl::Impl() {}
- WaveformScopeWidget::Impl::~Impl() {}
+ WaveformScopeWidget::Impl::Impl() : watcher_(new QFutureWatcher<QImage>()) {}
+ WaveformScopeWidget::Impl::~Impl() {
+  if (watcher_) {
+   watcher_->cancel();
+   watcher_->deleteLater();
+  }
+ }
 
- // Build the waveform scope image from the current video frame
- void WaveformScopeWidget::Impl::rebuildScopeImage(int scopeW, int scopeH) {
+ // Build the waveform scope image from the current video frame (heavy computation)
+ QImage WaveformScopeWidget::Impl::computeScopeImage(int scopeW, int scopeH) const {
   if (currentFrame_.isNull() || scopeW <= 0 || scopeH <= 0) {
-   scopeImage_ = QImage();
-   dirty_ = false;
-   return;
+   return QImage();
   }
 
-  scopeImage_ = QImage(scopeW, scopeH, QImage::Format_ARGB32_Premultiplied);
-  scopeImage_.fill(Qt::black);
+  QImage scopeImage(scopeW, scopeH, QImage::Format_ARGB32_Premultiplied);
+  scopeImage.fill(Qt::black);
 
   const QImage frame = currentFrame_.scaled(scopeW, currentFrame_.height(),
    Qt::IgnoreAspectRatio, Qt::FastTransformation)
@@ -87,9 +96,11 @@ namespace ArtifactWidgets {
   const int frameH = frame.height();
   const int alphaAdd = std::max(1, static_cast<int>(intensity_ * 12.0f));
 
+  // Use scanLine for faster pixel access
   for (int x = 0; x < frameW && x < scopeW; ++x) {
    for (int fy = 0; fy < frameH; ++fy) {
-    QRgb pixel = frame.pixel(x, fy);
+    const QRgb* scanLine = reinterpret_cast<const QRgb*>(frame.scanLine(fy));
+    QRgb pixel = scanLine[x];
     int r = qRed(pixel);
     int g = qGreen(pixel);
     int b = qBlue(pixel);
@@ -100,11 +111,11 @@ namespace ArtifactWidgets {
      int sy = scopeH - 1 - (luma * (scopeH - 1) / 255);
      sy = std::clamp(sy, 0, scopeH - 1);
 
-     QRgb existing = scopeImage_.pixel(x, sy);
+     QRgb existing = scopeImage.pixel(x, sy);
      int er = std::min(255, qRed(existing) + alphaAdd);
      int eg = std::min(255, qGreen(existing) + alphaAdd);
      int eb = std::min(255, qBlue(existing) + alphaAdd);
-     scopeImage_.setPixel(x, sy, qRgb(er, eg, eb));
+     scopeImage.setPixel(x, sy, qRgb(er, eg, eb));
     }
 
     if (mode_ == WaveformMode::RGB) {
@@ -112,25 +123,25 @@ namespace ArtifactWidgets {
      {
       int sy = scopeH - 1 - (r * (scopeH - 1) / 255);
       sy = std::clamp(sy, 0, scopeH - 1);
-      QRgb existing = scopeImage_.pixel(x, sy);
+      QRgb existing = scopeImage.pixel(x, sy);
       int nr = std::min(255, qRed(existing) + alphaAdd);
-      scopeImage_.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
+      scopeImage.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
      }
      // Green channel
      {
       int sy = scopeH - 1 - (g * (scopeH - 1) / 255);
       sy = std::clamp(sy, 0, scopeH - 1);
-      QRgb existing = scopeImage_.pixel(x, sy);
+      QRgb existing = scopeImage.pixel(x, sy);
       int ng = std::min(255, qGreen(existing) + alphaAdd);
-      scopeImage_.setPixel(x, sy, qRgb(qRed(existing), ng, qBlue(existing)));
+      scopeImage.setPixel(x, sy, qRgb(qRed(existing), ng, qBlue(existing)));
      }
      // Blue channel
      {
       int sy = scopeH - 1 - (b * (scopeH - 1) / 255);
       sy = std::clamp(sy, 0, scopeH - 1);
-      QRgb existing = scopeImage_.pixel(x, sy);
+      QRgb existing = scopeImage.pixel(x, sy);
       int nb = std::min(255, qBlue(existing) + alphaAdd);
-      scopeImage_.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
+      scopeImage.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
      }
     }
 
@@ -140,23 +151,22 @@ namespace ArtifactWidgets {
      int cbI = std::clamp(static_cast<int>(cb), 0, 255);
      int sy = scopeH - 1 - (cbI * (scopeH - 1) / 255);
      sy = std::clamp(sy, 0, scopeH - 1);
-     QRgb existing = scopeImage_.pixel(x, sy);
+     QRgb existing = scopeImage.pixel(x, sy);
      int nb = std::min(255, qBlue(existing) + alphaAdd);
-     scopeImage_.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
+     scopeImage.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
 
      // Cr
      float cr = 128.0f + (0.5f * r - 0.4542f * g - 0.0458f * b);
      int crI = std::clamp(static_cast<int>(cr), 0, 255);
      sy = scopeH - 1 - (crI * (scopeH - 1) / 255);
      sy = std::clamp(sy, 0, scopeH - 1);
-     existing = scopeImage_.pixel(x, sy);
+     existing = scopeImage.pixel(x, sy);
      int nr = std::min(255, qRed(existing) + alphaAdd);
-     scopeImage_.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
+     scopeImage.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
     }
    }
   }
-  dirty_ = false;
- }
+}
 
  // ==================== WaveformScopeWidget ====================
 
@@ -216,9 +226,9 @@ namespace ArtifactWidgets {
 
   if (scopeRect.width() <= 0 || scopeRect.height() <= 0) return;
 
-  // Rebuild scope image if needed
-  if (impl_->dirty_) {
-   impl_->rebuildScopeImage(scopeRect.width(), scopeRect.height());
+  // Rebuild scope image if needed (async)
+  if (impl_->dirty_ && !impl_->computing_) {
+   impl_->rebuildScopeImageAsync(scopeRect.width(), scopeRect.height());
   }
 
   // Draw graticule (horizontal reference lines)
@@ -256,6 +266,77 @@ namespace ArtifactWidgets {
   case WaveformMode::YCbCr: title = "Waveform (YCbCr)"; break;
   }
   painter.drawText(scopeRect.left(), height() - 5, title);
+ }
+
+ // Async rebuild: compute scope image in background thread
+ void WaveformScopeWidget::Impl::rebuildScopeImageAsync(int width, int height) {
+  if (computing_) return;
+
+  computing_ = true;
+  const auto frame = currentFrame_;  // Copy for worker thread
+  const auto mode = mode_;
+  const float intensity = intensity_;
+
+  QObject::connect(watcher_, &QFutureWatcher<QImage>::finished, [this]() {
+   if (watcher_->isCanceled()) {
+    computing_ = false;
+    return;
+   }
+   scopeImage_ = watcher_->result();
+   dirty_ = false;
+   computing_ = false;
+   // Trigger redraw
+   if (QWidget* w = qobject_cast<QWidget*>(watcher_->parent())) {
+    w->update();
+   }
+  });
+
+  watcher_->setFuture(QtConcurrent::run([this, frame, width, height, mode, intensity]() -> QImage {
+   // Create a temporary Impl-like context for computation
+   QImage scopeImage(width, height, QImage::Format_ARGB32_Premultiplied);
+   scopeImage.fill(Qt::black);
+
+   const QImage scaledFrame = frame.scaled(width, frame.height(),
+    Qt::IgnoreAspectRatio, Qt::FastTransformation)
+    .convertToFormat(QImage::Format_ARGB32);
+
+   const int frameW = scaledFrame.width();
+   const int frameH = scaledFrame.height();
+   const int alphaAdd = std::max(1, static_cast<int>(intensity * 12.0f));
+
+   for (int x = 0; x < frameW && x < width; ++x) {
+    for (int fy = 0; fy < frameH; ++fy) {
+     const QRgb* scanLine = reinterpret_cast<const QRgb*>(scaledFrame.scanLine(fy));
+     QRgb pixel = scanLine[x];
+     int r = qRed(pixel);
+     int g = qGreen(pixel);
+     int b = qBlue(pixel);
+
+     if (mode == WaveformMode::Luma || mode == WaveformMode::YCbCr) {
+      int luma = static_cast<int>(0.2126 * r + 0.7152 * g + 0.0722 * b);
+      int sy = height - 1 - (luma * (height - 1) / 255);
+      QRgb existing = scopeImage.pixel(x, sy);
+      int a = std::min(255, qAlpha(existing) + alphaAdd);
+      scopeImage.setPixel(x, sy, qRgba(r, g, b, a));
+     } else if (mode == WaveformMode::RGB) {
+      int sr = height - 1 - (r * (height - 1) / 255);
+      int sg = height - 1 - (g * (height - 1) / 255);
+      int sb = height - 1 - (b * (height - 1) / 255);
+
+      QRgb existingR = scopeImage.pixel(x, sr);
+      scopeImage.setPixel(x, sr, qRgba(255, 0, 0, std::min(255, qAlpha(existingR) + alphaAdd)));
+
+      QRgb existingG = scopeImage.pixel(x, sg);
+      scopeImage.setPixel(x, sg, qRgba(0, 255, 0, std::min(255, qAlpha(existingG) + alphaAdd)));
+
+      QRgb existingB = scopeImage.pixel(x, sb);
+      scopeImage.setPixel(x, sb, qRgba(0, 0, 255, std::min(255, qAlpha(existingB) + alphaAdd)));
+     }
+    }
+   }
+
+   return scopeImage;
+  }));
  }
 
 };

@@ -13,6 +13,8 @@
 #include <QGraphicsItem>
 #include <QMenu>
 #include <QFile>
+#include <QtConcurrent>
+#include <QFutureWatcher>
 module BasicImageViewWidget;
 
 import Widgets.Effects.GlowFrame;
@@ -133,27 +135,35 @@ namespace ArtifactWidgets {
 
  void BasicImageViewWidget::dropEvent(QDropEvent* event)
  {
-
   if (event->mimeData()->hasUrls()) {
-   for (const QUrl& url : event->mimeData()->urls()) {
-	QString path = url.toLocalFile();
-	qDebug() << "Dropped file path:" << path;
-	qDebug() << "Exists:" << QFile::exists(path);
-	// 最初にドロップされた画像を読み込む
-	// 複数ドロップされた場合でも最初の1つだけ処理する例
-	QImage droppedImage(path);
-	if (!droppedImage.isNull()) {
-	 setImage(droppedImage);
-	 break; // 最初の画像を処理したらループを抜ける
-	}
-	else {
-	 qDebug() << "Failed to load image from:" << path;
-	 QMessageBox::warning(this, "Image Load Error", "Failed to load image from:\n" + path);
-	}
-   }
+   // Process first dropped file only
+   const QUrl url = event->mimeData()->urls().first();
+   const QString path = url.toLocalFile();
+
+   // Show loading indicator
+   setCursor(Qt::WaitCursor);
+
+   // Load image asynchronously
+   auto* watcher = new QFutureWatcher<QImage>(this);
+   QObject::connect(watcher, &QFutureWatcher<QImage>::finished, this, [this, watcher, path]() {
+    unsetCursor();
+    QImage img = watcher->result();
+    watcher->deleteLater();
+
+    if (!img.isNull()) {
+     setImage(img);
+    } else {
+     QMessageBox::warning(this, "Image Load Error",
+       "Failed to load image from:\n" + path);
+    }
+   });
+
+   watcher->setFuture(QtConcurrent::run([path]() -> QImage {
+    return QImage(path);
+   }));
+
    event->acceptProposedAction();
-  }
-  else {
+  } else {
    event->ignore();
   }
  }
