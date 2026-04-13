@@ -3,6 +3,7 @@ module ;
 #include <QTreeWidget>
 #include <QPushButton>
 #include <QProgressBar>
+#include <QCheckBox>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -33,6 +34,8 @@ export namespace ArtifactWidgets {
   QProgressBar* progressBar() const;
   QPushButton* renderingStartButton() const;
   QPushButton* clearAllButton() const;
+  QPushButton* addAllCompositionsButton() const;
+  QCheckBox* autoOpenOutputFolderCheckBox() const;
 
   void setRenderingState(bool rendering);
   void setTotalProgress(int percent);
@@ -40,6 +43,7 @@ export namespace ArtifactWidgets {
  signals:
   void startRenderingClicked() W_SIGNAL(startRenderingClicked)
   void clearAllClicked() W_SIGNAL(clearAllClicked)
+  void addAllCompositionsClicked() W_SIGNAL(addAllCompositionsClicked)
  };
 
 
@@ -54,6 +58,8 @@ export namespace ArtifactWidgets {
 
   void setService(QObject* service);
   void refreshJobList();
+  void handlePreviewFrameReady(int jobIndex, int frameNumber);
+  W_SLOT(handlePreviewFrameReady, (int, int))
 
  protected:
   void contextMenuEvent(QContextMenuEvent* event) override;
@@ -76,7 +82,10 @@ export namespace ArtifactWidgets {
   Impl* impl_;
   void showJobContextMenu(int jobIndex, const QPoint& pos);
   void updateInfoPanel();
+  void notifyBackgroundRender(const QString& title, const QString& message);
  public:
+  void handleAllJobsCompleted();
+  W_SLOT(handleAllJobsCompleted)
 
   explicit RenderQueueManagerWidget(QWidget* parent = nullptr);
   ~RenderQueueManagerWidget();
@@ -96,6 +105,7 @@ export namespace ArtifactWidgets {
   ~RenderQueueManagerUnderInfoWidget();
 
   void updateInfo(const QString& log, int ramMB, const QString& elapsedTime);
+  void updateInfo(const QString& log, int ramMB, const QString& elapsedTime, const QString& etaTime);
  };
 
 };

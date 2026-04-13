@@ -5,7 +5,7 @@ module;
 
 export module AppProgress;
 
-namespace ArtifactWidgets
+export namespace ArtifactWidgets
 {
     /**
      * @brief OSのシェル（Taskbar/Dock）に対する進捗表示やメニューを管理するクラス
