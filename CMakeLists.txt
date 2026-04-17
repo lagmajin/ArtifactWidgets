@@ -107,8 +107,8 @@ target_include_directories(ArtifactWidgets
 # ---------------------------------------------------------------------------
 target_link_libraries(ArtifactWidgets PUBLIC ArtifactCore)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Multimedia)
-target_link_libraries(ArtifactWidgets PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Multimedia)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Concurrent Multimedia)
+target_link_libraries(ArtifactWidgets PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Concurrent Qt6::Multimedia)
 
 find_package(OpenCV REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC ${OpenCV_LIBS})

@@ -2,11 +2,13 @@ module;
 
 #include <QAction>
 #include <QApplication>
+#include <QCheckBox>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QDataStream>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDialog>
 #include <QDrag>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -16,31 +18,30 @@ module;
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QIODevice>
+#include <QIcon>
 #include <QInputDialog>
 #include <QLabel>
 #include <QLineEdit>
-#include <QIcon>
-#include <QCheckBox>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
 #include <QPalette>
-#include <QProgressBar>
 #include <QPixmap>
+#include <QProgressBar>
 #include <QPushButton>
+#include <QListWidget>
+#include <QStyle>
 #include <QStyleOptionProgressBar>
 #include <QStyledItemDelegate>
 #include <QSystemTrayIcon>
 #include <QTimer>
 #include <QTreeView>
-#include <QStyle>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <algorithm>
 #include <wobjectimpl.h>
-
 
 module Widgets.Render.Queue;
 
@@ -281,9 +282,9 @@ void RenderQueueManagerJobPanel::setService(QObject *service) {
   impl_->service_ = service;
 
   if (service) {
-    impl_->previewFrameReadyConnection_ = QObject::connect(
-        service, SIGNAL(previewFrameReady(int,int)), this,
-        SLOT(handlePreviewFrameReady(int,int)));
+    impl_->previewFrameReadyConnection_ =
+        QObject::connect(service, SIGNAL(previewFrameReady(int, int)), this,
+                         SLOT(handlePreviewFrameReady(int, int)));
   }
 }
 
@@ -541,13 +542,13 @@ RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget *parent)
           });
 
   connect(impl_->controlPanel_,
-          &RenderQueueControlPanel::addAllCompositionsClicked, this,
-          [this]() {
+          &RenderQueueControlPanel::addAllCompositionsClicked, this, [this]() {
             if (!impl_->service_)
               return;
             if (QMessageBox::question(
                     this, "Add All Compositions",
-                    QStringLiteral("Add every composition in the project to the render queue?"),
+                    QStringLiteral("Add every composition in the project to "
+                                   "the render queue?"),
                     QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
               return;
             }
@@ -649,9 +650,9 @@ void RenderQueueManagerWidget::setService(QObject *service) {
   impl_->jobPanel_->refreshJobList();
 
   if (service) {
-    impl_->allJobsCompletedConnection_ = QObject::connect(
-        service, SIGNAL(allJobsCompleted()), this,
-        SLOT(handleAllJobsCompleted()));
+    impl_->allJobsCompletedConnection_ =
+        QObject::connect(service, SIGNAL(allJobsCompleted()), this,
+                         SLOT(handleAllJobsCompleted()));
   }
 }
 
@@ -679,10 +680,9 @@ void RenderQueueManagerWidget::handleAllJobsCompleted() {
       impl_->controlPanel_->autoOpenOutputFolderCheckBox()->isChecked()) {
     QString outputPath;
     for (int i = 0; i < jobCount; ++i) {
-      QMetaObject::invokeMethod(service, "jobOutputPathAt",
-                                Qt::DirectConnection,
-                                Q_RETURN_ARG(QString, outputPath),
-                                Q_ARG(int, i));
+      QMetaObject::invokeMethod(
+          service, "jobOutputPathAt", Qt::DirectConnection,
+          Q_RETURN_ARG(QString, outputPath), Q_ARG(int, i));
       if (!outputPath.trimmed().isEmpty()) {
         break;
       }
@@ -715,8 +715,10 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
   menuPalette.setColor(QPalette::ButtonText, QColor(245, 245, 245));
   menuPalette.setColor(QPalette::Highlight, QColor(52, 152, 219));
   menuPalette.setColor(QPalette::HighlightedText, QColor(255, 255, 255));
-  menuPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(140, 140, 140));
-  menuPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(140, 140, 140));
+  menuPalette.setColor(QPalette::Disabled, QPalette::Text,
+                       QColor(140, 140, 140));
+  menuPalette.setColor(QPalette::Disabled, QPalette::ButtonText,
+                       QColor(140, 140, 140));
   menu.setPalette(menuPalette);
 
   // Get job status
@@ -749,6 +751,14 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
     errorDetailsAction = menu.addAction("🧾 Error Details...");
   }
 
+  // Phase 1: Render Recovery - 失敗フレーム表示と選択的再レンダリング
+  QAction *showFailedFramesAction = nullptr;
+  QAction *rerenderSelectedFramesAction = nullptr;
+  if (status == "Failed" || status == "Canceled") {
+    showFailedFramesAction = menu.addAction("🔍 Show Failed Frames...");
+    menu.addSeparator();
+  }
+
   QAction *resetAction = nullptr;
   if (status == "Failed" || status == "Completed") {
     resetAction = menu.addAction("🔄 Reset & Re-render");
@@ -759,6 +769,18 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
   QAction *chosen = menu.exec(pos);
   if (!chosen)
     return;
+
+  // Phase 1: 失敗フレーム表示・選択的再レンダリング処理
+  if (chosen == showFailedFramesAction) {
+    QMessageBox::information(
+        this, "Failed Frames",
+        "Failed frame inspection is not available in this build path yet.");
+    return;
+  }
+
+  if (chosen == rerenderSelectedFramesAction) {
+    // ...existing code...
+  }
 
   if (chosen == renameAction) {
     // Inline rename via input dialog
@@ -798,7 +820,8 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
     const int targetCount = selectedRows.size() > 1 ? selectedRows.size() : 1;
     if (QMessageBox::question(
             this, "Image Sequence",
-            QStringLiteral("Convert %1 job(s) to PNG image sequence?").arg(targetCount),
+            QStringLiteral("Convert %1 job(s) to PNG image sequence?")
+                .arg(targetCount),
             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
       int updated = 0;
       const auto applyToIndex = [queueService](int target) {
@@ -814,16 +837,15 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
             queueService, "jobOutputSettingsAt", Qt::DirectConnection,
             Q_RETURN_ARG(bool, ok), Q_ARG(int, target),
             Q_ARG(QString *, outputFormatPtr), Q_ARG(QString *, codecPtr),
-            Q_ARG(QString *, codecProfilePtr),
-            Q_ARG(int *, &width), Q_ARG(int *, &height), Q_ARG(double *, &fps),
+            Q_ARG(QString *, codecProfilePtr), Q_ARG(int *, &width),
+            Q_ARG(int *, &height), Q_ARG(double *, &fps),
             Q_ARG(int *, &bitrateKbps));
         if (!ok) {
           return;
         }
         QMetaObject::invokeMethod(
             queueService, "setJobOutputSettingsAt", Qt::DirectConnection,
-            Q_ARG(int, target),
-            Q_ARG(QString, QStringLiteral("PNG Sequence")),
+            Q_ARG(int, target), Q_ARG(QString, QStringLiteral("PNG Sequence")),
             Q_ARG(QString, QStringLiteral("PNG")), Q_ARG(QString, QString()),
             Q_ARG(int, width), Q_ARG(int, height), Q_ARG(double, fps),
             Q_ARG(int, bitrateKbps));
@@ -882,32 +904,27 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
           Q_ARG(int *, &bitrateKbps));
       QMetaObject::invokeMethod(queueService, "jobFrameRangeAt",
                                 Qt::DirectConnection, Q_RETURN_ARG(bool, ok),
-                                Q_ARG(int, jobIndex),
-                                Q_ARG(int *, &startFrame),
+                                Q_ARG(int, jobIndex), Q_ARG(int *, &startFrame),
                                 Q_ARG(int *, &endFrame));
-      integratedRenderEnabled =
-          false;
+      integratedRenderEnabled = false;
       QMetaObject::invokeMethod(
           queueService, "jobIntegratedRenderEnabledAt", Qt::DirectConnection,
           Q_RETURN_ARG(bool, integratedRenderEnabled), Q_ARG(int, jobIndex));
       QMetaObject::invokeMethod(
           queueService, "jobAudioSourcePathAt", Qt::DirectConnection,
           Q_RETURN_ARG(QString, audioSourcePath), Q_ARG(int, jobIndex));
-      QMetaObject::invokeMethod(queueService, "jobAudioCodecAt",
-                                Qt::DirectConnection,
-                                Q_RETURN_ARG(QString, audioCodec),
-                                Q_ARG(int, jobIndex));
+      QMetaObject::invokeMethod(
+          queueService, "jobAudioCodecAt", Qt::DirectConnection,
+          Q_RETURN_ARG(QString, audioCodec), Q_ARG(int, jobIndex));
       QMetaObject::invokeMethod(
           queueService, "jobAudioBitrateKbpsAt", Qt::DirectConnection,
           Q_RETURN_ARG(int, audioBitrateKbps), Q_ARG(int, jobIndex));
-      QMetaObject::invokeMethod(queueService, "jobRenderBackendAt",
-                                Qt::DirectConnection,
-                                Q_RETURN_ARG(QString, renderBackend),
-                                Q_ARG(int, jobIndex));
-      QMetaObject::invokeMethod(queueService, "jobEncoderBackendAt",
-                                Qt::DirectConnection,
-                                Q_RETURN_ARG(QString, encoderBackend),
-                                Q_ARG(int, jobIndex));
+      QMetaObject::invokeMethod(
+          queueService, "jobRenderBackendAt", Qt::DirectConnection,
+          Q_RETURN_ARG(QString, renderBackend), Q_ARG(int, jobIndex));
+      QMetaObject::invokeMethod(
+          queueService, "jobEncoderBackendAt", Qt::DirectConnection,
+          Q_RETURN_ARG(QString, encoderBackend), Q_ARG(int, jobIndex));
       QMetaObject::invokeMethod(
           queueService, "jobOverlayTransformAt", Qt::DirectConnection,
           Q_RETURN_ARG(bool, ok), Q_ARG(int, jobIndex),
@@ -915,10 +932,11 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
           Q_ARG(float *, &scale), Q_ARG(float *, &rotationDeg));
     }
 
-    const QString questionText = QStringLiteral(
-        "Copy render settings from job %1 to %2 selected job(s)?")
-                                    .arg(jobIndex + 1)
-                                    .arg(selectedRows.size() - 1);
+    const QString questionText =
+        QStringLiteral(
+            "Copy render settings from job %1 to %2 selected job(s)?")
+            .arg(jobIndex + 1)
+            .arg(selectedRows.size() - 1);
     if (QMessageBox::question(this, "Copy Settings", questionText,
                               QMessageBox::Yes | QMessageBox::No) ==
         QMessageBox::Yes) {
@@ -936,20 +954,18 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
             Q_ARG(int, bitrateKbps));
         QMetaObject::invokeMethod(queueService, "setJobFrameRangeAt",
                                   Qt::DirectConnection, Q_ARG(int, target),
-                                  Q_ARG(int, startFrame),
-                                  Q_ARG(int, endFrame));
-        QMetaObject::invokeMethod(
-            queueService, "setJobIntegratedRenderEnabledAt",
-            Qt::DirectConnection, Q_ARG(int, target),
-            Q_ARG(bool, integratedRenderEnabled));
+                                  Q_ARG(int, startFrame), Q_ARG(int, endFrame));
+        QMetaObject::invokeMethod(queueService,
+                                  "setJobIntegratedRenderEnabledAt",
+                                  Qt::DirectConnection, Q_ARG(int, target),
+                                  Q_ARG(bool, integratedRenderEnabled));
         QMetaObject::invokeMethod(queueService, "setJobAudioSourcePathAt",
                                   Qt::DirectConnection, Q_ARG(int, target),
                                   Q_ARG(QString, audioSourcePath));
         QMetaObject::invokeMethod(queueService, "setJobAudioCodecAt",
                                   Qt::DirectConnection, Q_ARG(int, target),
                                   Q_ARG(QString, audioCodec));
-        QMetaObject::invokeMethod(queueService,
-                                  "setJobAudioBitrateKbpsAt",
+        QMetaObject::invokeMethod(queueService, "setJobAudioBitrateKbpsAt",
                                   Qt::DirectConnection, Q_ARG(int, target),
                                   Q_ARG(int, audioBitrateKbps));
         QMetaObject::invokeMethod(queueService, "setJobRenderBackendAt",
@@ -958,11 +974,10 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
         QMetaObject::invokeMethod(queueService, "setJobEncoderBackendAt",
                                   Qt::DirectConnection, Q_ARG(int, target),
                                   Q_ARG(QString, encoderBackend));
-        QMetaObject::invokeMethod(queueService, "setJobOverlayTransform",
-                                  Qt::DirectConnection, Q_ARG(int, target),
-                                  Q_ARG(float, offsetX), Q_ARG(float, offsetY),
-                                  Q_ARG(float, scale),
-                                  Q_ARG(float, rotationDeg));
+        QMetaObject::invokeMethod(
+            queueService, "setJobOverlayTransform", Qt::DirectConnection,
+            Q_ARG(int, target), Q_ARG(float, offsetX), Q_ARG(float, offsetY),
+            Q_ARG(float, scale), Q_ARG(float, rotationDeg));
         ++copied;
       }
       if (copied > 0) {
@@ -983,9 +998,8 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
         errorMessage.isEmpty()
             ? QStringLiteral("No detailed error message is available.")
             : QStringLiteral("The render job reported an error."));
-    box.setDetailedText(errorMessage.isEmpty()
-                            ? QStringLiteral("(empty)")
-                            : errorMessage);
+    box.setDetailedText(errorMessage.isEmpty() ? QStringLiteral("(empty)")
+                                               : errorMessage);
     box.exec();
   } else if (chosen == resetAction) {
     QMetaObject::invokeMethod(impl_->service_, "resetJobForRerun",
@@ -1028,9 +1042,9 @@ void RenderQueueManagerWidget::updateInfoPanel() {
     }
   }
   if (impl_->isRendering_) {
-          ::ArtifactWidgets::AppProgress::setProgress(this, totalProgress, 100);
+    ::ArtifactWidgets::AppProgress::setProgress(this, totalProgress, 100);
   } else {
-      ::ArtifactWidgets::AppProgress::clear(this);
+    ::ArtifactWidgets::AppProgress::clear(this);
   }
 
   QString eta = QStringLiteral("--:--:--");
@@ -1038,7 +1052,8 @@ void RenderQueueManagerWidget::updateInfoPanel() {
     if (totalProgress >= 100) {
       eta = QStringLiteral("00:00:00");
     } else if (totalProgress > 0) {
-      const qint64 elapsedSecs = std::max<qint64>(1, impl_->renderTimer_.elapsed() / 1000);
+      const qint64 elapsedSecs =
+          std::max<qint64>(1, impl_->renderTimer_.elapsed() / 1000);
       const qint64 remainingSecs =
           (elapsedSecs * (100 - totalProgress)) / std::max(1, totalProgress);
       eta = formatHmsFromSeconds(remainingSecs);
