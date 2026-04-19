@@ -195,6 +195,16 @@ public:
   }
 };
 
+static QString formatFailedFrameList(const QString &status,
+                                     const QString &errorMessage) {
+  QStringList lines;
+  lines << QStringLiteral("Status: %1").arg(status.isEmpty() ? QStringLiteral("Unknown") : status);
+  lines << QStringLiteral("Error: %1").arg(errorMessage.isEmpty()
+                                               ? QStringLiteral("No error details available.")
+                                               : errorMessage);
+  return lines.join(QStringLiteral("\n"));
+}
+
 // ─────────────────────────────────────────────────────────
 // RenderQueueManagerJobPanel
 // ─────────────────────────────────────────────────────────
@@ -326,7 +336,7 @@ void RenderQueueManagerJobPanel::refreshJobList() {
   model->clearJobs();
   impl_->previewIcons_.clear();
   for (int i = 0; i < jobCount; ++i) {
-    QString compName, status, outputPath;
+    QString compName, status, outputPath, errorMessage;
     int progress = 0;
 
     QMetaObject::invokeMethod(impl_->service_, "jobCompositionNameAt",
@@ -341,8 +351,19 @@ void RenderQueueManagerJobPanel::refreshJobList() {
     QMetaObject::invokeMethod(impl_->service_, "jobOutputPathAt",
                               Qt::DirectConnection,
                               Q_RETURN_ARG(QString, outputPath), Q_ARG(int, i));
+    QMetaObject::invokeMethod(impl_->service_, "jobErrorMessageAt",
+                              Qt::DirectConnection,
+                              Q_RETURN_ARG(QString, errorMessage),
+                              Q_ARG(int, i));
 
-    model->addJob(compName, status, progress, outputPath);
+    const bool isFailedLike = status == QStringLiteral("Failed") ||
+                              status == QStringLiteral("Canceled");
+    const QString displayStatus =
+        isFailedLike && !errorMessage.trimmed().isEmpty()
+            ? QStringLiteral("%1 - %2").arg(status, errorMessage)
+            : status;
+
+    model->addJob(compName, displayStatus, progress, outputPath);
     if (impl_->previewIcons_.contains(i)) {
       const QModelIndex itemIndex = model->index(i, 0);
       if (itemIndex.isValid()) {
@@ -756,6 +777,7 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
   QAction *rerenderSelectedFramesAction = nullptr;
   if (status == "Failed" || status == "Canceled") {
     showFailedFramesAction = menu.addAction("🔍 Show Failed Frames...");
+    rerenderSelectedFramesAction = menu.addAction("🔁 Re-render Failed Frames");
     menu.addSeparator();
   }
 
@@ -772,14 +794,29 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
 
   // Phase 1: 失敗フレーム表示・選択的再レンダリング処理
   if (chosen == showFailedFramesAction) {
-    QMessageBox::information(
-        this, "Failed Frames",
-        "Failed frame inspection is not available in this build path yet.");
+    QString errorMessage;
+    QMetaObject::invokeMethod(
+        queueService, "jobErrorMessageAt", Qt::DirectConnection,
+        Q_RETURN_ARG(QString, errorMessage), Q_ARG(int, jobIndex));
+
+    QMessageBox box(this);
+    box.setWindowTitle(QStringLiteral("Failed Frames"));
+    box.setIcon(QMessageBox::Warning);
+    box.setText(QStringLiteral("Job %1 failed frame inspection").arg(jobIndex + 1));
+    box.setInformativeText(formatFailedFrameList(status, errorMessage));
+    box.setDetailedText(formatFailedFrameList(status, errorMessage));
+    box.exec();
     return;
   }
 
   if (chosen == rerenderSelectedFramesAction) {
-    // ...existing code...
+    QMetaObject::invokeMethod(queueService, "resetJobForRerun",
+                              Qt::QueuedConnection, Q_ARG(int, jobIndex));
+    QMetaObject::invokeMethod(queueService, "startRenderQueueAt",
+                              Qt::QueuedConnection, Q_ARG(int, jobIndex));
+    impl_->jobPanel_->refreshJobList();
+    updateInfoPanel();
+    return;
   }
 
   if (chosen == renameAction) {
@@ -1003,6 +1040,8 @@ void RenderQueueManagerWidget::showJobContextMenu(int jobIndex,
     box.exec();
   } else if (chosen == resetAction) {
     QMetaObject::invokeMethod(impl_->service_, "resetJobForRerun",
+                              Qt::QueuedConnection, Q_ARG(int, jobIndex));
+    QMetaObject::invokeMethod(impl_->service_, "startRenderQueueAt",
                               Qt::QueuedConnection, Q_ARG(int, jobIndex));
     impl_->jobPanel_->refreshJobList();
   } else if (chosen == removeAction) {

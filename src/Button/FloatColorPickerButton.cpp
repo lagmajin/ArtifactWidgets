@@ -41,7 +41,7 @@ FloatColorPickerButton::FloatColorPickerButton(QWidget *parent)
 
   connect(this, &QPushButton::clicked, this, [this]() {
     FloatColorPicker picker(this);
-    picker.setColor(impl_->currentColor);
+    picker.setInitialColor(impl_->currentColor);
     if (picker.exec() == QDialog::Accepted) {
       impl_->currentColor = picker.getColor();
       updateButtonStyle();

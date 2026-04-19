@@ -23,6 +23,7 @@ import Color.Float;
 import Widgets.Dialog.Abstract;
 import Widgets.ColorWheel;
 import Widget.ColorViewLabel;
+import EnhancedSlider;
 
 namespace ArtifactWidgets {
 
@@ -328,7 +329,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.colorWheel = new ColorWheelWidget(this);
   d.colorWheel->setFixedSize(280, 280);
 
-  d.brightnessSlider = new QSlider(Qt::Vertical, this);
+  d.brightnessSlider = new EnhancedSlider(Qt::Vertical, this);
   d.brightnessSlider->setRange(0, 1000);
   d.brightnessSlider->setValue(1000);
   d.brightnessSlider->setFixedWidth(22);
@@ -366,7 +367,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   };
   // helper lambda: create a horizontal slider
   auto makeHSlider = [this](int lo, int hi) -> QSlider * {
-    auto *sl = new QSlider(Qt::Horizontal, this);
+    auto *sl = new EnhancedSlider(Qt::Horizontal, this);
     sl->setRange(lo, hi);
     return sl;
   };
@@ -379,8 +380,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.sSpin   = makeDblSpin(0.0, 1.0);
   d.bSpin   = makeDblSpin(0.0, 1.0);
 
-  // Alpha (shared, created once and re-used via pointer — placed on HSB panel
-  // but connected globally)
+  // Alpha (shared)
   d.aSlider = makeHSlider(0, 1000);
   d.aSpin   = makeDblSpin(0.0, 1.0);
 
@@ -390,7 +390,6 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   hsbLayout->addLayout(makeSliderRow("H", d.hSlider, d.hSpin,   this, nullptr, true));
   hsbLayout->addLayout(makeSliderRow("S", d.sSlider, d.sSpin,   this));
   hsbLayout->addLayout(makeSliderRow("B", d.bSlider, d.bSpin,   this));
-  hsbLayout->addLayout(makeSliderRow("A", d.aSlider, d.aSpin,   this));
   hsbLayout->addStretch();
 
   // --- RGB panel ----------------------------------------------------------
@@ -401,28 +400,12 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.gSpin      = makeDblSpin(0.0, 1.0);
   d.rgbBSpin   = makeDblSpin(0.0, 1.0);
 
-  // Alpha row duplicates for RGB/HSL panels (same underlying widgets via proxy)
-  // We reuse aSlider/aSpin by embedding them only once (in HSB panel).
-  // For the other panels we create proxy rows that share the same widgets.
-  // To avoid Qt ownership issues we embed the shared alpha widgets into a
-  // container per-panel that simply references them without re-parenting.
-  auto makeAlphaRow = [&]() -> QHBoxLayout * {
-    auto *row = new QHBoxLayout();
-    auto *lbl = new QLabel(QStringLiteral("A"), this);
-    lbl->setFixedWidth(14);
-    row->addWidget(lbl);
-    row->addWidget(d.aSlider, 1);
-    row->addWidget(d.aSpin);
-    return row;
-  };
-
   auto *rgbWidget = new QWidget(this);
   auto *rgbLayout = new QVBoxLayout(rgbWidget);
   rgbLayout->setContentsMargins(0, 0, 0, 0);
   rgbLayout->addLayout(makeSliderRow("R", d.rSlider,    d.rSpin,    this));
   rgbLayout->addLayout(makeSliderRow("G", d.gSlider,    d.gSpin,    this));
   rgbLayout->addLayout(makeSliderRow("B", d.rgbBSlider, d.rgbBSpin, this));
-  rgbLayout->addLayout(makeAlphaRow());
   rgbLayout->addStretch();
 
   // --- HSL panel ----------------------------------------------------------
@@ -439,7 +422,6 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   hslLayout->addLayout(makeSliderRow("H", d.hslHSlider, d.hslHSpin, this, nullptr, true));
   hslLayout->addLayout(makeSliderRow("S", d.hslSSlider, d.hslSSpin, this));
   hslLayout->addLayout(makeSliderRow("L", d.hslLSlider, d.hslLSpin, this));
-  hslLayout->addLayout(makeAlphaRow());
   hslLayout->addStretch();
 
   d.tabContent->addWidget(hsbWidget);  // index 0
@@ -494,6 +476,13 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   rightLayout->setContentsMargins(0, 0, 0, 0);
   rightLayout->addWidget(d.colorPreviewBar);
   rightLayout->addWidget(d.tabContent);
+  auto *alphaRow = new QHBoxLayout();
+  auto *alphaLabel = new QLabel(QStringLiteral("A"), this);
+  alphaLabel->setFixedWidth(14);
+  alphaRow->addWidget(alphaLabel);
+  alphaRow->addWidget(d.aSlider, 1);
+  alphaRow->addWidget(d.aSpin);
+  rightLayout->addLayout(alphaRow);
   rightLayout->addLayout(hexRow);
 
   middleLayout->addLayout(rightLayout, 1);

@@ -5,6 +5,7 @@ module;
 #include <QtWidgets/QWidget>
 #include <QtGui/QImage>
 #include <wobjectdefs.h>
+#include <Define/DllExportMacro.hpp>
 //#include <Wobject>
 
 export module ParadeScopeWidget;
@@ -18,7 +19,7 @@ export namespace ArtifactWidgets {
   YRGB        // Luma + R, G, B (4 columns)
  };
 
- class ParadeScopeWidget :public AbstractWidget{
+  class WIDGET_LIBRARY_DLL_API ParadeScopeWidget :public AbstractWidget{
  W_OBJECT(ParadeScopeWidget)
  private:
   class Impl;
