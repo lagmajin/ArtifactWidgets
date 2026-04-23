@@ -89,6 +89,12 @@ target_sources(ArtifactWidgets
     PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
 )
 
+if(APPLE)
+    target_sources(ArtifactWidgets PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/Mac/QuickLook.mm"
+    )
+endif()
+
 target_compile_definitions(ArtifactWidgets
     PRIVATE WIDGET_LIBRARY_DLL_EXPORT
     INTERFACE WIDGET_LIBRARY_DLL_IMPORT
