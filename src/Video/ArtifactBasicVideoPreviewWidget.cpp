@@ -10,8 +10,10 @@
 #include <QAudioSink>
 #include <QIODevice>
 #include <QBuffer>
+#include <QImage>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <cstring>
 
 //#include "../Image/BasicImageViewWidget.hpp"
 
@@ -21,12 +23,41 @@ import std;
 
 import Codec.FFmpegVideoDecoder;
 import Codec.Thumbnail.FFmpeg;
+import Video.VideoFrame;
 
 namespace ArtifactCore{}//Dummy
  
 namespace ArtifactWidgets {
 
  using namespace ArtifactCore;
+
+ static QImage cpuVideoFrameToQImage(const ArtifactCore::CpuVideoFrame& frame) {
+  if (!frame.isValid() || frame.meta.pixelFormat != ArtifactCore::VideoFramePixelFormat::RGB24) {
+   return {};
+  }
+
+  QImage image(frame.meta.width, frame.meta.height, QImage::Format_RGB888);
+  if (image.isNull()) {
+   return {};
+  }
+
+  const int rowBytes = frame.meta.width * 3;
+  for (int y = 0; y < frame.meta.height; ++y) {
+   std::memcpy(image.scanLine(y), frame.bytes.data() + static_cast<size_t>(y) * static_cast<size_t>(frame.strideBytes), static_cast<size_t>(rowBytes));
+  }
+
+  return image;
+ }
+
+ static QImage decodedVideoFrameToQImage(const ArtifactCore::DecodedVideoFrame& frame) {
+  return std::visit([](const auto& value) -> QImage {
+   using ValueT = std::decay_t<decltype(value)>;
+   if constexpr (std::is_same_v<ValueT, ArtifactCore::CpuVideoFrame>) {
+    return cpuVideoFrameToQImage(value);
+   }
+   return {};
+  }, frame);
+ }
 
  W_OBJECT_IMPL(ArtifactBasicVideoPreviewWidget)
 
@@ -138,7 +169,7 @@ namespace ArtifactWidgets {
   if (!impl_->videoFilePath_.isEmpty()) {
     impl_->decoder_->openFile(impl_->videoFilePath_);
     connect(impl_->timer_, &QTimer::timeout, this, [this]() {
-      QImage frame = impl_->decoder_->decodeNextVideoFrame();
+      QImage frame = decodedVideoFrameToQImage(impl_->decoder_->decodeNextVideoFrameRaw());
       if (!frame.isNull()) {
         impl_->scene_.clear();
         impl_->scene_.addPixmap(QPixmap::fromImage(frame));
