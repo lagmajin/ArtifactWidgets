@@ -442,7 +442,9 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
     QFont f = hexHintLabel->font();
     f.setPointSizeF(f.pointSizeF() * 0.85);
     hexHintLabel->setFont(f);
-    hexHintLabel->setStyleSheet(QStringLiteral("color: gray;"));
+    QPalette pal = hexHintLabel->palette();
+    pal.setColor(QPalette::WindowText, Qt::gray);
+    hexHintLabel->setPalette(pal);
   }
 
   auto *hexRow = new QHBoxLayout();
