@@ -10,6 +10,8 @@ export module Widgets.KeyboardOverlayDialog;
 export namespace ArtifactWidgets
 {
  struct ShortcutEntry {
+  QString context;    // "Workspace.Timeline", "Viewport.Composition"
+  QString keymap;     // "Playback", "Timeline", etc.
   QString action;     // "Move Layer Up"
   QString key;        // "Ctrl+Shift+↑"
   QString category;   // "Layer", "Timeline"

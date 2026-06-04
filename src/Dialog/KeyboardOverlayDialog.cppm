@@ -58,12 +58,15 @@ namespace ArtifactWidgets
   searchLayout->addWidget(impl_->searchBox_);
   layout->addLayout(searchLayout);
 
-  // Table
-  impl_->table_ = new QTableWidget();
-  impl_->table_->setColumnCount(3);
-  impl_->table_->setHorizontalHeaderLabels({"Category", "Action", "Shortcut"});
+ // Table
+ impl_->table_ = new QTableWidget();
+  impl_->table_->setColumnCount(5);
+  impl_->table_->setHorizontalHeaderLabels({"Context", "KeyMap", "Category", "Action", "Shortcut"});
   impl_->table_->horizontalHeader()->setStretchLastSection(true);
+  impl_->table_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
   impl_->table_->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+  impl_->table_->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+  impl_->table_->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
   impl_->table_->verticalHeader()->setVisible(false);
   impl_->table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
   impl_->table_->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -176,6 +179,8 @@ namespace ArtifactWidgets
          for (auto* binding : keyMap->allBindings()) {
              if (!binding) continue;
              ShortcutEntry entry;
+             entry.context = keyMap->context();
+             entry.keymap = keyMap->name();
              entry.key = binding->toString();
              entry.action = binding->name().isEmpty() ? binding->actionId() : binding->name();
              if (auto* action = am->getAction(binding->actionId())) {
@@ -201,6 +206,8 @@ namespace ArtifactWidgets
 
      table_->setRowCount(entries.size());
      for (int i = 0; i < entries.size(); ++i) {
+         auto* ctxItem = new QTableWidgetItem(entries[i].context.isEmpty() ? QStringLiteral("Global") : entries[i].context);
+         auto* mapItem = new QTableWidgetItem(entries[i].keymap);
          auto* catItem = new QTableWidgetItem(entries[i].category);
          auto* actItem = new QTableWidgetItem(entries[i].action);
          auto* keyItem = new QTableWidgetItem(entries[i].key);
@@ -211,9 +218,11 @@ namespace ArtifactWidgets
          font.setBold(true);
          keyItem->setFont(font);
 
-         table_->setItem(i, 0, catItem);
-         table_->setItem(i, 1, actItem);
-         table_->setItem(i, 2, keyItem);
+         table_->setItem(i, 0, ctxItem);
+         table_->setItem(i, 1, mapItem);
+         table_->setItem(i, 2, catItem);
+         table_->setItem(i, 3, actItem);
+         table_->setItem(i, 4, keyItem);
      }
      table_->resizeColumnsToContents();
  }
