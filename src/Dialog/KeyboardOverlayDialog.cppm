@@ -4,6 +4,7 @@ module;
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QHeaderView>
 #include <QLineEdit>
 #include <QLabel>
@@ -12,6 +13,10 @@ module;
 #include <QTimer>
 #include <QApplication>
 #include <QScreen>
+#include <QPainter>
+#include <QPainterPath>
+#include <QScrollArea>
+#include <QFrame>
 #include <vector>
 #include <set>
 
@@ -23,7 +28,7 @@ namespace ArtifactWidgets
 {
  class KeyboardOverlayDialog::Impl
  {
- private:
+private:
 
  public:
   Impl(KeyboardOverlayDialog* owner);
@@ -32,34 +37,61 @@ namespace ArtifactWidgets
   KeyboardOverlayDialog* owner_;
   QTableWidget* table_;
   QLineEdit* searchBox_;
+  QFrame* keyboardPreview_;
+  QScrollArea* tableScroll_;
   bool isCompact_ = false;
 
   void reloadShortcuts();
+  void rebuildKeyboardPreview();
  };
 
  KeyboardOverlayDialog::Impl::Impl(KeyboardOverlayDialog* owner) : owner_(owner) {}
 
- KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent), impl_(new Impl(this))
+KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent), impl_(new Impl(this))
  {
   setWindowTitle("Keyboard Shortcuts");
   resize(800, 600);
-  
-  auto* layout = new QVBoxLayout(this);
-  layout->setContentsMargins(16, 16, 16, 16);
-  layout->setSpacing(8);
+
+  setAttribute(Qt::WA_TranslucentBackground, true);
+  setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+  setObjectName(QStringLiteral("KeyboardOverlayDialog"));
+
+  auto* outerLayout = new QVBoxLayout(this);
+  outerLayout->setContentsMargins(18, 18, 18, 18);
+  outerLayout->setSpacing(12);
+
+  auto* shell = new QWidget(this);
+  shell->setObjectName(QStringLiteral("KeyboardOverlayShell"));
+  shell->setAutoFillBackground(false);
+  auto* shellLayout = new QVBoxLayout(shell);
+  shellLayout->setContentsMargins(18, 18, 18, 18);
+  shellLayout->setSpacing(12);
 
   // Search Bar
   auto* searchLayout = new QHBoxLayout();
-  auto* searchIcon = new QLabel("🔍");
+  auto* searchIcon = new QLabel(QStringLiteral("⌕"));
   impl_->searchBox_ = new QLineEdit();
   impl_->searchBox_->setPlaceholderText("Search shortcuts or actions...");
-  impl_->searchBox_->setStyleSheet("QLineEdit { background: rgba(50, 50, 50, 180); color: white; border: 1px solid #555; padding: 4px; border-radius: 4px; }");
+  impl_->searchBox_->setObjectName(QStringLiteral("KeyboardOverlaySearch"));
   searchLayout->addWidget(searchIcon);
   searchLayout->addWidget(impl_->searchBox_);
-  layout->addLayout(searchLayout);
+  shellLayout->addLayout(searchLayout);
 
- // Table
- impl_->table_ = new QTableWidget();
+  impl_->keyboardPreview_ = new QFrame(shell);
+  impl_->keyboardPreview_->setMinimumHeight(220);
+  impl_->keyboardPreview_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  impl_->keyboardPreview_->setObjectName(QStringLiteral("KeyboardOverlayPreview"));
+  impl_->keyboardPreview_->setFrameStyle(QFrame::Box | QFrame::Plain);
+  impl_->keyboardPreview_->setLineWidth(1);
+  shellLayout->addWidget(impl_->keyboardPreview_);
+
+  // Table
+  impl_->tableScroll_ = new QScrollArea(shell);
+  impl_->tableScroll_->setWidgetResizable(true);
+  impl_->tableScroll_->setFrameShape(QFrame::NoFrame);
+  impl_->tableScroll_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  impl_->tableScroll_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  impl_->table_ = new QTableWidget();
   impl_->table_->setColumnCount(5);
   impl_->table_->setHorizontalHeaderLabels({"Context", "KeyMap", "Category", "Action", "Shortcut"});
   impl_->table_->horizontalHeader()->setStretchLastSection(true);
@@ -72,29 +104,9 @@ namespace ArtifactWidgets
   impl_->table_->setSelectionBehavior(QAbstractItemView::SelectRows);
   impl_->table_->setSelectionMode(QAbstractItemView::SingleSelection);
   impl_->table_->setShowGrid(false);
-  
-  impl_->table_->setStyleSheet(R"(
-    QTableWidget {
-        background-color: transparent;
-        color: #E0E0E0;
-        border: none;
-    }
-    QTableWidget::item {
-        padding: 4px;
-        border-bottom: 1px solid rgba(255, 255, 255, 10);
-    }
-    QTableWidget::item:selected {
-        background-color: rgba(60, 120, 200, 80);
-    }
-    QHeaderView::section {
-        background-color: rgba(40, 40, 40, 200);
-        color: #888;
-        padding: 4px;
-        border: none;
-        border-bottom: 2px solid #555;
-    }
-  )");
-  layout->addWidget(impl_->table_);
+  impl_->tableScroll_->setWidget(impl_->table_);
+  shellLayout->addWidget(impl_->tableScroll_);
+  outerLayout->addWidget(shell);
 
   connect(impl_->searchBox_, &QLineEdit::textChanged, this, [this](const QString& text) {
       for (int i = 0; i < impl_->table_->rowCount(); ++i) {
@@ -108,10 +120,12 @@ namespace ArtifactWidgets
           }
           impl_->table_->setRowHidden(i, !match);
       }
+      impl_->rebuildKeyboardPreview();
   });
 
   setOverlayOpacity(0.9f); // Default
   impl_->reloadShortcuts();
+  impl_->rebuildKeyboardPreview();
  }
 
  KeyboardOverlayDialog::~KeyboardOverlayDialog()
@@ -123,12 +137,10 @@ namespace ArtifactWidgets
  {
      impl_->isCompact_ = enabled;
      if (enabled) {
-         impl_->table_->setStyleSheet(impl_->table_->styleSheet() + "QTableWidget::item { padding: 2px; font-size: 11px; }");
-         layout()->setContentsMargins(8, 8, 8, 8);
+         if (layout()) layout()->setContentsMargins(10, 10, 10, 10);
          resize(600, 400);
      } else {
-         impl_->table_->setStyleSheet(impl_->table_->styleSheet().replace("QTableWidget::item { padding: 2px; font-size: 11px; }", ""));
-         layout()->setContentsMargins(16, 16, 16, 16);
+         if (layout()) layout()->setContentsMargins(18, 18, 18, 18);
          resize(800, 600);
      }
  }
@@ -136,7 +148,13 @@ namespace ArtifactWidgets
  void KeyboardOverlayDialog::setOverlayOpacity(float opacity)
  {
      setWindowOpacity(opacity);
-     setStyleSheet(QString("QDialog { background-color: rgba(30, 30, 30, %1); }").arg(int(opacity * 255)));
+     QPalette palette = this->palette();
+     palette.setColor(QPalette::Window, QColor(18, 20, 24, int(opacity * 255)));
+     palette.setColor(QPalette::Base, QColor(24, 27, 32, int(opacity * 255)));
+     palette.setColor(QPalette::Text, QColor(235, 240, 245));
+     palette.setColor(QPalette::WindowText, QColor(235, 240, 245));
+     setPalette(palette);
+     setAutoFillBackground(true);
  }
 
  void KeyboardOverlayDialog::setAlwaysOnTop(bool enabled)
@@ -183,9 +201,19 @@ namespace ArtifactWidgets
              entry.keymap = keyMap->name();
              entry.key = binding->toString();
              entry.action = binding->name().isEmpty() ? binding->actionId() : binding->name();
+             entry.section = QStringLiteral("General");
              if (auto* action = am->getAction(binding->actionId())) {
                  entry.action = action->label();
                  entry.category = action->category();
+                 const QString actionId = binding->actionId();
+                 if (actionId.contains(QStringLiteral("play"), Qt::CaseInsensitive) ||
+                     actionId.contains(QStringLiteral("transport"), Qt::CaseInsensitive)) {
+                     entry.section = QStringLiteral("Playback");
+                 } else if (actionId.contains(QStringLiteral("tool"), Qt::CaseInsensitive) ||
+                            actionId.contains(QStringLiteral("select"), Qt::CaseInsensitive) ||
+                            actionId.contains(QStringLiteral("move"), Qt::CaseInsensitive)) {
+                     entry.section = QStringLiteral("Editing");
+                 }
              } else {
                  entry.category = keyMap->name();
              }
@@ -196,10 +224,17 @@ namespace ArtifactWidgets
 
      for (auto* action : am->allActions()) {
          if (!action || boundActionIds.contains(action->id())) continue;
-         entries.push_back({action->label(), "---", action->category()});
+         ShortcutEntry entry;
+         entry.context = QStringLiteral("Global");
+         entry.keymap = QStringLiteral("---");
+         entry.action = action->label();
+         entry.category = action->category();
+         entry.section = QStringLiteral("General");
+         entries.push_back(entry);
      }
 
      std::sort(entries.begin(), entries.end(), [](const ShortcutEntry& a, const ShortcutEntry& b) {
+         if (a.section != b.section) return a.section < b.section;
          if (a.category != b.category) return a.category < b.category;
          return a.action < b.action;
      });
@@ -225,6 +260,41 @@ namespace ArtifactWidgets
          table_->setItem(i, 4, keyItem);
      }
      table_->resizeColumnsToContents();
+ }
+
+ void KeyboardOverlayDialog::Impl::rebuildKeyboardPreview()
+ {
+     if (!keyboardPreview_) return;
+     auto* text = keyboardPreview_->findChild<QLabel*>(QString(), Qt::FindDirectChildrenOnly);
+     if (!text) {
+         text = new QLabel(keyboardPreview_);
+         text->setAlignment(Qt::AlignCenter);
+         text->setWordWrap(true);
+         text->setObjectName(QStringLiteral("KeyboardOverlayPreviewText"));
+         text->setGeometry(keyboardPreview_->rect().adjusted(16, 16, -16, -16));
+     }
+
+     int visibleCount = 0;
+     QStringList categories;
+     for (int row = 0; row < table_->rowCount(); ++row) {
+         if (table_->isRowHidden(row)) continue;
+         ++visibleCount;
+         const auto* item = table_->item(row, 2);
+         if (item && !categories.contains(item->text())) {
+             categories.push_back(item->text());
+         }
+     }
+
+     text->setText(QStringLiteral("Keyboard wireframe overlay\n%1 visible shortcuts\n%2")
+         .arg(visibleCount)
+         .arg(categories.isEmpty() ? QStringLiteral("No category matches") : categories.join(QStringLiteral("  •  "))));
+     QPalette textPalette = text->palette();
+     textPalette.setColor(QPalette::WindowText, QColor(217, 241, 255));
+     text->setPalette(textPalette);
+     QFont textFont = text->font();
+     textFont.setBold(true);
+     text->setFont(textFont);
+     keyboardPreview_->update();
  }
 
 }

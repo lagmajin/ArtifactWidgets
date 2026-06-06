@@ -143,16 +143,13 @@ target_link_libraries(ArtifactWidgets PUBLIC magic_enum::magic_enum)
 find_package(Boost REQUIRED COMPONENTS iostreams)
 target_link_libraries(ArtifactWidgets PUBLIC Boost::iostreams)
 
-find_package(ffmpeg REQUIRED)
-if(ffmpeg_FOUND)
-    target_include_directories(ArtifactWidgets PUBLIC ${FFMPEG_INCLUDE_DIR})
-    target_link_libraries(ArtifactWidgets PUBLIC
-        ${FFMPEG_AVCODEC_LIBRARY}
-        ${FFMPEG_AVFORMAT_LIBRARY}
-        ${FFMPEG_AVUTIL_LIBRARY}
-        ${FFMPEG_SWSCALE_LIBRARY}
-        ${FFMPEG_SWRESAMPLE_LIBRARY}
-    )
+find_package(FFMPEG REQUIRED)
+if(FFMPEG_FOUND)
+    target_include_directories(ArtifactWidgets PUBLIC ${FFMPEG_INCLUDE_DIRS})
+    if(FFMPEG_LIBRARY_DIRS)
+        target_link_directories(ArtifactWidgets PUBLIC ${FFMPEG_LIBRARY_DIRS})
+    endif()
+    target_link_libraries(ArtifactWidgets PUBLIC ${FFMPEG_LIBRARIES})
 else()
     target_link_libraries(ArtifactWidgets PUBLIC
         "${VCPKG_INSTALLED}/lib/avcodec.lib"

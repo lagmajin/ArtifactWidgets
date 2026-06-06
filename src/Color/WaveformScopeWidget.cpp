@@ -166,6 +166,8 @@ namespace ArtifactWidgets {
     }
    }
   }
+
+  return scopeImage;
 }
 
  // ==================== WaveformScopeWidget ====================

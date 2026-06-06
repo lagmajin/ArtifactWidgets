@@ -15,6 +15,8 @@ export namespace ArtifactWidgets
   QString action;     // "Move Layer Up"
   QString key;        // "Ctrl+Shift+↑"
   QString category;   // "Layer", "Timeline"
+  QString section;    // "Function Row", "Editing", "Playback"
+  QString displayGroup;// Derived UI grouping
  };
 
  class WIDGET_LIBRARY_DLL_API KeyboardOverlayDialog:public QDialog
