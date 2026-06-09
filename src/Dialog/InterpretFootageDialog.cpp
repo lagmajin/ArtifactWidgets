@@ -1,7 +1,5 @@
-module ArtifactWidgets.Dialog.InterpretFootage;
-
-import Media.SourceInterpret;
-
+module;
+#include <wobjectimpl.h>
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>
@@ -13,7 +11,12 @@ import Media.SourceInterpret;
 #include <QHBoxLayout>
 #include <QFormLayout>
 
+module Widgets.Dialog.InterpretFootage;
+
+import Media.SourceInterpret;
+
 namespace ArtifactWidgets {
+W_OBJECT_IMPL(InterpretFootageDialog)
 
 struct InterpretFootageDialog::Impl {
     QDoubleSpinBox* frameRateSpin = nullptr;
@@ -38,12 +41,10 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
 
     auto* mainLayout = new QVBoxLayout(this);
 
-    // Source info
     auto* infoLabel = new QLabel(
         tr("Source frame rate: %1 fps").arg(sourceFrameRate, 0, 'f', 3));
     mainLayout->addWidget(infoLabel);
 
-    // Frame rate override
     auto* formLayout = new QFormLayout();
     impl_->frameRateSpin = new QDoubleSpinBox();
     impl_->frameRateSpin->setRange(1.0, 240.0);
@@ -52,7 +53,6 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
     formLayout->addRow(tr("Frame rate (fps):"), impl_->frameRateSpin);
     mainLayout->addLayout(formLayout);
 
-    // Preserve mode
     auto* modeGroup = new QGroupBox(tr("Preserve mode"));
     auto* modeLayout = new QVBoxLayout(modeGroup);
 
@@ -66,7 +66,6 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
     impl_->keepKeyframesBtn->setChecked(true);
     mainLayout->addWidget(modeGroup);
 
-    // Impact summary
     QString impactMsg;
     if (affectedLayerCount > 0 || hasTimeRemap) {
         impactMsg += tr("<b>Impact:</b><br>");
@@ -86,7 +85,6 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
     impl_->impactLabel->setWordWrap(true);
     mainLayout->addWidget(impl_->impactLabel);
 
-    // Buttons
     auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

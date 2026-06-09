@@ -1,5 +1,6 @@
 module;
 
+#include <wobjectdefs.h>
 #include <QDialog>
 #include <QVector>
 #include <QString>
@@ -10,7 +11,7 @@ export module Widgets.Dialog.InterpretFootage;
 export namespace ArtifactWidgets {
 
 class InterpretFootageDialog : public QDialog {
-    Q_OBJECT
+    W_OBJECT(InterpretFootageDialog)
 public:
     explicit InterpretFootageDialog(const QString& footageName,
                                     double currentFrameRate,
