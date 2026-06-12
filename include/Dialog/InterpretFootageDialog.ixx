@@ -1,5 +1,6 @@
 module;
 
+#include <Define/DllExportMacro.hpp>
 #include <wobjectdefs.h>
 #include <QDialog>
 #include <QVector>
@@ -10,7 +11,7 @@ export module Widgets.Dialog.InterpretFootage;
 
 export namespace ArtifactWidgets {
 
-class InterpretFootageDialog : public QDialog {
+class WIDGET_LIBRARY_DLL_API InterpretFootageDialog : public QDialog {
     W_OBJECT(InterpretFootageDialog)
 public:
     explicit InterpretFootageDialog(const QString& footageName,
