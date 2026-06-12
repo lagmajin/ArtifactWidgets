@@ -91,6 +91,8 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
     mainLayout->addWidget(buttonBox);
 }
 
+InterpretFootageDialog::~InterpretFootageDialog() = default;
+
 double InterpretFootageDialog::selectedFrameRate() const {
     return impl_->frameRateSpin->value();
 }

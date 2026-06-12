@@ -20,6 +20,7 @@ public:
                                     int affectedKeyframeCount,
                                     bool hasTimeRemap,
                                     QWidget* parent = nullptr);
+    ~InterpretFootageDialog();
 
     double selectedFrameRate() const;
     int selectedPreserveMode() const; // 0=KeepKeyframes, 1=KeepTime, 2=ReSample
