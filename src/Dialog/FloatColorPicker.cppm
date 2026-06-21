@@ -13,6 +13,7 @@ module;
 #include <QStackedWidget>
 #include <QTabBar>
 #include <QVBoxLayout>
+#include <QColor>
 #include <cmath>
 #include <wobjectimpl.h>
 
@@ -335,6 +336,9 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.brightnessSlider->setFixedWidth(22);
   d.brightnessSlider->setFixedHeight(280);
   d.brightnessSlider->setInvertedAppearance(true);
+  d.brightnessSlider->setProperty("artifactFillColor", QColor(255, 208, 92));
+  d.brightnessSlider->setProperty("artifactTrackColor", QColor(72, 76, 84));
+  d.brightnessSlider->setProperty("artifactHandleColor", QColor(238, 241, 246));
 
   d.colorPreviewBar = new ColorViewLabel(this);
   d.colorPreviewBar->setFixedHeight(45);
@@ -371,6 +375,17 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
     sl->setRange(lo, hi);
     return sl;
   };
+  auto applySliderPalette = [](QSlider* slider, const QColor& fill,
+                               const QColor& track = QColor(72, 76, 84),
+                               const QColor& handle = QColor(238, 241, 246)) {
+    if (!slider) {
+      return;
+    }
+    slider->setProperty("artifactFillColor", fill);
+    slider->setProperty("artifactTrackColor", track);
+    slider->setProperty("artifactHandleColor", handle);
+    slider->update();
+  };
 
   // --- HSB panel ----------------------------------------------------------
   d.hSlider = makeHSlider(0, 360);
@@ -383,6 +398,10 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   // Alpha (shared)
   d.aSlider = makeHSlider(0, 1000);
   d.aSpin   = makeDblSpin(0.0, 1.0);
+  applySliderPalette(d.hSlider, QColor(255, 149, 64));
+  applySliderPalette(d.sSlider, QColor(76, 196, 120));
+  applySliderPalette(d.bSlider, QColor(255, 208, 92));
+  applySliderPalette(d.aSlider, QColor(156, 168, 184));
 
   auto *hsbWidget = new QWidget(this);
   auto *hsbLayout = new QVBoxLayout(hsbWidget);
@@ -399,6 +418,9 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.rSpin      = makeDblSpin(0.0, 1.0);
   d.gSpin      = makeDblSpin(0.0, 1.0);
   d.rgbBSpin   = makeDblSpin(0.0, 1.0);
+  applySliderPalette(d.rSlider, QColor(230, 92, 92));
+  applySliderPalette(d.gSlider, QColor(72, 196, 112));
+  applySliderPalette(d.rgbBSlider, QColor(88, 144, 232));
 
   auto *rgbWidget = new QWidget(this);
   auto *rgbLayout = new QVBoxLayout(rgbWidget);
@@ -415,6 +437,9 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   d.hslHSpin   = makeIntSpin(0, 360);
   d.hslSSpin   = makeDblSpin(0.0, 1.0);
   d.hslLSpin   = makeDblSpin(0.0, 1.0);
+  applySliderPalette(d.hslHSlider, QColor(255, 149, 64));
+  applySliderPalette(d.hslSSlider, QColor(76, 196, 120));
+  applySliderPalette(d.hslLSlider, QColor(124, 164, 232));
 
   auto *hslWidget = new QWidget(this);
   auto *hslLayout = new QVBoxLayout(hslWidget);

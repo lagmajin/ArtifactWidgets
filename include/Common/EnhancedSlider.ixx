@@ -2,6 +2,7 @@ module;
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QSlider>
+#include <QPaintEvent>
 #include <wobjectdefs.h>
 #include "../Define/DllExportMacro.hpp"
 
@@ -22,6 +23,7 @@ protected:
   void mousePressEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
+  void paintEvent(QPaintEvent* event) override;
 
 public:
   explicit EnhancedSlider(Qt::Orientation orientation, QWidget* parent = nullptr);

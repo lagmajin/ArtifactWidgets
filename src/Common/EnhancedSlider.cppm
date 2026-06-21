@@ -3,9 +3,12 @@ module;
 #include <algorithm>
 
 #include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QRect>
 #include <QStyle>
 #include <QStyleOptionSlider>
+#include <QVariant>
 #include <wobjectimpl.h>
 
 module EnhancedSlider;
@@ -39,6 +42,19 @@ QStyleOptionSlider makeSliderOption(const QSlider* slider)
 int coordinateAlongTrack(const QSlider* slider, const QPoint& point)
 {
   return slider->orientation() == Qt::Horizontal ? point.x() : point.y();
+}
+
+QColor propertyColor(const QObject* object, const char* name, const QColor& fallback)
+{
+  if (!object) {
+    return fallback;
+  }
+  const QVariant value = object->property(name);
+  if (!value.isValid()) {
+    return fallback;
+  }
+  const QColor color = value.value<QColor>();
+  return color.isValid() ? color : fallback;
 }
 
 }
@@ -153,6 +169,69 @@ void EnhancedSlider::mouseReleaseEvent(QMouseEvent* event)
   }
 
   QSlider::mouseReleaseEvent(event);
+}
+
+void EnhancedSlider::paintEvent(QPaintEvent* event)
+{
+  Q_UNUSED(event);
+
+  QStyleOptionSlider option = makeSliderOption(this);
+  QStyle* style = this->style();
+  const QRect grooveRect =
+      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderGroove, this);
+  const QRect handleRect =
+      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderHandle, this);
+  if (!grooveRect.isValid() || !handleRect.isValid()) {
+    QSlider::paintEvent(event);
+    return;
+  }
+
+  const QColor fillColor =
+      propertyColor(this, "artifactFillColor", palette().color(QPalette::Highlight));
+  const QColor trackColor =
+      propertyColor(this, "artifactTrackColor", palette().color(QPalette::Mid));
+  const QColor handleColor =
+      propertyColor(this, "artifactHandleColor", palette().color(QPalette::Base));
+  const QColor borderColor = fillColor.lighter(118);
+
+  QPainter painter(this);
+  painter.save();
+  painter.setRenderHint(QPainter::Antialiasing, true);
+
+  QRectF trackRect = grooveRect;
+  if (orientation() == Qt::Horizontal) {
+    trackRect.setTop(trackRect.center().y() - 3.0);
+    trackRect.setBottom(trackRect.center().y() + 3.0);
+  } else {
+    trackRect.setLeft(trackRect.center().x() - 3.0);
+    trackRect.setRight(trackRect.center().x() + 3.0);
+  }
+
+  painter.setPen(Qt::NoPen);
+  painter.setBrush(trackColor);
+  painter.drawRoundedRect(trackRect, 3.0, 3.0);
+
+  const double denom = std::max(1, maximum() - minimum());
+  const double t = std::clamp((value() - minimum()) / denom, 0.0, 1.0);
+  QRectF fillRect = trackRect;
+  if (orientation() == Qt::Horizontal) {
+    fillRect.setRight(trackRect.left() + trackRect.width() * t);
+  } else {
+    fillRect.setTop(trackRect.bottom() - trackRect.height() * t);
+  }
+  if (fillRect.isValid() && fillRect.width() > 0.0 && fillRect.height() > 0.0) {
+    painter.setBrush(fillColor);
+    painter.drawRoundedRect(fillRect, 3.0, 3.0);
+  }
+
+  const QPointF handleCenter = handleRect.center();
+  const qreal radius =
+      orientation() == Qt::Horizontal ? std::max<qreal>(6.0, handleRect.height() * 0.42)
+                                      : std::max<qreal>(6.0, handleRect.width() * 0.42);
+  painter.setPen(QPen(borderColor, 1.0));
+  painter.setBrush(handleColor);
+  painter.drawEllipse(handleCenter, radius, radius);
+  painter.restore();
 }
 
 }
