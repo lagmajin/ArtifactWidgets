@@ -125,15 +125,14 @@ namespace ArtifactWidgets {
   connect(this, &QPlainTextEdit::textChanged,
           this, [this]() { emit textChanged(this->toPlainText()); });
 
-  setStyleSheet(R"(
-   QPlainTextEdit {
-    background-color: #1E1E1E;
-    color: #D4D4D4;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 12px;
-    border: none;
-   }
-  )");
+  QPalette darkPal;
+  darkPal.setColor(QPalette::Base, QColor("#1E1E1E"));
+  darkPal.setColor(QPalette::Text, QColor("#D4D4D4"));
+  setPalette(darkPal);
+  QFont monoFont("Consolas", 12);
+  monoFont.setStyleHint(QFont::Monospace);
+  setFont(monoFont);
+  setFrameShape(QFrame::NoFrame);
  }
 
  CodeEditor::~CodeEditor()

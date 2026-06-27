@@ -51,7 +51,13 @@ namespace ArtifactWidgets {
         setWordWrapMode(QTextOption::NoWrap);
         
         // Dark theme console style
-        setStyleSheet("color: #CCCCCC; background-color: #1E1E1E; font-family: 'Consolas', 'Monaco', monospace; font-size: 10pt;");
+        QPalette consolePal = palette();
+        consolePal.setColor(QPalette::Base, QColor("#1E1E1E"));
+        consolePal.setColor(QPalette::Text, QColor("#CCCCCC"));
+        setPalette(consolePal);
+        QFont consoleFont("Consolas", 10);
+        consoleFont.setStyleHint(QFont::Monospace);
+        setFont(consoleFont);
         
         setContextMenuPolicy(Qt::CustomContextMenu);
         connect(this, &QWidget::customContextMenuRequested, [this](const QPoint& pos) {

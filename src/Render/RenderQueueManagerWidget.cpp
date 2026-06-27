@@ -82,34 +82,32 @@ RenderQueueControlPanel::RenderQueueControlPanel(QWidget *parent)
   auto pHVoxLayout = new QHBoxLayout();
 
   impl_->renderingStartButton = new QPushButton("▶ Rendering");
-  impl_->renderingStartButton->setStyleSheet(
-      "QPushButton { border-radius: 6px; background-color: #27ae60; color: "
-      "white; font-weight: bold; padding: 6px 16px; }"
-      "QPushButton:hover { background-color: #2ecc71; }"
-      "QPushButton:pressed { background-color: #1e8449; }"
-      "QPushButton:disabled { background-color: #555555; color: #888888; }");
+  { QPalette pal = impl_->renderingStartButton->palette();
+    pal.setColor(QPalette::Button, QColor("#27ae60"));
+    pal.setColor(QPalette::ButtonText, Qt::white);
+    impl_->renderingStartButton->setPalette(pal);
+    impl_->renderingStartButton->setAutoFillBackground(true); }
 
   impl_->clearAllRenderQueueButton = new QPushButton("🗑 Clear All");
-  impl_->clearAllRenderQueueButton->setStyleSheet(
-      "QPushButton { border-radius: 6px; background-color: #c0392b; color: "
-      "white; font-weight: bold; padding: 6px 16px; }"
-      "QPushButton:hover { background-color: #e74c3c; }"
-      "QPushButton:pressed { background-color: #922b21; }");
+  { QPalette pal = impl_->clearAllRenderQueueButton->palette();
+    pal.setColor(QPalette::Button, QColor("#c0392b"));
+    pal.setColor(QPalette::ButtonText, Qt::white);
+    impl_->clearAllRenderQueueButton->setPalette(pal);
+    impl_->clearAllRenderQueueButton->setAutoFillBackground(true); }
 
   impl_->addAllCompositionsButton = new QPushButton("＋ Add All Comps");
-  impl_->addAllCompositionsButton->setStyleSheet(
-      "QPushButton { border-radius: 6px; background-color: #3c3c3c; color: "
-      "white; font-weight: bold; padding: 6px 16px; }"
-      "QPushButton:hover { background-color: #4a4a4a; }"
-      "QPushButton:pressed { background-color: #2b2b2b; }");
+  { QPalette pal = impl_->addAllCompositionsButton->palette();
+    pal.setColor(QPalette::Button, QColor("#3c3c3c"));
+    pal.setColor(QPalette::ButtonText, Qt::white);
+    impl_->addAllCompositionsButton->setPalette(pal);
+    impl_->addAllCompositionsButton->setAutoFillBackground(true); }
 
   impl_->progressBar = new QProgressBar();
   impl_->progressBar->setValue(0);
   impl_->progressBar->setTextVisible(true);
-  impl_->progressBar->setStyleSheet(
-      "QProgressBar { border: 1px solid #555; border-radius: 4px; "
-      "background-color: #2a2a2a; text-align: center; color: #ffffff; }"
-      "QProgressBar::chunk { background-color: #3498db; border-radius: 3px; }");
+  { QPalette pal = impl_->progressBar->palette();
+    pal.setColor(QPalette::Highlight, QColor("#3498db"));
+    impl_->progressBar->setPalette(pal); }
 
   pHVoxLayout->addWidget(impl_->progressBar, 1);
   impl_->autoOpenOutputFolderCheckBox = new QCheckBox("Open folder when done");
@@ -228,8 +226,7 @@ RenderQueueManagerJobPanel::Impl::~Impl() { delete updateTimer_; }
 
 RenderQueueManagerJobPanel::RenderQueueManagerJobPanel(QWidget *parent)
     : QTreeView(parent), impl_(new Impl()) {
-  auto style = getDCCStyleSheetPreset(DccStylePreset::StudioStyle);
-  setStyleSheet(style);
+  // グローバルテーマ (palette + CommonStyle) に委譲
 
   auto model = new RenderJobModel();
   setModel(model);
@@ -508,8 +505,7 @@ QString formatHmsFromSeconds(qint64 seconds) {
 
 RenderQueueManagerWidget::RenderQueueManagerWidget(QWidget *parent)
     : QWidget(parent), impl_(new Impl()) {
-  auto style = getDCCStyleSheetPreset(DccStylePreset::StudioStyle);
-  setStyleSheet(style);
+  // グローバルテーマ (palette + CommonStyle) に委譲
 
   impl_->controlPanel_ = new RenderQueueControlPanel();
   impl_->jobPanel_ = new RenderQueueManagerJobPanel();
@@ -1130,13 +1126,19 @@ RenderQueueManagerUnderInfoWidget::RenderQueueManagerUnderInfoWidget(
   layout->setContentsMargins(8, 4, 8, 4);
 
   impl_->logLabel = new QLabel("Log: Idle");
-  impl_->logLabel->setStyleSheet("color: #aaaaaa; font-size: 11px;");
+  { QPalette pal = impl_->logLabel->palette();
+    pal.setColor(QPalette::WindowText, QColor("#aaaaaa"));
+    impl_->logLabel->setPalette(pal); }
 
   impl_->ramUsageLabel = new QLabel("RAM: -- MB");
-  impl_->ramUsageLabel->setStyleSheet("color: #aaaaaa; font-size: 11px;");
+  { QPalette pal = impl_->ramUsageLabel->palette();
+    pal.setColor(QPalette::WindowText, QColor("#aaaaaa"));
+    impl_->ramUsageLabel->setPalette(pal); }
 
   impl_->elapsedTimeLabel = new QLabel("Elapsed: --:--:--");
-  impl_->elapsedTimeLabel->setStyleSheet("color: #aaaaaa; font-size: 11px;");
+  { QPalette pal = impl_->elapsedTimeLabel->palette();
+    pal.setColor(QPalette::WindowText, QColor("#aaaaaa"));
+    impl_->elapsedTimeLabel->setPalette(pal); }
 
   layout->addWidget(impl_->logLabel, 1);
   layout->addWidget(impl_->ramUsageLabel);

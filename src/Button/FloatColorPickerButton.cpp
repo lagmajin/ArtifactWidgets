@@ -66,20 +66,12 @@ void FloatColorPickerButton::updateButtonStyle() {
       QColor::fromRgbF(impl_->currentColor.r(), impl_->currentColor.g(),
                        impl_->currentColor.b(), impl_->currentColor.a());
 
-  // チェッカーボードパターンで透明度を表現
-  QString style = QString(R"(
-    QPushButton {
-      background-color: %1;
-      border: 1px solid #3E3E42;
-      border-radius: 4px;
-    }
-    QPushButton:hover {
-      border: 1px solid #0E639C;
-    }
-  )")
-                      .arg(qcolor.name());
-
-  setStyleSheet(style);
+  QPalette pal = palette();
+  pal.setColor(QPalette::Button, qcolor);
+  pal.setColor(QPalette::ButtonText,
+               (qcolor.lightness() > 128) ? QColor("#1E1E1E") : QColor("#FFFFFF"));
+  setPalette(pal);
+  setAutoFillBackground(true);
 }
 
 } // namespace ArtifactWidgets

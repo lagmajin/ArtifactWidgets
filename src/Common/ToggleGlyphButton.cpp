@@ -39,30 +39,18 @@ namespace ArtifactWidgets
 
  void TextIconButton::updateStyle()
  {
-  QString style = QString(
-   "QPushButton {"
-   "background-color: %1;"
-   "color: %2;"
-   "font-weight: %3;"
-   "font-size: %4pt;"
-   "border: none;"
-   "border-radius: 4px;"
-   "}"
-   "QPushButton:hover {"
-   "background-color: %5;"
-   "}"
-   "QPushButton:pressed {"
-   "background-color: %6;"
-   "}"
-  )
-   .arg(m_backgroundColor.name())
-   .arg(m_textColor.name())
-   .arg(m_bold ? "bold" : "normal")
-   .arg(m_fontSize)
-   .arg(m_backgroundColor.darker(120).name())
-   .arg(m_backgroundColor.darker(150).name());
+  QPalette pal = palette();
+  pal.setColor(QPalette::Button, m_backgroundColor);
+  pal.setColor(QPalette::ButtonText, m_textColor);
+  pal.setColor(QPalette::Light, m_backgroundColor.darker(120));
+  pal.setColor(QPalette::Dark, m_backgroundColor.darker(150));
+  setPalette(pal);
+  setAutoFillBackground(true);
 
-  setStyleSheet(style);
+  QFont fnt = font();
+  fnt.setBold(m_bold);
+  fnt.setPointSize(m_fontSize);
+  setFont(fnt);
  }
 
 

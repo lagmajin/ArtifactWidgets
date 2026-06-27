@@ -27,9 +27,8 @@ namespace ArtifactWidgets
 
   HeaderPanel::HeaderPanel(const QString& title, QWidget* parent /*= nullptr*/) : QWidget(parent)
  {
-  auto style = getDCCStyleSheetPreset(DccStylePreset::ModoStyle);
-
-  setStyleSheet(style);
+  // Global palette + CommonStyle がテーマを担当するため、
+  // 個別の DCC preset QSS は設定しない
 
 
   auto layout = new QVBoxLayout(this);
@@ -38,8 +37,6 @@ namespace ArtifactWidgets
   // ヘッダー部分
   auto header = new QWidget(this);
   header->setObjectName("header");
-  header->setStyleSheet("background-color: #333; color: white;");
-  header->setStyleSheet(style);
 
   auto headerLayout = new QHBoxLayout(header);
   headerLayout->setContentsMargins(5, 2, 5, 2);
