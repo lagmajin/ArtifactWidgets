@@ -100,8 +100,8 @@ int EnhancedSlider::valueFromPoint(const QPoint& point) const
 
   const int span = std::max(1, grooveRect.height() - 1);
   const int positionFromTop = std::clamp(point.y() - grooveRect.top(), 0, span);
-  const int position = option.upsideDown ? positionFromTop : (span - positionFromTop);
-  return QStyle::sliderValueFromPosition(minValue, maxValue, position, span, false);
+  return QStyle::sliderValueFromPosition(
+      minValue, maxValue, positionFromTop, span, option.upsideDown);
 }
 
 void EnhancedSlider::mousePressEvent(QMouseEvent* event)
