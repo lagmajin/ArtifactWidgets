@@ -17,8 +17,17 @@ module AudioBusWidget;
 
 import Audio.Mixer;
 import Audio.Bus;
+import Core.ArtifactString;
 
 namespace ArtifactWidgets {
+
+namespace {
+
+QString zeroStringToQString(const ArtifactCore::ZeroString& text) {
+    return QString::fromUtf8(text.data(), static_cast<qsizetype>(text.length()));
+}
+
+}
 
 W_OBJECT_IMPL(AudioBusWidget)
 
@@ -32,7 +41,7 @@ AudioBusWidget::AudioBusWidget(ArtifactCore::AudioMixer* mixer, std::shared_ptr<
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(4);
 
-    QString busName = QString::fromStdString(bus->getName());
+    QString busName = zeroStringToQString(bus->getName());
     nameLabel_ = new QLabel(busName, this);
     nameLabel_->setAlignment(Qt::AlignCenter);
     QFont nameFont = nameLabel_->font();
@@ -110,13 +119,13 @@ void AudioBusWidget::refreshRoutingTargets() {
         auto buses = mixer_->getAllBuses();
         for (const auto& b : buses) {
             if (b && b != bus_ && b != mixer_->getMasterBus()) {
-                routeCombo_->addItem(QString::fromStdString(b->getName()));
+                routeCombo_->addItem(zeroStringToQString(b->getName()));
             }
         }
         auto target = mixer_->getRoutingTarget(bus_);
         int idx = 0;
         for (int i = 0; i < routeCombo_->count(); ++i) {
-            if (target && routeCombo_->itemText(i) == QString::fromStdString(target->getName())) {
+            if (target && routeCombo_->itemText(i) == zeroStringToQString(target->getName())) {
                 idx = i;
                 break;
             }
@@ -128,7 +137,7 @@ void AudioBusWidget::refreshRoutingTargets() {
 
 void AudioBusWidget::updateBusDisplay() {
     if (nameLabel_ && bus_) {
-        nameLabel_->setText(QString::fromStdString(bus_->getName()));
+        nameLabel_->setText(zeroStringToQString(bus_->getName()));
     }
 }
 
