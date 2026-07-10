@@ -58,6 +58,19 @@ foreach(file_path ${POTENTIAL_SOURCES})
     endif()
 endforeach()
 
+# These scope widgets are legacy implementation units paired with exported
+# module interfaces. Keep them explicitly in the shared library so a stale
+# module scan cannot silently omit their exported method definitions.
+foreach(_scope_widget_impl IN ITEMS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/HistgramWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cppm"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cpp")
+    list(FIND WIDGETS_IMPL "${_scope_widget_impl}" _scope_widget_idx)
+    if(_scope_widget_idx EQUAL -1)
+        list(APPEND WIDGETS_IMPL "${_scope_widget_impl}")
+    endif()
+endforeach()
+
 # ---------------------------------------------------------------------------
 # ターゲット定義
 # ---------------------------------------------------------------------------

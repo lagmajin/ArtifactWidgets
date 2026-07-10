@@ -2,6 +2,7 @@ module;
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QImage>
+#include <Define/DllExportMacro.hpp>
 #include <wobjectdefs.h>
 
 export module WaveformScopeWidget;
@@ -19,7 +20,7 @@ export namespace ArtifactWidgets {
 
  /// Video waveform scope widget (luminance / RGB waveform)
  /// Displays brightness distribution across the horizontal axis of the frame.
- class WaveformScopeWidget : public AbstractWidget {
+ class WIDGET_LIBRARY_DLL_API WaveformScopeWidget : public AbstractWidget {
   W_OBJECT(WaveformScopeWidget)
  private:
   class Impl;

@@ -1,6 +1,7 @@
 ﻿module;
 #include <QtWidgets/QWidget>
 #include <QtGui/QImage>
+#include <Define/DllExportMacro.hpp>
 
 export module HistgramWidget;
 
@@ -16,7 +17,7 @@ export namespace ArtifactWidgets {
   Combined    // Luma + RGB overlaid
  };
 
- class HistgramWidget :public QWidget{
+ class WIDGET_LIBRARY_DLL_API HistgramWidget :public QWidget{
  private:
   class Impl;
   Impl* impl_;

@@ -3,6 +3,7 @@ module;
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QImage>
+#include <Define/DllExportMacro.hpp>
 #include <wobjectdefs.h>
 export module VectorScopeWidget;
 
@@ -20,7 +21,7 @@ export namespace ArtifactWidgets {
  /// Video vectorscope widget
  /// Displays chrominance information on a circular plot.
  /// X-axis = Cb (blue difference), Y-axis = Cr (red difference)
- class VectorScopeWidget :public AbstractWidget{
+ class WIDGET_LIBRARY_DLL_API VectorScopeWidget :public AbstractWidget{
  W_OBJECT(VectorScopeWidget)
  private:
   class Impl;
