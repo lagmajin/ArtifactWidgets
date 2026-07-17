@@ -25,6 +25,8 @@ public:
 
     double selectedFrameRate() const;
     int selectedPreserveMode() const; // 0=KeepKeyframes, 1=KeepTime, 2=ReSample
+    QString selectedInputColorSpace() const;
+    QString selectedInputTransferFunction() const;
 
 private:
     class Impl;

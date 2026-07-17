@@ -18,7 +18,7 @@ foreach(file_path ${POTENTIAL_SOURCES})
     if(file_path MATCHES "\\.bak$" OR
        file_path MATCHES "include/third_party" OR
        file_path MATCHES "third_party/wobject" OR
-       file_path MATCHES "src/Common/WidgetCounter\\.cpp" OR
+       file_path MATCHES "src/Common/WidgetCounter\\.cppm" OR
        file_path MATCHES "src/Knob/KnobEditorWidget/KnobCheckBox\\.cppm")
         continue()
     endif()
@@ -62,9 +62,9 @@ endforeach()
 # module interfaces. Keep them explicitly in the shared library so a stale
 # module scan cannot silently omit their exported method definitions.
 foreach(_scope_widget_impl IN ITEMS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/HistgramWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/HistgramWidget.cppm"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cppm"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cppm")
     list(FIND WIDGETS_IMPL "${_scope_widget_impl}" _scope_widget_idx)
     if(_scope_widget_idx EQUAL -1)
         list(APPEND WIDGETS_IMPL "${_scope_widget_impl}")

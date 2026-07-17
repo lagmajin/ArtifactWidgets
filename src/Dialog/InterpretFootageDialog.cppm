@@ -24,6 +24,8 @@ struct InterpretFootageDialog::Impl {
     QRadioButton* keepTimeBtn = nullptr;
     QRadioButton* reSampleBtn = nullptr;
     QLabel* impactLabel = nullptr;
+    QComboBox* inputColorSpace = nullptr;
+    QComboBox* inputTransferFunction = nullptr;
 
     int selectedMode = 0;
 };
@@ -51,6 +53,15 @@ InterpretFootageDialog::InterpretFootageDialog(const QString& footageName,
     impl_->frameRateSpin->setDecimals(3);
     impl_->frameRateSpin->setValue(currentFrameRate > 0.0 ? currentFrameRate : sourceFrameRate);
     formLayout->addRow(tr("Frame rate (fps):"), impl_->frameRateSpin);
+    impl_->inputColorSpace = new QComboBox();
+    impl_->inputColorSpace->addItems({tr("Auto (source metadata)"), tr("Linear"), tr("sRGB"),
+                                      tr("Rec.709"), tr("Rec.2020"), tr("ACEScc"), tr("ACEScct")});
+    formLayout->addRow(tr("Input color space:"), impl_->inputColorSpace);
+    impl_->inputTransferFunction = new QComboBox();
+    impl_->inputTransferFunction->addItems({tr("Auto (source metadata)"), tr("Linear"), tr("sRGB"),
+                                            tr("Rec.709"), tr("PQ"), tr("HLG"), tr("ACEScc"),
+                                            tr("ACEScct"), tr("Sony S-Log3"), tr("Cineon")});
+    formLayout->addRow(tr("Input transfer:"), impl_->inputTransferFunction);
     mainLayout->addLayout(formLayout);
 
     auto* modeGroup = new QGroupBox(tr("Preserve mode"));
@@ -101,6 +112,16 @@ int InterpretFootageDialog::selectedPreserveMode() const {
     if (impl_->keepKeyframesBtn->isChecked()) return 0;
     if (impl_->keepTimeBtn->isChecked()) return 1;
     return 2;
+}
+
+QString InterpretFootageDialog::selectedInputColorSpace() const {
+    const int index = impl_->inputColorSpace->currentIndex();
+    return index == 0 ? QString() : impl_->inputColorSpace->currentText();
+}
+
+QString InterpretFootageDialog::selectedInputTransferFunction() const {
+    const int index = impl_->inputTransferFunction->currentIndex();
+    return index == 0 ? QString() : impl_->inputTransferFunction->currentText();
 }
 
 } // namespace ArtifactWidgets
