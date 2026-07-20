@@ -594,19 +594,22 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
 
   // HSB spinboxes → sliders
   connect(d.hSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int v) {
+          [this, hsbSliderChanged](int v) {
             const QSignalBlocker bl(impl_->hSlider);
             impl_->hSlider->setValue(v);
+            hsbSliderChanged();
           });
   connect(d.sSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, hsbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->sSlider);
             impl_->sSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            hsbSliderChanged();
           });
   connect(d.bSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, hsbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->bSlider);
             impl_->bSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            hsbSliderChanged();
           });
 
   // RGB sliders → color
@@ -636,19 +639,22 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
 
   // RGB spinboxes → sliders
   connect(d.rSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->rSlider);
             impl_->rSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            rgbSliderChanged();
           });
   connect(d.gSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->gSlider);
             impl_->gSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            rgbSliderChanged();
           });
   connect(d.rgbBSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->rgbBSlider);
             impl_->rgbBSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            rgbSliderChanged();
           });
 
   // HSL sliders → color
@@ -678,19 +684,22 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
 
   // HSL spinboxes → sliders
   connect(d.hslHSpin, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          [this](int v) {
+          [this, hslSliderChanged](int v) {
             const QSignalBlocker bl(impl_->hslHSlider);
             impl_->hslHSlider->setValue(v);
+            hslSliderChanged();
           });
   connect(d.hslSSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, hslSliderChanged](double v) {
             const QSignalBlocker bl(impl_->hslSSlider);
             impl_->hslSSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            hslSliderChanged();
           });
   connect(d.hslLSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, hslSliderChanged](double v) {
             const QSignalBlocker bl(impl_->hslLSlider);
             impl_->hslLSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            hslSliderChanged();
           });
 
   // Alpha slider
@@ -709,9 +718,16 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
             emitChanged();
           });
   connect(d.aSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
-          [this](double v) {
+          [this, emitChanged](double v) {
             const QSignalBlocker bl(impl_->aSlider);
             impl_->aSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            if (impl_->updatingFromColor) return;
+            impl_->currentColor.setColor(
+                impl_->currentColor.r(), impl_->currentColor.g(),
+                impl_->currentColor.b(), static_cast<float>(v));
+            impl_->updateAllFromColor();
+            impl_->colorPreviewBar->setColor(impl_->currentColor);
+            emitChanged();
           });
 
   // Hex input
