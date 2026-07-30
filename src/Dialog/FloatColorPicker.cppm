@@ -21,6 +21,7 @@ module;
 module FloatColorPickerDialog;
 
 import Color.Float;
+import Color.Conversion;
 import Widgets.Dialog.Abstract;
 import Widgets.ColorWheel;
 import Widget.ColorViewLabel;
@@ -102,11 +103,6 @@ public:
 
   bool updatingFromColor = false;
 
-  void rgbToHSV(float r, float g, float b, float &h, float &s, float &v);
-  void hsvToRGB(float h, float s, float v, float &r, float &g, float &b);
-  void rgbToHSL(float r, float g, float b, float &h, float &s, float &l);
-  void hslToRGB(float h, float s, float l, float &r, float &g, float &b);
-
   void updateColorFromHSBSliders();
   void updateColorFromRGBSliders();
   void updateColorFromHSLSliders();
@@ -114,83 +110,6 @@ public:
   void updateColorFromHex();
   void updateAllFromColor();
 };
-
-// ---- math helpers -------------------------------------------------------
-
-void FloatColorPicker::Impl::rgbToHSV(float r, float g, float b,
-                                       float &h, float &s, float &v) {
-  float mx = std::max({r, g, b});
-  float mn = std::min({r, g, b});
-  float d  = mx - mn;
-  v = mx;
-  s = (mx == 0.0f) ? 0.0f : d / mx;
-  if (d == 0.0f) {
-    h = 0.0f;
-  } else {
-    if (mx == r)
-      h = 60.0f * std::fmod((g - b) / d, 6.0f);
-    else if (mx == g)
-      h = 60.0f * ((b - r) / d + 2.0f);
-    else
-      h = 60.0f * ((r - g) / d + 4.0f);
-    if (h < 0.0f)
-      h += 360.0f;
-  }
-}
-
-void FloatColorPicker::Impl::hsvToRGB(float h, float s, float v,
-                                       float &r, float &g, float &b) {
-  int   hi = static_cast<int>(h / 60.0f) % 6;
-  float f  = h / 60.0f - static_cast<int>(h / 60.0f);
-  float p  = v * (1.0f - s);
-  float q  = v * (1.0f - f * s);
-  float t  = v * (1.0f - (1.0f - f) * s);
-  switch (hi) {
-  case 0: r = v; g = t; b = p; break;
-  case 1: r = q; g = v; b = p; break;
-  case 2: r = p; g = v; b = t; break;
-  case 3: r = p; g = q; b = v; break;
-  case 4: r = t; g = p; b = v; break;
-  default: r = v; g = p; b = q; break;
-  }
-}
-
-void FloatColorPicker::Impl::rgbToHSL(float r, float g, float b,
-                                       float &h, float &s, float &l) {
-  float mx = std::max({r, g, b});
-  float mn = std::min({r, g, b});
-  float d  = mx - mn;
-  l = (mx + mn) / 2.0f;
-  if (d == 0.0f) {
-    h = 0.0f;
-    s = 0.0f;
-  } else {
-    s = d / (1.0f - std::fabs(2.0f * l - 1.0f));
-    if (mx == r)
-      h = 60.0f * std::fmod((g - b) / d, 6.0f);
-    else if (mx == g)
-      h = 60.0f * ((b - r) / d + 2.0f);
-    else
-      h = 60.0f * ((r - g) / d + 4.0f);
-    if (h < 0.0f)
-      h += 360.0f;
-  }
-}
-
-void FloatColorPicker::Impl::hslToRGB(float h, float s, float l,
-                                       float &r, float &g, float &b) {
-  float c  = (1.0f - std::fabs(2.0f * l - 1.0f)) * s;
-  float hp = h / 60.0f;
-  float x  = c * (1.0f - std::fabs(std::fmod(hp, 2.0f) - 1.0f));
-  float m  = l - c / 2.0f;
-  if      (hp < 1.0f) { r = c; g = x; b = 0; }
-  else if (hp < 2.0f) { r = x; g = c; b = 0; }
-  else if (hp < 3.0f) { r = 0; g = c; b = x; }
-  else if (hp < 4.0f) { r = 0; g = x; b = c; }
-  else if (hp < 5.0f) { r = x; g = 0; b = c; }
-  else                { r = c; g = 0; b = x; }
-  r += m; g += m; b += m;
-}
 
 // ---- update helpers -----------------------------------------------------
 
@@ -230,8 +149,9 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   updatingFromColor = true;
 
   // HSB panel
-  float h, s, v;
-  rgbToHSV(currentColor.r(), currentColor.g(), currentColor.b(), h, s, v);
+  ArtifactCore::HSVColor hsv = ArtifactCore::ColorConversion::RGBToHSV(
+      currentColor.r(), currentColor.g(), currentColor.b());
+  float h = hsv.h, s = hsv.s, v = hsv.v;
   {
     const QSignalBlocker b1(hSlider),  b2(sSlider),  b3(bSlider);
     const QSignalBlocker b4(hSpin),    b5(sSpin),    b6(bSpin);
@@ -262,8 +182,9 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   }
 
   // HSL panel
-  float hl, sl, l;
-  rgbToHSL(currentColor.r(), currentColor.g(), currentColor.b(), hl, sl, l);
+  ArtifactCore::HSLColor hsl = ArtifactCore::ColorConversion::RGBToHSL(
+      currentColor.r(), currentColor.g(), currentColor.b());
+  float hl = hsl.h, sl = hsl.s, l = hsl.l;
   {
     const QSignalBlocker b1(hslHSlider), b2(hslSSlider), b3(hslLSlider);
     const QSignalBlocker b4(hslHSpin),   b5(hslSSpin),   b6(hslLSpin);
@@ -291,9 +212,8 @@ void FloatColorPicker::Impl::updateColorFromHSBSliders() {
   float h = static_cast<float>(hSlider->value());
   float s = static_cast<float>(sSlider->value()) / 1000.0f;
   float v = static_cast<float>(bSlider->value()) / 1000.0f;
-  float r, g, b;
-  hsvToRGB(h, s, v, r, g, b);
-  currentColor.setColor(r, g, b, currentColor.a());
+  auto rgb = ArtifactCore::ColorConversion::HSVToRGB({h, s, v});
+  currentColor.setColor(rgb[0], rgb[1], rgb[2], currentColor.a());
 }
 
 void FloatColorPicker::Impl::updateColorFromRGBSliders() {
@@ -308,9 +228,8 @@ void FloatColorPicker::Impl::updateColorFromHSLSliders() {
   float h = static_cast<float>(hslHSlider->value());
   float s = static_cast<float>(hslSSlider->value()) / 1000.0f;
   float l = static_cast<float>(hslLSlider->value()) / 1000.0f;
-  float r, g, b;
-  hslToRGB(h, s, l, r, g, b);
-  currentColor.setColor(r, g, b, currentColor.a());
+  auto rgb = ArtifactCore::ColorConversion::HSLToRGB({h, s, l});
+  currentColor.setColor(rgb[0], rgb[1], rgb[2], currentColor.a());
 }
 
 // ---- Constructor --------------------------------------------------------
@@ -532,18 +451,11 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
           [this, emitChanged](const ArtifactCore::FloatColor &wc) {
             if (impl_->updatingFromColor)
               return;
-            // Adopt H and S from wheel; keep current V and A
-            float h, s, v;
-            impl_->rgbToHSV(wc.r(), wc.g(), wc.b(), h, s, v);
-            float cv;
-            float dummy;
-            impl_->rgbToHSV(impl_->currentColor.r(),
-                            impl_->currentColor.g(),
-                            impl_->currentColor.b(),
-                            dummy, dummy, cv);
-            float r, g, b;
-            impl_->hsvToRGB(h, s, cv, r, g, b);
-            impl_->currentColor.setColor(r, g, b, impl_->currentColor.a());
+            ArtifactCore::HSVColor wheelHsv = ArtifactCore::ColorConversion::RGBToHSV(wc.r(), wc.g(), wc.b());
+            ArtifactCore::HSVColor curHsv = ArtifactCore::ColorConversion::RGBToHSV(
+                impl_->currentColor.r(), impl_->currentColor.g(), impl_->currentColor.b());
+            auto rgb = ArtifactCore::ColorConversion::HSVToRGB({wheelHsv.h, wheelHsv.s, curHsv.v});
+            impl_->currentColor.setColor(rgb[0], rgb[1], rgb[2], impl_->currentColor.a());
             impl_->updateAllFromColor();
             impl_->colorPreviewBar->setColor(impl_->currentColor);
             emitChanged();
@@ -554,14 +466,10 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
           [this, emitChanged](int val) {
             if (impl_->updatingFromColor)
               return;
-            float h, s, v;
-            impl_->rgbToHSV(impl_->currentColor.r(),
-                            impl_->currentColor.g(),
-                            impl_->currentColor.b(), h, s, v);
-            v = val / 1000.0f;
-            float r, g, b;
-            impl_->hsvToRGB(h, s, v, r, g, b);
-            impl_->currentColor.setColor(r, g, b, impl_->currentColor.a());
+            ArtifactCore::HSVColor curHsv = ArtifactCore::ColorConversion::RGBToHSV(
+                impl_->currentColor.r(), impl_->currentColor.g(), impl_->currentColor.b());
+            auto rgb = ArtifactCore::ColorConversion::HSVToRGB({curHsv.h, curHsv.s, val / 1000.0f});
+            impl_->currentColor.setColor(rgb[0], rgb[1], rgb[2], impl_->currentColor.a());
             impl_->updateAllFromColor();
             impl_->colorPreviewBar->setColor(impl_->currentColor);
             emitChanged();
