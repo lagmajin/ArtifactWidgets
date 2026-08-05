@@ -15,6 +15,7 @@ export namespace ArtifactWidgets {
 
 
 
+ [[deprecated("Use Artifact PropertyEditor controls instead")]]
  class WIDGET_LIBRARY_DLL_API AbstractKnobEditor:public QWidget {
   W_OBJECT(AbstractKnobEditor)
  private:

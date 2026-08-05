@@ -8,6 +8,7 @@ export module KnobEditorWidget;
 
 export namespace ArtifactWidgets {
 
+ [[deprecated("Use Artifact PropertyEditor controls instead")]]
  class KnobEditorWidget:public QWidget {
  private:
 
