@@ -6,8 +6,7 @@ export module  KnobColorPicker;
 export namespace ArtifactWidgets {
 
 
- [[deprecated("Use FloatColorPicker instead")]]
- class KnobColorPicker {
+ class [[deprecated("Use FloatColorPicker instead")]] KnobColorPicker {
  private:
 
  public:

@@ -51,8 +51,7 @@ export namespace ArtifactWidgets {
 
  class KnobCheckBoxPrivate;
 
- [[deprecated("Use the standard PropertyEditor boolean control instead")]]
- class KnobCheckBox :public QCheckBox{
+ class [[deprecated("Use the standard PropertyEditor boolean control instead")]] KnobCheckBox :public QCheckBox{
   W_OBJECT(KnobCheckBox);
  private:
   class Impl;

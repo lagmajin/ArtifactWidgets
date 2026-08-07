@@ -10,8 +10,7 @@ import Widgets.Knob;
 
 export namespace ArtifactCore {
 
- [[deprecated("Use Artifact PropertyEditor rotation controls instead")]]
- class  RotaryKnob:public QWidget {
+ class [[deprecated("Use Artifact PropertyEditor rotation controls instead")]] RotaryKnob:public QWidget {
   W_OBJECT(RotaryKnob)
  private:
   class Impl;
