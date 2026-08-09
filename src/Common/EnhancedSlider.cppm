@@ -57,6 +57,39 @@ QColor propertyColor(const QObject* object, const char* name, const QColor& fall
   return color.isValid() ? color : fallback;
 }
 
+QRect sliderGrooveRect(const QSlider* slider)
+{
+  constexpr int handleExtent = 14;
+  constexpr int trackInset = handleExtent / 2;
+  const QRect widgetRect = slider->rect();
+  if (slider->orientation() == Qt::Horizontal) {
+    return QRect(trackInset, widgetRect.center().y() - 3,
+                 std::max(1, widgetRect.width() - handleExtent), 7);
+  }
+  return QRect(widgetRect.center().x() - 3, trackInset, 7,
+               std::max(1, widgetRect.height() - handleExtent));
+}
+
+QRect sliderHandleRect(const QSlider* slider, const QRect& grooveRect)
+{
+  constexpr int handleExtent = 14;
+  const QStyleOptionSlider option = makeSliderOption(slider);
+  const int span = slider->orientation() == Qt::Horizontal
+      ? std::max(1, grooveRect.width() - 1)
+      : std::max(1, grooveRect.height() - 1);
+  const int pos = QStyle::sliderPositionFromValue(
+      slider->minimum(), slider->maximum(), slider->sliderPosition(), span,
+      option.upsideDown);
+  if (slider->orientation() == Qt::Horizontal) {
+    return QRect(grooveRect.left() + pos - handleExtent / 2,
+                 slider->rect().center().y() - handleExtent / 2,
+                 handleExtent, handleExtent);
+  }
+  return QRect(slider->rect().center().x() - handleExtent / 2,
+               grooveRect.top() + pos - handleExtent / 2,
+               handleExtent, handleExtent);
+}
+
 }
 
 class EnhancedSlider::Impl {
@@ -78,12 +111,7 @@ EnhancedSlider::~EnhancedSlider()
 int EnhancedSlider::valueFromPoint(const QPoint& point) const
 {
   const QStyleOptionSlider option = makeSliderOption(this);
-  QStyle* style = this->style();
-  const QRect grooveRect =
-      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderGroove, this);
-  if (!grooveRect.isValid()) {
-    return value();
-  }
+  const QRect grooveRect = sliderGrooveRect(this);
 
   const int minValue = minimum();
   const int maxValue = maximum();
@@ -113,10 +141,8 @@ void EnhancedSlider::mousePressEvent(QMouseEvent* event)
 
   setFocus(Qt::MouseFocusReason);
 
-  const QStyleOptionSlider option = makeSliderOption(this);
-  QStyle* style = this->style();
-  const QRect handleRect =
-      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderHandle, this);
+  const QRect grooveRect = sliderGrooveRect(this);
+  const QRect handleRect = sliderHandleRect(this, grooveRect);
   const QRect expandedHandle = handleRect.adjusted(-6, -6, 6, 6);
   const QPoint point = event->position().toPoint();
 
@@ -175,16 +201,8 @@ void EnhancedSlider::paintEvent(QPaintEvent* event)
 {
   Q_UNUSED(event);
 
-  QStyleOptionSlider option = makeSliderOption(this);
-  QStyle* style = this->style();
-  const QRect grooveRect =
-      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderGroove, this);
-  const QRect handleRect =
-      style->subControlRect(QStyle::CC_Slider, &option, QStyle::SC_SliderHandle, this);
-  if (!grooveRect.isValid() || !handleRect.isValid()) {
-    QSlider::paintEvent(event);
-    return;
-  }
+  const QRect grooveRect = sliderGrooveRect(this);
+  const QRect handleRect = sliderHandleRect(this, grooveRect);
 
   const QColor fillColor =
       propertyColor(this, "artifactFillColor", palette().color(QPalette::Highlight));
