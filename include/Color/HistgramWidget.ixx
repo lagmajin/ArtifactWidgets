@@ -17,7 +17,7 @@ export namespace ArtifactWidgets {
   Combined    // Luma + RGB overlaid
  };
 
- class WIDGET_LIBRARY_DLL_API HistgramWidget :public QWidget{
+ class WIDGET_LIBRARY_DLL_API HistogramWidget : public QWidget {
  private:
   class Impl;
   Impl* impl_;
@@ -25,8 +25,8 @@ export namespace ArtifactWidgets {
   void paintEvent(QPaintEvent* event) override;
   void resizeEvent(QResizeEvent* event) override;
  public:
-  explicit HistgramWidget(QWidget* parent = nullptr);
-  virtual ~HistgramWidget();
+  explicit HistogramWidget(QWidget* parent = nullptr);
+  virtual ~HistogramWidget();
 
   /// Update with a new video frame
   void updateFrame(const QImage& frame);
@@ -39,8 +39,12 @@ export namespace ArtifactWidgets {
   void setLogScale(bool enabled);
   bool logScale() const;
 
-  /// Legacy API
+  /// Compatibility API for the former misspelled entry point.
   void setHistgram();
+  void setHistogram();
  };
+
+ // Compatibility alias. Keep the old public name while downstream modules migrate.
+ using HistgramWidget = HistogramWidget;
 
 };

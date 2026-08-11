@@ -48,7 +48,7 @@ module HistgramWidget;
 namespace ArtifactWidgets {
 
  // ==================== Impl ====================
- class HistgramWidget::Impl {
+ class HistogramWidget::Impl {
  public:
   Impl();
   ~Impl();
@@ -69,16 +69,16 @@ namespace ArtifactWidgets {
   bool dirty_ = true;
  };
 
- HistgramWidget::Impl::Impl() {
+ HistogramWidget::Impl::Impl() {
   histR_.fill(0);
   histG_.fill(0);
   histB_.fill(0);
   histLuma_.fill(0);
  }
 
- HistgramWidget::Impl::~Impl() {}
+ HistogramWidget::Impl::~Impl() {}
 
- void HistgramWidget::Impl::computeHistogram(const QImage& frame) {
+ void HistogramWidget::Impl::computeHistogram(const QImage& frame) {
   histR_.fill(0);
   histG_.fill(0);
   histB_.fill(0);
@@ -124,7 +124,7 @@ namespace ArtifactWidgets {
   dirty_ = false;
  }
 
- void HistgramWidget::Impl::drawChannel(QPainter& painter, const QRect& rect,
+ void HistogramWidget::Impl::drawChannel(QPainter& painter, const QRect& rect,
   const std::array<int, 256>& data, int maxVal,
   const QColor& color, bool filled)
  {
@@ -184,53 +184,57 @@ namespace ArtifactWidgets {
   painter.drawPath(linePath);
  }
 
- // ==================== HistgramWidget ====================
+ // ==================== HistogramWidget ====================
 
- HistgramWidget::HistgramWidget(QWidget* parent)
+ HistogramWidget::HistogramWidget(QWidget* parent)
   : QWidget(parent), impl_(new Impl)
  {
   setMinimumSize(200, 120);
  }
 
- HistgramWidget::~HistgramWidget() {
+ HistogramWidget::~HistogramWidget() {
   delete impl_;
  }
 
- void HistgramWidget::setHistgram() {
+ void HistogramWidget::setHistgram() {
   // Legacy: trigger repaint
   update();
  }
 
- void HistgramWidget::updateFrame(const QImage& frame) {
+ void HistogramWidget::setHistogram() {
+  setHistgram();
+ }
+
+ void HistogramWidget::updateFrame(const QImage& frame) {
   impl_->currentFrame_ = frame;
   impl_->dirty_ = true;
   update();
  }
 
- void HistgramWidget::setMode(HistogramMode mode) {
+ void HistogramWidget::setMode(HistogramMode mode) {
   impl_->mode_ = mode;
   impl_->dirty_ = true;
   update();
  }
 
- HistogramMode HistgramWidget::mode() const {
+ HistogramMode HistogramWidget::mode() const {
   return impl_->mode_;
  }
 
- void HistgramWidget::setLogScale(bool enabled) {
+ void HistogramWidget::setLogScale(bool enabled) {
   impl_->logScale_ = enabled;
   update(); // No recompute needed, just re-render
  }
 
- bool HistgramWidget::logScale() const {
+ bool HistogramWidget::logScale() const {
   return impl_->logScale_;
  }
 
- void HistgramWidget::resizeEvent(QResizeEvent* event) {
+ void HistogramWidget::resizeEvent(QResizeEvent* event) {
   QWidget::resizeEvent(event);
  }
 
- void HistgramWidget::paintEvent(QPaintEvent* event) {
+ void HistogramWidget::paintEvent(QPaintEvent* event) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
 
