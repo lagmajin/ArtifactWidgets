@@ -85,7 +85,14 @@ set_target_properties(ArtifactWidgets PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
 
-if(TARGET __CMAKE::CXX23)
+if(TARGET ArtifactStdModule)
+    add_dependencies(ArtifactWidgets ArtifactStdModule)
+    if(MSVC AND _artifact_std_ifc)
+        target_compile_options(ArtifactWidgets PRIVATE
+            "/reference;std=${_artifact_std_ifc}"
+        )
+    endif()
+elseif(TARGET __CMAKE::CXX23)
     set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD ON)
 else()
     set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD OFF)
@@ -129,7 +136,7 @@ target_include_directories(ArtifactWidgets
 # ---------------------------------------------------------------------------
 # 依存関係
 # ---------------------------------------------------------------------------
-target_link_libraries(ArtifactWidgets PUBLIC ArtifactCore)
+target_link_libraries(ArtifactWidgets PUBLIC ArtifactCore ArtifactCoreAudio ArtifactCoreMedia ArtifactCoreUI ArtifactCoreFile)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Concurrent Multimedia)
 target_link_libraries(ArtifactWidgets PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Concurrent Qt6::Multimedia)
@@ -232,4 +239,8 @@ artifact_enable_delay_load(ArtifactWidgets
 
 if(WIN32)
     target_link_libraries(ArtifactWidgets PRIVATE dwmapi shell32 user32)
+endif()
+
+if(DEFINED ARTIFACT_USE_EXPLICIT_STD_IFC)
+    set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD OFF)
 endif()
