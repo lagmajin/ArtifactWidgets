@@ -1,6 +1,6 @@
 ﻿module;
-#include <DockWidget.h>
-#include <QBoxLayout>
+#include <QVBoxLayout>
+#include <QWidget>
 #include <QPushButton>
 #include <wobjectimpl.h>
 module DockWidget;
@@ -19,11 +19,14 @@ namespace ArtifactWidgets
  };
 
  Pane::Pane(const QString& title, QWidget* contentWidget, QWidget* parent /*= nullptr*/)
-  : ads::CDockWidget(title, parent), impl_(new Impl())
+   : QWidget(parent), impl_(new Impl())
  {
+  setWindowTitle(title);
   if (contentWidget) {
-   // CDockWidget の標準動作に完全に任せる（AutoScrollArea）
-   setWidget(contentWidget);
+   contentWidget->setParent(this);
+   auto *layout = new QVBoxLayout(this);
+   layout->setContentsMargins(0, 0, 0, 0);
+   layout->addWidget(contentWidget);
   }
  }
 

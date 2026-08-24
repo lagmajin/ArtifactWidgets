@@ -144,9 +144,6 @@ target_link_libraries(ArtifactWidgets PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6
 find_package(OpenCV REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC ${OpenCV_LIBS})
 
-find_package(qtadvanceddocking-qt6 REQUIRED)
-target_link_libraries(ArtifactWidgets PRIVATE ads::qtadvanceddocking-qt6)
-
 find_package(OpenMP REQUIRED)
 target_link_libraries(ArtifactWidgets PUBLIC OpenMP::OpenMP_CXX)
 
