@@ -21,7 +21,7 @@ export namespace ArtifactWidgets {
   W_OBJECT(ArtifactBasicVideoPreviewWidget)
  private:
   class Impl;
-  Impl* impl_;
+  Impl* impl_ = nullptr;
  public:
   explicit ArtifactBasicVideoPreviewWidget(QWidget*parent=nullptr);
   virtual ~ArtifactBasicVideoPreviewWidget();

@@ -42,6 +42,8 @@ namespace ArtifactWidgets {
   }
 
   const int rowBytes = frame.meta.width * 3;
+  if (frame.strideBytes < rowBytes) return {};
+  if (frame.bytes.size() < static_cast<size_t>(frame.strideBytes) * static_cast<size_t>(frame.meta.height)) return {};
   for (int y = 0; y < frame.meta.height; ++y) {
    std::memcpy(image.scanLine(y), frame.bytes.data() + static_cast<size_t>(y) * static_cast<size_t>(frame.strideBytes), static_cast<size_t>(rowBytes));
   }
@@ -90,7 +92,7 @@ namespace ArtifactWidgets {
  : decoder_(new ArtifactCore::FFmpegVideoDecoder()),
    thumbnailExtractor_(new ArtifactCore::FFmpegThumbnailExtractor()),
    view_(new QGraphicsView(&scene_)),
-   timer_(new QTimer())
+   timer_(new QTimer(view_))
  {
 
  }
@@ -134,6 +136,7 @@ namespace ArtifactWidgets {
  }
 
  ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/):QWidget(parent)
+  : impl_(new Impl())
  {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(impl_->view_);
@@ -143,7 +146,13 @@ namespace ArtifactWidgets {
 
  ArtifactBasicVideoPreviewWidget::~ArtifactBasicVideoPreviewWidget()
  {
-
+  if (impl_) {
+   impl_->timer_->stop();
+   // disconnect to avoid queued timeout after delete
+   QObject::disconnect(impl_->timer_, nullptr, this, nullptr);
+   delete impl_;
+   impl_ = nullptr;
+  }
  }
 
  void ArtifactBasicVideoPreviewWidget::dragEnterEvent(QDragEnterEvent* event)
@@ -166,27 +175,29 @@ namespace ArtifactWidgets {
 
  void ArtifactBasicVideoPreviewWidget::play()
  {
-  if (!impl_->videoFilePath_.isEmpty()) {
-    impl_->decoder_->openFile(impl_->videoFilePath_);
-    connect(impl_->timer_, &QTimer::timeout, this, [this]() {
-      QImage frame = decodedVideoFrameToQImage(impl_->decoder_->decodeNextVideoFrameRaw());
-      if (!frame.isNull()) {
-        impl_->scene_.clear();
-        impl_->scene_.addPixmap(QPixmap::fromImage(frame));
-        impl_->view_->fitInView(impl_->scene_.sceneRect(), Qt::KeepAspectRatio);
-      } else {
-        // End of video or error
-        stop();
-      }
-    });
-    impl_->timer_->start(33); // ~30 fps
-  }
+  if (!impl_ || impl_->videoFilePath_.isEmpty()) return;
+  impl_->decoder_->openFile(impl_->videoFilePath_);
+  QObject::disconnect(impl_->timer_, &QTimer::timeout, this, nullptr);
+  connect(impl_->timer_, &QTimer::timeout, this, [this]() {
+    if (!impl_) return;
+    QImage frame = decodedVideoFrameToQImage(impl_->decoder_->decodeNextVideoFrameRaw());
+    if (!frame.isNull()) {
+      impl_->scene_.clear();
+      impl_->scene_.addPixmap(QPixmap::fromImage(frame));
+      impl_->view_->fitInView(impl_->scene_.sceneRect(), Qt::KeepAspectRatio);
+    } else {
+      stop();
+    }
+  }, Qt::UniqueConnection);
+  if (!impl_->timer_->isActive()) impl_->timer_->start(33);
  }
 
  void ArtifactBasicVideoPreviewWidget::stop()
  {
+  if (!impl_) return;
+  QObject::disconnect(impl_->timer_, &QTimer::timeout, this, nullptr);
   impl_->timer_->stop();
-  impl_->decoder_->closeFile();
+  if (impl_->decoder_) impl_->decoder_->closeFile();
  }
 
 };
