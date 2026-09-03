@@ -135,8 +135,9 @@ namespace ArtifactWidgets {
   }
  }
 
- ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/):QWidget(parent)
-  : impl_(new Impl())
+ ArtifactBasicVideoPreviewWidget::ArtifactBasicVideoPreviewWidget(QWidget* parent/*=nullptr*/)
+  : QWidget(parent)
+  , impl_(new Impl())
  {
   auto layout = new QVBoxLayout(this);
   layout->addWidget(impl_->view_);
