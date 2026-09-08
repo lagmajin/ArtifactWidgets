@@ -5,6 +5,7 @@ module;
 #include <QtGui/QImage>
 #include <QtGui/QConicalGradient>
 #include <QtGui/QFont>
+#include <QtGui/QFontDatabase>
 #include <QtGui/QColor>
 #include <QtCore/QRect>
 #include <QtCore/QPoint>
@@ -133,7 +134,9 @@ namespace ArtifactWidgets {
   };
 
   const float r90 = radius * 0.9f;
-  painter.setFont(QFont("Consolas", 7));
+  auto scopeFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  scopeFont.setPointSize(7);
+  painter.setFont(scopeFont);
   for (const auto& t : targets) {
    int tx = cx + static_cast<int>(t.cb * r90);
    int ty = cy - static_cast<int>(t.cr * r90);

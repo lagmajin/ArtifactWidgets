@@ -3,6 +3,7 @@ module;
 #include <QtWidgets/QWidget>
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
+#include <QtGui/QFontDatabase>
 #include <wobjectimpl.h>
 #include <algorithm>
 #include <cmath>
@@ -659,7 +660,9 @@ namespace ArtifactWidgets {
    // Scale labels (IRE / percentage)
    int value = 100 - (i * 100 / divisions);
    painter.setPen(QColor(120, 120, 120));
-   painter.setFont(QFont("Consolas", 7));
+   auto scopeFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+   scopeFont.setPointSize(7);
+   painter.setFont(scopeFont);
    painter.drawText(2, y + 4, QString::number(value));
    painter.setPen(QPen(QColor(50, 50, 50), 1, Qt::DotLine));
   }

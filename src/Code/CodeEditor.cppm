@@ -4,6 +4,7 @@ module;
 #include <QScrollBar>
 #include <QPlainTextEdit>
 #include <QWidget>
+#include <QFontDatabase>
 #include <wobjectimpl.h>
 module CodeEditor;
 
@@ -129,7 +130,8 @@ namespace ArtifactWidgets {
   darkPal.setColor(QPalette::Base, QColor("#1E1E1E"));
   darkPal.setColor(QPalette::Text, QColor("#D4D4D4"));
   setPalette(darkPal);
-  QFont monoFont("Consolas", 12);
+  QFont monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  monoFont.setPointSize(12);
   monoFont.setStyleHint(QFont::Monospace);
   setFont(monoFont);
   setFrameShape(QFrame::NoFrame);

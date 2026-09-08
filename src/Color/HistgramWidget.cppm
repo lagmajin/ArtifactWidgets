@@ -1,6 +1,7 @@
 module;
 #include <QtGui/QPainter>
 #include <QtGui/QImage>
+#include <QtGui/QFontDatabase>
 #include <QtGui/QPainterPath>
 #include <algorithm>
 #include <cmath>
@@ -320,7 +321,9 @@ namespace ArtifactWidgets {
 
   // Scale labels
   painter.setPen(QColor(100, 100, 100));
-  painter.setFont(QFont("Consolas", 7));
+  auto scopeFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+  scopeFont.setPointSize(7);
+  painter.setFont(scopeFont);
   painter.drawText(plotRect.left(), plotRect.bottom() + 12, "0");
   painter.drawText(plotRect.left() + plotRect.width() / 2 - 8, plotRect.bottom() + 12, "128");
   painter.drawText(plotRect.right() - 18, plotRect.bottom() + 12, "255");

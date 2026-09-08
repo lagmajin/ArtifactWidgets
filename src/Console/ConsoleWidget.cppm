@@ -5,6 +5,7 @@ module;
 #include <QMenu>
 #include <QColor>
 #include <QFont>
+#include <QFontDatabase>
 #include <wobjectimpl.h>
 
 module ConsoleWidget;
@@ -55,7 +56,8 @@ namespace ArtifactWidgets {
         consolePal.setColor(QPalette::Base, QColor("#1E1E1E"));
         consolePal.setColor(QPalette::Text, QColor("#CCCCCC"));
         setPalette(consolePal);
-        QFont consoleFont("Consolas", 10);
+        QFont consoleFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        consoleFont.setPointSize(10);
         consoleFont.setStyleHint(QFont::Monospace);
         setFont(consoleFont);
         
