@@ -5,6 +5,7 @@ module;
 #include <QCursor>
 
 module DragSpinBox;
+import Core.ArtifactMath;
 
 namespace ArtifactWidgets {
 
@@ -48,7 +49,7 @@ void DragSpinBox::mouseMoveEvent(QMouseEvent* event) {
         if (impl_->dragging) {
             int step = singleStep();
             if (event->modifiers() & Qt::ShiftModifier) step *= 10;
-            if (event->modifiers() & Qt::ControlModifier) step = std::max(1, step / 10);
+            if (event->modifiers() & Qt::ControlModifier) step = ArtifactCore::artifactMax(1, step / 10);
 
             int newValue = impl_->startValue + (delta.x() * step);
             setValue(newValue);

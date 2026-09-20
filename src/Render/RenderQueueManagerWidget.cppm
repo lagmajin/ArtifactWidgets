@@ -40,11 +40,11 @@ module;
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <algorithm>
 #include <wobjectimpl.h>
 
 module Widgets.Render.Queue;
 
+import Core.ArtifactMath;
 import Render;
 import AppProgress;
 import Widgets.Utils.CSS;
@@ -152,7 +152,7 @@ void RenderQueueControlPanel::setRenderingState(bool rendering) {
 }
 
 void RenderQueueControlPanel::setTotalProgress(int percent) {
-  impl_->progressBar->setValue(std::clamp(percent, 0, 100));
+  impl_->progressBar->setValue(ArtifactCore::artifactClamp(percent, 0, 100));
 }
 
 // ─────────────────────────────────────────────────────────
@@ -429,7 +429,7 @@ void RenderQueueManagerJobPanel::dropEvent(QDropEvent *event) {
     } else if (pos.y() < viewport()->height() / 2) {
       toIndex = 0;
     }
-    toIndex = std::clamp(toIndex, 0, rowCount);
+    toIndex = ArtifactCore::artifactClamp(toIndex, 0, rowCount);
     if (fromIndex != toIndex) {
       emit jobDropped(fromIndex, toIndex);
     }
@@ -491,7 +491,7 @@ RenderQueueManagerWidget::Impl::~Impl() {
 namespace {
 
 QString formatHmsFromSeconds(qint64 seconds) {
-  seconds = std::max<qint64>(0, seconds);
+  seconds = ArtifactCore::artifactMax<qint64>(0, seconds);
   const qint64 hours = seconds / 3600;
   const qint64 minutes = (seconds % 3600) / 60;
   const qint64 secs = seconds % 60;
@@ -1068,7 +1068,7 @@ void RenderQueueManagerWidget::updateInfoPanel() {
                             Q_RETURN_ARG(int, totalProgress));
   impl_->controlPanel_->setTotalProgress(totalProgress);
   if (impl_->isRendering_) {
-    const int bucket = std::clamp(totalProgress / 25, 0, 4);
+    const int bucket = ArtifactCore::artifactClamp(totalProgress / 25, 0, 4);
     if (bucket != impl_->lastProgressBucket_ && totalProgress > 0) {
       impl_->lastProgressBucket_ = bucket;
       notifyBackgroundRender(
@@ -1088,9 +1088,9 @@ void RenderQueueManagerWidget::updateInfoPanel() {
       eta = QStringLiteral("00:00:00");
     } else if (totalProgress > 0) {
       const qint64 elapsedSecs =
-          std::max<qint64>(1, impl_->renderTimer_.elapsed() / 1000);
+          ArtifactCore::artifactMax<qint64>(1, impl_->renderTimer_.elapsed() / 1000);
       const qint64 remainingSecs =
-          (elapsedSecs * (100 - totalProgress)) / std::max(1, totalProgress);
+          (elapsedSecs * (100 - totalProgress)) / ArtifactCore::artifactMax(1, totalProgress);
       eta = formatHmsFromSeconds(remainingSecs);
     }
   }

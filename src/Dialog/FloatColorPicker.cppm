@@ -14,12 +14,12 @@ module;
 #include <QTabBar>
 #include <QVBoxLayout>
 #include <QColor>
-#include <cmath>
 #include <wobjectimpl.h>
 
 
 module FloatColorPickerDialog;
 
+import Core.ArtifactMath;
 import Color.Float;
 import Color.Conversion;
 import Widgets.Dialog.Abstract;
@@ -114,10 +114,10 @@ public:
 // ---- update helpers -----------------------------------------------------
 
 void FloatColorPicker::Impl::updateHexFromColor() {
-  int r = static_cast<int>(std::round(currentColor.r() * 255.0f));
-  int g = static_cast<int>(std::round(currentColor.g() * 255.0f));
-  int b = static_cast<int>(std::round(currentColor.b() * 255.0f));
-  int a = static_cast<int>(std::round(currentColor.a() * 255.0f));
+  int r = static_cast<int>(ArtifactCore::artifactRound(currentColor.r() * 255.0f));
+  int g = static_cast<int>(ArtifactCore::artifactRound(currentColor.g() * 255.0f));
+  int b = static_cast<int>(ArtifactCore::artifactRound(currentColor.b() * 255.0f));
+  int a = static_cast<int>(ArtifactCore::artifactRound(currentColor.a() * 255.0f));
   const QSignalBlocker bl(hexInput);
   hexInput->setText(QString("%1%2%3%4")
                         .arg(r, 2, 16, QChar('0'))
@@ -155,10 +155,10 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   {
     const QSignalBlocker b1(hSlider),  b2(sSlider),  b3(bSlider);
     const QSignalBlocker b4(hSpin),    b5(sSpin),    b6(bSpin);
-    hSlider->setValue(static_cast<int>(std::round(h)));
-    sSlider->setValue(static_cast<int>(std::round(s * 1000.0f)));
-    bSlider->setValue(static_cast<int>(std::round(v * 1000.0f)));
-    hSpin->setValue(static_cast<int>(std::round(h)));
+    hSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(h)));
+    sSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(s * 1000.0f)));
+    bSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0f)));
+    hSpin->setValue(static_cast<int>(ArtifactCore::artifactRound(h)));
     sSpin->setValue(static_cast<double>(s));
     bSpin->setValue(static_cast<double>(v));
   }
@@ -166,16 +166,16 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   // brightness slider (V channel)
   {
     const QSignalBlocker b(brightnessSlider);
-    brightnessSlider->setValue(static_cast<int>(std::round(v * 1000.0f)));
+    brightnessSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0f)));
   }
 
   // RGB panel
   {
     const QSignalBlocker b1(rSlider),   b2(gSlider),   b3(rgbBSlider);
     const QSignalBlocker b4(rSpin),     b5(gSpin),     b6(rgbBSpin);
-    rSlider->setValue(static_cast<int>(std::round(currentColor.r() * 1000.0f)));
-    gSlider->setValue(static_cast<int>(std::round(currentColor.g() * 1000.0f)));
-    rgbBSlider->setValue(static_cast<int>(std::round(currentColor.b() * 1000.0f)));
+    rSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(currentColor.r() * 1000.0f)));
+    gSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(currentColor.g() * 1000.0f)));
+    rgbBSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(currentColor.b() * 1000.0f)));
     rSpin->setValue(static_cast<double>(currentColor.r()));
     gSpin->setValue(static_cast<double>(currentColor.g()));
     rgbBSpin->setValue(static_cast<double>(currentColor.b()));
@@ -188,10 +188,10 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   {
     const QSignalBlocker b1(hslHSlider), b2(hslSSlider), b3(hslLSlider);
     const QSignalBlocker b4(hslHSpin),   b5(hslSSpin),   b6(hslLSpin);
-    hslHSlider->setValue(static_cast<int>(std::round(hl)));
-    hslSSlider->setValue(static_cast<int>(std::round(sl * 1000.0f)));
-    hslLSlider->setValue(static_cast<int>(std::round(l  * 1000.0f)));
-    hslHSpin->setValue(static_cast<int>(std::round(hl)));
+    hslHSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(hl)));
+    hslSSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(sl * 1000.0f)));
+    hslLSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(l  * 1000.0f)));
+    hslHSpin->setValue(static_cast<int>(ArtifactCore::artifactRound(hl)));
     hslSSpin->setValue(static_cast<double>(sl));
     hslLSpin->setValue(static_cast<double>(l));
   }
@@ -199,7 +199,7 @@ void FloatColorPicker::Impl::updateAllFromColor() {
   // Alpha (shared)
   {
     const QSignalBlocker b1(aSlider), b2(aSpin);
-    aSlider->setValue(static_cast<int>(std::round(currentColor.a() * 1000.0f)));
+    aSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(currentColor.a() * 1000.0f)));
     aSpin->setValue(static_cast<double>(currentColor.a()));
   }
 
@@ -510,13 +510,13 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   connect(d.sSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, hsbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->sSlider);
-            impl_->sSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->sSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             hsbSliderChanged();
           });
   connect(d.bSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, hsbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->bSlider);
-            impl_->bSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->bSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             hsbSliderChanged();
           });
 
@@ -549,19 +549,19 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   connect(d.rSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->rSlider);
-            impl_->rSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->rSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             rgbSliderChanged();
           });
   connect(d.gSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->gSlider);
-            impl_->gSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->gSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             rgbSliderChanged();
           });
   connect(d.rgbBSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, rgbSliderChanged](double v) {
             const QSignalBlocker bl(impl_->rgbBSlider);
-            impl_->rgbBSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->rgbBSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             rgbSliderChanged();
           });
 
@@ -600,13 +600,13 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   connect(d.hslSSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, hslSliderChanged](double v) {
             const QSignalBlocker bl(impl_->hslSSlider);
-            impl_->hslSSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->hslSSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             hslSliderChanged();
           });
   connect(d.hslLSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, hslSliderChanged](double v) {
             const QSignalBlocker bl(impl_->hslLSlider);
-            impl_->hslLSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->hslLSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             hslSliderChanged();
           });
 
@@ -628,7 +628,7 @@ FloatColorPicker::FloatColorPicker(QWidget *parent)
   connect(d.aSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           [this, emitChanged](double v) {
             const QSignalBlocker bl(impl_->aSlider);
-            impl_->aSlider->setValue(static_cast<int>(std::round(v * 1000.0)));
+            impl_->aSlider->setValue(static_cast<int>(ArtifactCore::artifactRound(v * 1000.0)));
             if (impl_->updatingFromColor) return;
             impl_->currentColor.setColor(
                 impl_->currentColor.r(), impl_->currentColor.g(),

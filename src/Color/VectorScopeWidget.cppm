@@ -9,13 +9,12 @@ module;
 #include <QtGui/QColor>
 #include <QtCore/QRect>
 #include <QtCore/QPoint>
-#include <algorithm>
-#include <cmath>
 #include <vector>
 #include <wobjectimpl.h>
 
 module VectorScopeWidget;
 
+import Core.ArtifactMath;
 import AbstractWidget;
 
 namespace ArtifactWidgets {
@@ -56,10 +55,10 @@ namespace ArtifactWidgets {
   const int cx = diameter / 2;
   const int cy = diameter / 2;
   const float radius = (diameter / 2.0f) * 0.9f; // 90% of the radius
-  const int alphaAdd = std::max(1, static_cast<int>(intensity_ * 8.0f));
+  const int alphaAdd = ArtifactCore::artifactMax(1, static_cast<int>(intensity_ * 8.0f));
 
   // Step through pixels (subsample for performance)
-  const int step = std::max(1, static_cast<int>(std::sqrt(frameW * frameH / 80000.0)));
+  const int step = ArtifactCore::artifactMax(1, static_cast<int>(ArtifactCore::artifactSqrt(frameW * frameH / 80000.0)));
 
   for (int fy = 0; fy < frameH; fy += step) {
    for (int fx = 0; fx < frameW; fx += step) {
@@ -76,8 +75,8 @@ namespace ArtifactWidgets {
     int sx = cx + static_cast<int>(cb * radius / 127.5f);
     int sy = cy - static_cast<int>(cr * radius / 127.5f); // Y is inverted
 
-    sx = std::clamp(sx, 0, diameter - 1);
-    sy = std::clamp(sy, 0, diameter - 1);
+    sx = ArtifactCore::artifactClamp(sx, 0, diameter - 1);
+    sy = ArtifactCore::artifactClamp(sy, 0, diameter - 1);
 
     QRgb existing = scopeImage_.pixel(sx, sy);
     int ea = qAlpha(existing);
@@ -86,10 +85,10 @@ namespace ArtifactWidgets {
     int eb = qBlue(existing);
 
     // Colorize trace by the pixel's own color
-    er = std::min(255, er + std::max(1, r * alphaAdd / 128));
-    eg = std::min(255, eg + std::max(1, g * alphaAdd / 128));
-    eb = std::min(255, eb + std::max(1, b * alphaAdd / 128));
-    ea = std::min(255, ea + alphaAdd * 2);
+    er = ArtifactCore::artifactMin(255, er + ArtifactCore::artifactMax(1, r * alphaAdd / 128));
+    eg = ArtifactCore::artifactMin(255, eg + ArtifactCore::artifactMax(1, g * alphaAdd / 128));
+    eb = ArtifactCore::artifactMin(255, eb + ArtifactCore::artifactMax(1, b * alphaAdd / 128));
+    ea = ArtifactCore::artifactMin(255, ea + alphaAdd * 2);
 
     scopeImage_.setPixel(sx, sy, qRgba(er, eg, eb, ea));
    }
@@ -150,8 +149,8 @@ namespace ArtifactWidgets {
    const float skinAngle = 123.0f * M_PI / 180.0f;
    painter.setPen(QPen(QColor(200, 150, 100), 1, Qt::DashLine));
    painter.drawLine(cx, cy,
-    cx + static_cast<int>(std::cos(skinAngle) * radius),
-    cy - static_cast<int>(std::sin(skinAngle) * radius));
+    cx + static_cast<int>(ArtifactCore::artifactCos(skinAngle) * radius),
+    cy - static_cast<int>(ArtifactCore::artifactSin(skinAngle) * radius));
   }
  }
 
@@ -187,7 +186,7 @@ namespace ArtifactWidgets {
  }
 
  void VectorScopeWidget::setIntensity(float intensity) {
-  impl_->intensity_ = std::clamp(intensity, 0.0f, 1.0f);
+  impl_->intensity_ = ArtifactCore::artifactClamp(intensity, 0.0f, 1.0f);
   impl_->dirty_ = true;
   update();
  }
@@ -210,7 +209,7 @@ namespace ArtifactWidgets {
 
   // Compute scope area (square, centered)
   const int margin = 15;
-  int side = std::min(width(), height()) - margin * 2;
+  int side = ArtifactCore::artifactMin(width(), height()) - margin * 2;
   if (side <= 0) return;
   const int radius = static_cast<int>(side / 2.0f * 0.9f);
   QRect scopeRect((width() - side) / 2, (height() - side) / 2 - 8, side, side);

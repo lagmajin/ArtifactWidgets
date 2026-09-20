@@ -4,8 +4,6 @@ module;
 #include <QtGui/QImage>
 #include <QtGui/QFontDatabase>
 #include <wobjectimpl.h>
-#include <algorithm>
-#include <cmath>
 #include <vector>
 #include <QtConcurrent>
 #include <QFutureWatcher>
@@ -18,8 +16,6 @@ module;
 #include <set>
 #include <unordered_set>
 #include <memory>
-#include <algorithm>
-#include <cmath>
 #include <functional>
 #include <optional>
 #include <utility>
@@ -44,6 +40,7 @@ module;
 #include <regex>
 #include <random>
 module WaveformScopeWidget;
+import Core.ArtifactMath;
 
 
 
@@ -95,7 +92,7 @@ namespace ArtifactWidgets {
 
   const int frameW = frame.width();
   const int frameH = frame.height();
-  const int alphaAdd = std::max(1, static_cast<int>(intensity_ * 12.0f));
+  const int alphaAdd = ArtifactCore::artifactMax(1, static_cast<int>(intensity_ * 12.0f));
 
   // Use scanLine for faster pixel access
   for (int x = 0; x < frameW && x < scopeW; ++x) {
@@ -110,12 +107,12 @@ namespace ArtifactWidgets {
      // ITU-R BT.709 luminance
      int luma = static_cast<int>(0.2126 * r + 0.7152 * g + 0.0722 * b);
      int sy = scopeH - 1 - (luma * (scopeH - 1) / 255);
-     sy = std::clamp(sy, 0, scopeH - 1);
+     sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
 
      QRgb existing = scopeImage.pixel(x, sy);
-     int er = std::min(255, qRed(existing) + alphaAdd);
-     int eg = std::min(255, qGreen(existing) + alphaAdd);
-     int eb = std::min(255, qBlue(existing) + alphaAdd);
+     int er = ArtifactCore::artifactMin(255, qRed(existing) + alphaAdd);
+     int eg = ArtifactCore::artifactMin(255, qGreen(existing) + alphaAdd);
+     int eb = ArtifactCore::artifactMin(255, qBlue(existing) + alphaAdd);
      scopeImage.setPixel(x, sy, qRgb(er, eg, eb));
     }
 
@@ -123,25 +120,25 @@ namespace ArtifactWidgets {
      // Red channel
      {
       int sy = scopeH - 1 - (r * (scopeH - 1) / 255);
-      sy = std::clamp(sy, 0, scopeH - 1);
+      sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
       QRgb existing = scopeImage.pixel(x, sy);
-      int nr = std::min(255, qRed(existing) + alphaAdd);
+      int nr = ArtifactCore::artifactMin(255, qRed(existing) + alphaAdd);
       scopeImage.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
      }
      // Green channel
      {
       int sy = scopeH - 1 - (g * (scopeH - 1) / 255);
-      sy = std::clamp(sy, 0, scopeH - 1);
+      sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
       QRgb existing = scopeImage.pixel(x, sy);
-      int ng = std::min(255, qGreen(existing) + alphaAdd);
+      int ng = ArtifactCore::artifactMin(255, qGreen(existing) + alphaAdd);
       scopeImage.setPixel(x, sy, qRgb(qRed(existing), ng, qBlue(existing)));
      }
      // Blue channel
      {
       int sy = scopeH - 1 - (b * (scopeH - 1) / 255);
-      sy = std::clamp(sy, 0, scopeH - 1);
+      sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
       QRgb existing = scopeImage.pixel(x, sy);
-      int nb = std::min(255, qBlue(existing) + alphaAdd);
+      int nb = ArtifactCore::artifactMin(255, qBlue(existing) + alphaAdd);
       scopeImage.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
      }
     }
@@ -149,20 +146,20 @@ namespace ArtifactWidgets {
     if (mode_ == WaveformMode::YCbCr) {
      // Cb
      float cb = 128.0f + (-0.1146f * r - 0.3854f * g + 0.5f * b);
-     int cbI = std::clamp(static_cast<int>(cb), 0, 255);
+     int cbI = ArtifactCore::artifactClamp(static_cast<int>(cb), 0, 255);
      int sy = scopeH - 1 - (cbI * (scopeH - 1) / 255);
-     sy = std::clamp(sy, 0, scopeH - 1);
+     sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
      QRgb existing = scopeImage.pixel(x, sy);
-     int nb = std::min(255, qBlue(existing) + alphaAdd);
+     int nb = ArtifactCore::artifactMin(255, qBlue(existing) + alphaAdd);
      scopeImage.setPixel(x, sy, qRgb(qRed(existing), qGreen(existing), nb));
 
      // Cr
      float cr = 128.0f + (0.5f * r - 0.4542f * g - 0.0458f * b);
-     int crI = std::clamp(static_cast<int>(cr), 0, 255);
+     int crI = ArtifactCore::artifactClamp(static_cast<int>(cr), 0, 255);
      sy = scopeH - 1 - (crI * (scopeH - 1) / 255);
-     sy = std::clamp(sy, 0, scopeH - 1);
+     sy = ArtifactCore::artifactClamp(sy, 0, scopeH - 1);
      existing = scopeImage.pixel(x, sy);
-     int nr = std::min(255, qRed(existing) + alphaAdd);
+     int nr = ArtifactCore::artifactMin(255, qRed(existing) + alphaAdd);
      scopeImage.setPixel(x, sy, qRgb(nr, qGreen(existing), qBlue(existing)));
     }
    }
@@ -203,7 +200,7 @@ namespace ArtifactWidgets {
  }
 
  void WaveformScopeWidget::setIntensity(float intensity) {
-  impl_->intensity_ = std::clamp(intensity, 0.0f, 1.0f);
+  impl_->intensity_ = ArtifactCore::artifactClamp(intensity, 0.0f, 1.0f);
   impl_->dirty_ = true;
   update();
  }
@@ -307,7 +304,7 @@ namespace ArtifactWidgets {
 
    const int frameW = scaledFrame.width();
    const int frameH = scaledFrame.height();
-   const int alphaAdd = std::max(1, static_cast<int>(intensity * 12.0f));
+   const int alphaAdd = ArtifactCore::artifactMax(1, static_cast<int>(intensity * 12.0f));
 
    for (int x = 0; x < frameW && x < width; ++x) {
     for (int fy = 0; fy < frameH; ++fy) {
@@ -321,7 +318,7 @@ namespace ArtifactWidgets {
       int luma = static_cast<int>(0.2126 * r + 0.7152 * g + 0.0722 * b);
       int sy = height - 1 - (luma * (height - 1) / 255);
       QRgb existing = scopeImage.pixel(x, sy);
-      int a = std::min(255, qAlpha(existing) + alphaAdd);
+      int a = ArtifactCore::artifactMin(255, qAlpha(existing) + alphaAdd);
       scopeImage.setPixel(x, sy, qRgba(r, g, b, a));
      } else if (mode == WaveformMode::RGB) {
       int sr = height - 1 - (r * (height - 1) / 255);
@@ -329,13 +326,13 @@ namespace ArtifactWidgets {
       int sb = height - 1 - (b * (height - 1) / 255);
 
       QRgb existingR = scopeImage.pixel(x, sr);
-      scopeImage.setPixel(x, sr, qRgba(255, 0, 0, std::min(255, qAlpha(existingR) + alphaAdd)));
+      scopeImage.setPixel(x, sr, qRgba(255, 0, 0, ArtifactCore::artifactMin(255, qAlpha(existingR) + alphaAdd)));
 
       QRgb existingG = scopeImage.pixel(x, sg);
-      scopeImage.setPixel(x, sg, qRgba(0, 255, 0, std::min(255, qAlpha(existingG) + alphaAdd)));
+      scopeImage.setPixel(x, sg, qRgba(0, 255, 0, ArtifactCore::artifactMin(255, qAlpha(existingG) + alphaAdd)));
 
       QRgb existingB = scopeImage.pixel(x, sb);
-      scopeImage.setPixel(x, sb, qRgba(0, 0, 255, std::min(255, qAlpha(existingB) + alphaAdd)));
+      scopeImage.setPixel(x, sb, qRgba(0, 0, 255, ArtifactCore::artifactMin(255, qAlpha(existingB) + alphaAdd)));
      }
     }
    }

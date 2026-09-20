@@ -14,12 +14,14 @@
 #include <QVBoxLayout>
 #include <QTimer>
 #include <cstring>
+#include <stdexcept>
+#include <type_traits>
+#include <variant>
 
 //#include "../Image/BasicImageViewWidget.hpp"
 
 module Widgets.VideoPreview;
 
-import std;
 
 import Codec.FFmpegVideoDecoder;
 import Codec.Thumbnail.FFmpeg;

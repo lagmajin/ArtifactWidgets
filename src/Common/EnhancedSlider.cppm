@@ -1,6 +1,5 @@
 module;
 
-#include <algorithm>
 
 #include <QMouseEvent>
 #include <QPainter>
@@ -12,6 +11,7 @@ module;
 #include <wobjectimpl.h>
 
 module EnhancedSlider;
+import Core.ArtifactMath;
 
 namespace ArtifactWidgets {
 
@@ -64,10 +64,10 @@ QRect sliderGrooveRect(const QSlider* slider)
   const QRect widgetRect = slider->rect();
   if (slider->orientation() == Qt::Horizontal) {
     return QRect(trackInset, widgetRect.center().y() - 3,
-                 std::max(1, widgetRect.width() - handleExtent), 7);
+                 ArtifactCore::artifactMax(1, widgetRect.width() - handleExtent), 7);
   }
   return QRect(widgetRect.center().x() - 3, trackInset, 7,
-               std::max(1, widgetRect.height() - handleExtent));
+               ArtifactCore::artifactMax(1, widgetRect.height() - handleExtent));
 }
 
 QRect sliderHandleRect(const QSlider* slider, const QRect& grooveRect)
@@ -75,8 +75,8 @@ QRect sliderHandleRect(const QSlider* slider, const QRect& grooveRect)
   constexpr int handleExtent = 14;
   const QStyleOptionSlider option = makeSliderOption(slider);
   const int span = slider->orientation() == Qt::Horizontal
-      ? std::max(1, grooveRect.width() - 1)
-      : std::max(1, grooveRect.height() - 1);
+      ? ArtifactCore::artifactMax(1, grooveRect.width() - 1)
+      : ArtifactCore::artifactMax(1, grooveRect.height() - 1);
   const int pos = QStyle::sliderPositionFromValue(
       slider->minimum(), slider->maximum(), slider->sliderPosition(), span,
       option.upsideDown);
@@ -120,14 +120,14 @@ int EnhancedSlider::valueFromPoint(const QPoint& point) const
   }
 
   if (orientation() == Qt::Horizontal) {
-    const int span = std::max(1, grooveRect.width() - 1);
-    const int position = std::clamp(point.x() - grooveRect.left(), 0, span);
+    const int span = ArtifactCore::artifactMax(1, grooveRect.width() - 1);
+    const int position = ArtifactCore::artifactClamp(point.x() - grooveRect.left(), 0, span);
     return QStyle::sliderValueFromPosition(
         minValue, maxValue, position, span, option.upsideDown);
   }
 
-  const int span = std::max(1, grooveRect.height() - 1);
-  const int positionFromTop = std::clamp(point.y() - grooveRect.top(), 0, span);
+  const int span = ArtifactCore::artifactMax(1, grooveRect.height() - 1);
+  const int positionFromTop = ArtifactCore::artifactClamp(point.y() - grooveRect.top(), 0, span);
   return QStyle::sliderValueFromPosition(
       minValue, maxValue, positionFromTop, span, option.upsideDown);
 }
@@ -229,8 +229,8 @@ void EnhancedSlider::paintEvent(QPaintEvent* event)
   painter.setBrush(trackColor);
   painter.drawRoundedRect(trackRect, 3.0, 3.0);
 
-  const double denom = std::max(1, maximum() - minimum());
-  const double t = std::clamp((value() - minimum()) / denom, 0.0, 1.0);
+  const double denom = ArtifactCore::artifactMax(1, maximum() - minimum());
+  const double t = ArtifactCore::artifactClamp((value() - minimum()) / denom, 0.0, 1.0);
   QRectF fillRect = trackRect;
   if (orientation() == Qt::Horizontal) {
     fillRect.setRight(trackRect.left() + trackRect.width() * t);
@@ -244,8 +244,8 @@ void EnhancedSlider::paintEvent(QPaintEvent* event)
 
   const QPointF handleCenter = handleRect.center();
   const qreal radius =
-      orientation() == Qt::Horizontal ? std::max<qreal>(6.0, handleRect.height() * 0.42)
-                                      : std::max<qreal>(6.0, handleRect.width() * 0.42);
+      orientation() == Qt::Horizontal ? ArtifactCore::artifactMax<qreal>(6.0, handleRect.height() * 0.42)
+                                      : ArtifactCore::artifactMax<qreal>(6.0, handleRect.width() * 0.42);
   painter.setPen(QPen(borderColor, 1.0));
   painter.setBrush(handleColor);
   painter.drawEllipse(handleCenter, radius, radius);

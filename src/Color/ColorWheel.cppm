@@ -5,12 +5,11 @@
 #include <QPainter>
 #include <QRadialGradient>
 #include <QWidget>
-#include <algorithm>
-#include <cmath>
 #include <wobjectimpl.h>
 
 module Widgets.ColorWheel;
 
+import Core.ArtifactMath;
 import Color.Float;
 
 namespace ArtifactWidgets {
@@ -30,12 +29,12 @@ public:
   void updateColorFromPosition(const QPoint &pos, const QRect &wheelRect) {
     QPointF center = wheelRect.center();
     QPointF delta = QPointF(pos) - center;
-    double radius = std::min(wheelRect.width(), wheelRect.height()) / 2.0;
+    double radius = ArtifactCore::artifactMin(wheelRect.width(), wheelRect.height()) / 2.0;
 
-    double distance = std::sqrt(delta.x() * delta.x() + delta.y() * delta.y());
-    double sat = std::min(1.0, distance / radius);
+    double distance = ArtifactCore::artifactSqrt(delta.x() * delta.x() + delta.y() * delta.y());
+    double sat = ArtifactCore::artifactMin(1.0, distance / radius);
 
-    double angle = std::atan2(delta.y(), delta.x()) * 180.0 / M_PI;
+    double angle = ArtifactCore::artifactAtan2(delta.y(), delta.x()) * 180.0 / M_PI;
     if (angle < 0)
       angle += 360.0;
 
@@ -95,8 +94,8 @@ public:
     double g = currentColor.g();
     double b = currentColor.b();
 
-    double max = std::max({r, g, b});
-    double min = std::min({r, g, b});
+    double max = ArtifactCore::artifactMax(r, g, b);
+    double min = ArtifactCore::artifactMin(r, g, b);
     v = max;
     double d = max - min;
     s = max == 0 ? 0 : d / max;
@@ -114,12 +113,12 @@ public:
         h += 360;
     }
 
-    double radius = std::min(wheelRect.width(), wheelRect.height()) / 2.0;
+    double radius = ArtifactCore::artifactMin(wheelRect.width(), wheelRect.height()) / 2.0;
     double rad = h * M_PI / 180.0;
     double dist = s * radius;
 
     QPointF center = wheelRect.center();
-    return center + QPointF(std::cos(rad) * dist, std::sin(rad) * dist);
+    return center + QPointF(ArtifactCore::artifactCos(rad) * dist, ArtifactCore::artifactSin(rad) * dist);
   }
 };
 
@@ -145,7 +144,7 @@ void ColorWheelWidget::paintEvent(QPaintEvent *event) {
   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
   QRect wheelRect = rect().adjusted(10, 10, -10, -10);
-  const int side = std::min(wheelRect.width(), wheelRect.height());
+  const int side = ArtifactCore::artifactMin(wheelRect.width(), wheelRect.height());
   wheelRect.setSize(QSize(side, side));
   wheelRect.moveCenter(rect().center());
   if (side <= 0) {
@@ -153,8 +152,8 @@ void ColorWheelWidget::paintEvent(QPaintEvent *event) {
   }
 
   const qreal dpr = devicePixelRatioF();
-  const QSize pixelSize(std::max(1, static_cast<int>(std::round(side * dpr))),
-                        std::max(1, static_cast<int>(std::round(side * dpr))));
+  const QSize pixelSize(ArtifactCore::artifactMax(1, static_cast<int>(ArtifactCore::artifactRound(side * dpr))),
+                        ArtifactCore::artifactMax(1, static_cast<int>(ArtifactCore::artifactRound(side * dpr))));
   if (impl_->wheelImage.isNull() || impl_->wheelImageSize != pixelSize) {
     impl_->wheelImage = QImage(pixelSize, QImage::Format_ARGB32_Premultiplied);
     impl_->wheelImage.setDevicePixelRatio(dpr);
@@ -164,22 +163,22 @@ void ColorWheelWidget::paintEvent(QPaintEvent *event) {
     const int h = impl_->wheelImage.height();
     const float cx = (w - 1) * 0.5f;
     const float cy = (h - 1) * 0.5f;
-    const float radius = std::min(w, h) * 0.5f - 1.0f;
+    const float radius = ArtifactCore::artifactMin(w, h) * 0.5f - 1.0f;
 
     for (int y = 0; y < h; ++y) {
       QRgb* line = reinterpret_cast<QRgb*>(impl_->wheelImage.scanLine(y));
       for (int x = 0; x < w; ++x) {
         const float dx = (static_cast<float>(x) - cx);
         const float dy = (static_cast<float>(y) - cy);
-        const float dist = std::sqrt(dx * dx + dy * dy);
+        const float dist = ArtifactCore::artifactSqrt(dx * dx + dy * dy);
         if (dist > radius) {
           line[x] = qRgba(0, 0, 0, 0);
           continue;
         }
 
-        float hue = std::atan2(dy, dx) * 180.0f / static_cast<float>(M_PI);
+        float hue = ArtifactCore::artifactAtan2(dy, dx) * 180.0f / static_cast<float>(M_PI);
         if (hue < 0.0f) hue += 360.0f;
-        const float sat = std::clamp(dist / radius, 0.0f, 1.0f);
+        const float sat = ArtifactCore::artifactClamp(dist / radius, 0.0f, 1.0f);
         const QColor c = QColor::fromHsvF(hue / 360.0f, sat, 1.0f, 1.0f);
         line[x] = c.rgba();
       }
