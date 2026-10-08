@@ -17,6 +17,15 @@ module;
 #include <QPainterPath>
 #include <QScrollArea>
 #include <QFrame>
+#include <QKeySequence>
+#include <QFont>
+#include <QPalette>
+#include <QColor>
+#include <QStringList>
+#include <QPoint>
+#include <QSizePolicy>
+#include <QBrush>
+#include <algorithm>
 #include <vector>
 #include <set>
 
@@ -26,6 +35,21 @@ import Input.Operator;
 
 namespace ArtifactWidgets
 {
+ // Standard button activation covers mouse, keyboard and accessibility without
+ // introducing another signal/slot connection.
+ class OverlayCloseButton final : public QPushButton {
+ public:
+  explicit OverlayCloseButton(QDialog* dialog) : QPushButton(QStringLiteral("×"), dialog), dialog_(dialog) {
+   setAccessibleName(QObject::tr("Close keyboard shortcuts"));
+   setAutoDefault(false);
+   setFixedSize(30, 30);
+  }
+ protected:
+  void nextCheckState() override { dialog_->reject(); }
+ private:
+  QDialog* dialog_;
+ };
+
  class KeyboardOverlayDialog::Impl
  {
 private:
@@ -39,6 +63,10 @@ private:
   QLineEdit* searchBox_;
   QFrame* keyboardPreview_;
   QScrollArea* tableScroll_;
+  QLabel* summary_ = nullptr;
+  struct KeyCap { QLabel* label = nullptr; int key = 0; };
+  KeyCap keyCaps_[96]{};
+  int keyCapCount_ = 0;
   bool isCompact_ = false;
 
   void reloadShortcuts();
@@ -50,9 +78,9 @@ private:
 KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent), impl_(new Impl(this))
  {
   setWindowTitle("Keyboard Shortcuts");
-  resize(800, 600);
+  resize(1120, 780);
+  setMinimumSize(820, 640);
 
-  setAttribute(Qt::WA_TranslucentBackground, true);
   setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
   setObjectName(QStringLiteral("KeyboardOverlayDialog"));
 
@@ -62,10 +90,26 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
 
   auto* shell = new QWidget(this);
   shell->setObjectName(QStringLiteral("KeyboardOverlayShell"));
-  shell->setAutoFillBackground(false);
+  shell->setAutoFillBackground(true);
   auto* shellLayout = new QVBoxLayout(shell);
   shellLayout->setContentsMargins(18, 18, 18, 18);
   shellLayout->setSpacing(12);
+
+  auto* header = new QHBoxLayout();
+  auto* title = new QLabel(tr("Keyboard Shortcuts"), shell);
+  QFont titleFont = title->font();
+  titleFont.setPointSize(titleFont.pointSize() + 3);
+  titleFont.setBold(true);
+  title->setFont(titleFont);
+  header->addWidget(title);
+  header->addStretch();
+  header->addWidget(new OverlayCloseButton(this));
+  shellLayout->addLayout(header);
+  auto* subtitle = new QLabel(tr("Current bindings • Search actions and keys"), shell);
+  QPalette muted = subtitle->palette();
+  muted.setColor(QPalette::WindowText, QColor(149, 160, 173));
+  subtitle->setPalette(muted);
+  shellLayout->addWidget(subtitle);
 
   // Search Bar
   auto* searchLayout = new QHBoxLayout();
@@ -73,16 +117,51 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
   impl_->searchBox_ = new QLineEdit();
   impl_->searchBox_->setPlaceholderText("Search shortcuts or actions...");
   impl_->searchBox_->setObjectName(QStringLiteral("KeyboardOverlaySearch"));
+  impl_->searchBox_->setMinimumHeight(34);
   searchLayout->addWidget(searchIcon);
   searchLayout->addWidget(impl_->searchBox_);
   shellLayout->addLayout(searchLayout);
 
   impl_->keyboardPreview_ = new QFrame(shell);
-  impl_->keyboardPreview_->setMinimumHeight(220);
-  impl_->keyboardPreview_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  impl_->keyboardPreview_->setMinimumHeight(270);
+  impl_->keyboardPreview_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   impl_->keyboardPreview_->setObjectName(QStringLiteral("KeyboardOverlayPreview"));
-  impl_->keyboardPreview_->setFrameStyle(QFrame::Box | QFrame::Plain);
-  impl_->keyboardPreview_->setLineWidth(1);
+  impl_->keyboardPreview_->setFrameShape(QFrame::NoFrame);
+  auto* keyboardLayout = new QVBoxLayout(impl_->keyboardPreview_);
+  keyboardLayout->setContentsMargins(0, 8, 0, 8);
+  keyboardLayout->setSpacing(6);
+  // Fixed ANSI reference geometry; bindings remain the source of highlights.
+  const char* rows[] = {
+   "Esc|F1|F2|F3|F4|F5|F6|F7|F8|F9|F10|F11|F12",
+   "`|1|2|3|4|5|6|7|8|9|0|-|=|Backspace",
+   "Tab|Q|W|E|R|T|Y|U|I|O|P|[|]|\\",
+   "Caps Lock|A|S|D|F|G|H|J|K|L|;|'|Enter",
+   "Shift|Z|X|C|V|B|N|M|,|.|/|Shift",
+   "Ctrl|Win|Alt|Space|Alt|Menu|Ctrl|Left|Down|Up|Right"
+  };
+  for (const auto* row : rows) {
+   auto* keyRow = new QHBoxLayout();
+   keyRow->setSpacing(6);
+   const auto legends = QString::fromLatin1(row).split(QLatin1Char('|'));
+   for (const auto& legend : legends) {
+    auto* cap = new QLabel(legend, impl_->keyboardPreview_);
+    cap->setAlignment(Qt::AlignCenter);
+    cap->setMinimumSize(24, 35);
+    cap->setAutoFillBackground(true);
+    cap->setFrameShape(QFrame::StyledPanel);
+    const auto sequence = QKeySequence::fromString(legend, QKeySequence::PortableText);
+    int key = sequence.isEmpty() ? 0 : int(sequence[0].key());
+    if (legend == QStringLiteral("Ctrl")) key = Qt::Key_Control;
+    else if (legend == QStringLiteral("Shift")) key = Qt::Key_Shift;
+    else if (legend == QStringLiteral("Alt")) key = Qt::Key_Alt;
+    else if (legend == QStringLiteral("Win")) key = Qt::Key_Meta;
+    else if (legend == QStringLiteral("Caps Lock")) key = Qt::Key_CapsLock;
+    impl_->keyCaps_[impl_->keyCapCount_++] = {cap, key};
+    const int stretch = legend == QStringLiteral("Space") ? 6 : legend.size() > 2 ? 2 : 1;
+    keyRow->addWidget(cap, stretch);
+   }
+   keyboardLayout->addLayout(keyRow);
+  }
   shellLayout->addWidget(impl_->keyboardPreview_);
 
   // Table
@@ -104,8 +183,20 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
   impl_->table_->setSelectionBehavior(QAbstractItemView::SelectRows);
   impl_->table_->setSelectionMode(QAbstractItemView::SingleSelection);
   impl_->table_->setShowGrid(false);
+  impl_->table_->setFrameShape(QFrame::NoFrame);
+  impl_->table_->verticalHeader()->setDefaultSectionSize(28);
+  impl_->table_->setAlternatingRowColors(true);
   impl_->tableScroll_->setWidget(impl_->table_);
   shellLayout->addWidget(impl_->tableScroll_);
+  auto* footer = new QHBoxLayout();
+  impl_->summary_ = new QLabel(shell);
+  impl_->summary_->setPalette(muted);
+  footer->addWidget(impl_->summary_);
+  footer->addStretch();
+  auto* hint = new QLabel(tr("Use the Help menu shortcut to toggle"), shell);
+  hint->setPalette(muted);
+  footer->addWidget(hint);
+  shellLayout->addLayout(footer);
   outerLayout->addWidget(shell);
 
   connect(impl_->searchBox_, &QLineEdit::textChanged, this, [this](const QString& text) {
@@ -123,7 +214,7 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
       impl_->rebuildKeyboardPreview();
   });
 
-  setOverlayOpacity(0.9f); // Default
+  setOverlayOpacity(1.0f);
   impl_->reloadShortcuts();
   impl_->rebuildKeyboardPreview();
  }
@@ -138,10 +229,10 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
      impl_->isCompact_ = enabled;
      if (enabled) {
          if (layout()) layout()->setContentsMargins(10, 10, 10, 10);
-         resize(600, 400);
+         resize(1040, 700);
      } else {
          if (layout()) layout()->setContentsMargins(18, 18, 18, 18);
-         resize(800, 600);
+         resize(1120, 780);
      }
  }
 
@@ -149,8 +240,13 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
  {
      setWindowOpacity(opacity);
      QPalette palette = this->palette();
-     palette.setColor(QPalette::Window, QColor(18, 20, 24, int(opacity * 255)));
-     palette.setColor(QPalette::Base, QColor(24, 27, 32, int(opacity * 255)));
+     palette.setColor(QPalette::Window, QColor(29, 33, 38));
+     palette.setColor(QPalette::Base, QColor(24, 28, 33));
+     palette.setColor(QPalette::AlternateBase, QColor(32, 37, 43));
+     palette.setColor(QPalette::Button, QColor(40, 46, 53));
+     palette.setColor(QPalette::ButtonText, QColor(220, 226, 233));
+     palette.setColor(QPalette::Highlight, QColor(48, 79, 106));
+     palette.setColor(QPalette::HighlightedText, QColor(240, 246, 252));
      palette.setColor(QPalette::Text, QColor(235, 240, 245));
      palette.setColor(QPalette::WindowText, QColor(235, 240, 245));
      setPalette(palette);
@@ -168,12 +264,16 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
 
  void KeyboardOverlayDialog::showCentered()
  {
+     impl_->reloadShortcuts();
+     // Keep the existing search connection as the sole filtering path.
+     impl_->searchBox_->clear();
+     impl_->rebuildKeyboardPreview();
      if (parentWidget() && parentWidget()->window()) {
          const auto rect = parentWidget()->window()->geometry();
-         move(rect.center() - rect.center() / 2);
+         move(rect.center() - QPoint(width() / 2, height() / 2));
      } else if (auto* screen = QGuiApplication::primaryScreen()) {
          const auto rect = screen->geometry();
-         move(rect.center() - rect.center() / 2);
+         move(rect.center() - QPoint(width() / 2, height() / 2));
      }
      show();
      impl_->searchBox_->setFocus();
@@ -265,36 +365,39 @@ KeyboardOverlayDialog::KeyboardOverlayDialog(QWidget* parent) : QDialog(parent),
  void KeyboardOverlayDialog::Impl::rebuildKeyboardPreview()
  {
      if (!keyboardPreview_) return;
-     auto* text = keyboardPreview_->findChild<QLabel*>(QString(), Qt::FindDirectChildrenOnly);
-     if (!text) {
-         text = new QLabel(keyboardPreview_);
-         text->setAlignment(Qt::AlignCenter);
-         text->setWordWrap(true);
-         text->setObjectName(QStringLiteral("KeyboardOverlayPreviewText"));
-         text->setGeometry(keyboardPreview_->rect().adjusted(16, 16, -16, -16));
-     }
-
      int visibleCount = 0;
-     QStringList categories;
      for (int row = 0; row < table_->rowCount(); ++row) {
-         if (table_->isRowHidden(row)) continue;
-         ++visibleCount;
-         const auto* item = table_->item(row, 2);
-         if (item && !categories.contains(item->text())) {
-             categories.push_back(item->text());
-         }
+         if (!table_->isRowHidden(row)) ++visibleCount;
      }
-
-     text->setText(QStringLiteral("Keyboard wireframe overlay\n%1 visible shortcuts\n%2")
-         .arg(visibleCount)
-         .arg(categories.isEmpty() ? QStringLiteral("No category matches") : categories.join(QStringLiteral("  •  "))));
-     QPalette textPalette = text->palette();
-     textPalette.setColor(QPalette::WindowText, QColor(217, 241, 255));
-     text->setPalette(textPalette);
-     QFont textFont = text->font();
-     textFont.setBold(true);
-     text->setFont(textFont);
-     keyboardPreview_->update();
+     summary_->setText(QObject::tr("%1 shortcuts • ANSI reference layout").arg(visibleCount));
+     // Cold UI refresh only: resolve key sequences on search, never on a frame path.
+     for (int index = 0; index < keyCapCount_; ++index) {
+         auto& cap = keyCaps_[index];
+         QStringList actions;
+         for (int row = 0; row < table_->rowCount(); ++row) {
+             if (table_->isRowHidden(row)) continue;
+             const auto* keyItem = table_->item(row, 4);
+             const auto* actionItem = table_->item(row, 3);
+             if (!keyItem || !actionItem || keyItem->text().isEmpty()) continue;
+             const auto sequence = QKeySequence::fromString(keyItem->text(), QKeySequence::NativeText);
+             bool matches = false;
+             for (int stroke = 0; stroke < sequence.count(); ++stroke) {
+                 const auto combination = sequence[stroke];
+                 const auto modifiers = combination.keyboardModifiers();
+                 matches |= combination.key() == cap.key;
+                 matches |= cap.key == Qt::Key_Control && modifiers.testFlag(Qt::ControlModifier);
+                 matches |= cap.key == Qt::Key_Shift && modifiers.testFlag(Qt::ShiftModifier);
+                 matches |= cap.key == Qt::Key_Alt && modifiers.testFlag(Qt::AltModifier);
+                 matches |= cap.key == Qt::Key_Meta && modifiers.testFlag(Qt::MetaModifier);
+             }
+             if (matches) actions.append(keyItem->text() + QStringLiteral("  —  ") + actionItem->text());
+         }
+         QPalette colors = owner_->palette();
+         colors.setColor(QPalette::Window, actions.isEmpty() ? QColor(40, 46, 53) : QColor(43, 69, 91));
+         colors.setColor(QPalette::WindowText, actions.isEmpty() ? QColor(180, 190, 201) : QColor(224, 238, 250));
+         cap.label->setPalette(colors);
+         cap.label->setToolTip(actions.join(QLatin1Char('\n')));
+     }
  }
 
 }
