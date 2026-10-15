@@ -76,13 +76,18 @@ endforeach()
 # ---------------------------------------------------------------------------
 add_library(ArtifactWidgets SHARED)
 
+if(ARTIFACT_ENABLE_LAYER_TEST)
+    set(_artifact_widgets_runtime_dir "${CMAKE_BINARY_DIR}/bin/LayerTests/$<CONFIG>")
+else()
+    set(_artifact_widgets_runtime_dir "${CMAKE_BINARY_DIR}/bin/$<CONFIG>")
+endif()
 set_target_properties(ArtifactWidgets PROPERTIES
     CXX_STANDARD 23
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    RUNTIME_OUTPUT_DIRECTORY "${_artifact_widgets_runtime_dir}"
+    LIBRARY_OUTPUT_DIRECTORY "${_artifact_widgets_runtime_dir}"
+    ARCHIVE_OUTPUT_DIRECTORY "${_artifact_widgets_runtime_dir}"
 )
 
 if(TARGET ArtifactStdModule)
