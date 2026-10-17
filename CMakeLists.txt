@@ -119,6 +119,22 @@ target_sources(ArtifactWidgets
     PUBLIC FILE_SET CXX_MODULES FILES ${WIDGETS_MODULES}
 )
 
+if(MSVC)
+    # MSBuild otherwise treats every .cppm as a module interface. Keep the
+    # exported providers in WIDGETS_MODULES and compile paired implementation
+    # units as C++ while CMake supplies their module dependency ordering.
+    foreach(_widget_impl IN LISTS WIDGETS_IMPL)
+        if(_widget_impl MATCHES "[.]cppm$")
+            file(STRINGS "${_widget_impl}" _widget_export_module
+                REGEX "^[ \t]*export[ \t]+module[ \t]+")
+            if(NOT _widget_export_module)
+                set_property(SOURCE "${_widget_impl}" APPEND PROPERTY
+                    VS_SETTINGS "CompileAs=CompileAsCpp")
+            endif()
+        endif()
+    endforeach()
+endif()
+
 if(APPLE)
     target_sources(ArtifactWidgets PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/Mac/QuickLook.mm"

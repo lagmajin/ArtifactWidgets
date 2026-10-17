@@ -10,7 +10,6 @@
 
 export module Widgets.VideoPreview;
 
-import std;
 import AbstractWidget;
 
 export namespace ArtifactWidgets {
