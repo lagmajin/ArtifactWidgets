@@ -2,6 +2,9 @@
 
 module;
 #include <wobjectimpl.h>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
 
 module Widgets.Knob;
 

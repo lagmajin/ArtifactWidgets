@@ -35,4 +35,6 @@ signals:
 
 } // namespace ArtifactWidgets
 
+export {
 W_REGISTER_ARGTYPE(ArtifactCore::FloatColor)
+}

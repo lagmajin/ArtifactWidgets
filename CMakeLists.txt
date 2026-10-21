@@ -17,9 +17,7 @@ foreach(file_path ${POTENTIAL_SOURCES})
     # Exclude third_party/wobjectimpl.h (C++20 modules incompatible)
     if(file_path MATCHES "\\.bak$" OR
        file_path MATCHES "include/third_party" OR
-       file_path MATCHES "third_party/wobject" OR
-       file_path MATCHES "src/Common/WidgetCounter\\.cppm" OR
-       file_path MATCHES "src/Knob/KnobEditorWidget/KnobCheckBox\\.cppm")
+       file_path MATCHES "third_party/wobject")
         continue()
     endif()
 
@@ -55,6 +53,28 @@ foreach(file_path ${POTENTIAL_SOURCES})
         endif()
     else()
         list(APPEND WIDGETS_IMPL "${file_path}")
+    endif()
+endforeach()
+
+# Gradual .cppm -> .cpp implementation-unit migration pilots. Keep the
+# renamed implementation explicit so this CMakeLists change triggers a fresh
+# configure and the source cannot disappear behind a stale file(GLOB) result.
+set(_widget_cpp_implementation_sources
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AlignmentComboBox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/ClickableLabel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/DialogPlacement.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/ToggleGlyphButton.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Viewer/ContentViewer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Dock/Pane.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Time/TimeCodeLabel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ColorViewLabel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/CollapsibleSection.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WidgetCounter.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/KnobCheckBox.cpp")
+foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
+    list(FIND WIDGETS_IMPL "${_widget_cpp_impl}" _widget_cpp_impl_idx)
+    if(_widget_cpp_impl_idx EQUAL -1)
+        list(APPEND WIDGETS_IMPL "${_widget_cpp_impl}")
     endif()
 endforeach()
 
@@ -130,6 +150,25 @@ if(MSVC)
             if(NOT _widget_export_module)
                 set_property(SOURCE "${_widget_impl}" APPEND PROPERTY
                     VS_SETTINGS "CompileAs=CompileAsCpp")
+            endif()
+        endif()
+    endforeach()
+endif()
+
+if(ARTIFACT_COMPILER_CLANG_GNU)
+    # The upstream GNU-style Clang driver treats .cppm as a module interface
+    # unless the implementation units are explicitly compiled as C++ source.
+    # Keep P1689 scanning enabled so imports and module partitions still get
+    # ordered against the public interfaces in WIDGETS_MODULES.
+    foreach(_widget_impl IN LISTS WIDGETS_IMPL)
+        if(_widget_impl MATCHES "[.]cppm$")
+            file(STRINGS "${_widget_impl}" _widget_export_module
+                REGEX "^[ \t]*export[ \t]+module[ \t]+")
+            if(NOT _widget_export_module)
+                set_source_files_properties("${_widget_impl}" PROPERTIES
+                    CXX_SCAN_FOR_MODULES ON)
+                set_property(SOURCE "${_widget_impl}" APPEND PROPERTY
+                    COMPILE_OPTIONS -x c++)
             endif()
         endif()
     endforeach()

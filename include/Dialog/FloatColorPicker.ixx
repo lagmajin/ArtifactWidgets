@@ -6,6 +6,7 @@ module;
 export module FloatColorPickerDialog;
 
 import Widgets.Dialog.Abstract;
+import Widgets.ColorWheel;
 import Color.Float;
 
 export namespace ArtifactWidgets
@@ -33,5 +34,3 @@ export namespace ArtifactWidgets
  };
 
 }
-
-W_REGISTER_ARGTYPE(ArtifactCore::FloatColor)

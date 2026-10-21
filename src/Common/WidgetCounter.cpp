@@ -1,41 +1,12 @@
-﻿#include <QHash>
-#include "QCoreApplication"
-#include "../../../ArtifactWidgets/include/Common/WidgetCounter.ixx"
-
-#include <iostream>
-#include <vector>
-#include <string>
-#include <map>
-#include <unordered_map>
-#include <set>
-#include <unordered_set>
-#include <memory>
-#include <algorithm>
-#include <cmath>
-#include <functional>
-#include <optional>
-#include <utility>
-#include <array>
+module;
+#include <QCoreApplication>
+#include <QHash>
+#include <QObject>
+#include <QString>
 #include <mutex>
-#include <thread>
-#include <chrono>
-#include <filesystem>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <type_traits>
-#include <variant>
-#include <any>
-#include <atomic>
-#include <condition_variable>
-#include <queue>
-#include <deque>
-#include <list>
-#include <tuple>
-#include <numeric>
-#include <regex>
-#include <random>
 #include <wobjectimpl.h>
+
+module WidgetCounter;
 
 namespace ArtifactWidgets {
 
@@ -53,6 +24,8 @@ public:
  void decrement();
  static WidgetCounter& getInstance();
 };
+
+WidgetCounter* WidgetCounter::Impl::s_instance = nullptr;
 
 WidgetCounter::Impl::~Impl()
 {

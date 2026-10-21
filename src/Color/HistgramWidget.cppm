@@ -3,6 +3,8 @@ module;
 #include <QtGui/QImage>
 #include <QtGui/QFontDatabase>
 #include <QtGui/QPainterPath>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QResizeEvent>
 #include <algorithm>
 #include <cmath>
 #include <array>

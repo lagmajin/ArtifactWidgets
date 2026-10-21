@@ -1,9 +1,12 @@
-﻿#include <QCheckBox>
+module;
+#include <QCheckBox>
 #include <QHBoxLayout>
-#include "../../../include/Knob/KnobCheckBox.ixx"
+#include <wobjectimpl.h>
 
+module Widgets.Knob.CheckBox;
 
 namespace ArtifactWidgets {
+	W_OBJECT_IMPL(KnobCheckBox)
 
 	class KnobCheckBox::Impl {
 	public:
