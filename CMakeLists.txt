@@ -61,6 +61,7 @@ endforeach()
 # configure and the source cannot disappear behind a stale file(GLOB) result.
 set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AbstractDialog.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AppProgress_Win.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Effect/WidgetGlowFrame.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Time/TimeCodeEditor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AlignmentComboBox.cpp"
