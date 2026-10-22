@@ -100,7 +100,8 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobSlider.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/RotaryKnob.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/AbstractKnobEditor.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/VolumeSlider.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/VolumeSlider.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/HeadPanel.cpp")
 foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
     list(FIND WIDGETS_IMPL "${_widget_cpp_impl}" _widget_cpp_impl_idx)
     if(_widget_cpp_impl_idx EQUAL -1)

@@ -1,19 +1,18 @@
-﻿module;
+module;
 
 #include <qboxlayout.h>
 #include <QLabel>
 #include <QPushButton>
 #include <wobjectimpl.h>
 #include <QWidget>
+#include <QString>
 
 
 module HeadPanel;
 
-import Widgets.Utils.CSS;
 
 namespace ArtifactWidgets
 {
- using namespace ArtifactCore;
 
  W_OBJECT_IMPL(HeaderPanel)
 
