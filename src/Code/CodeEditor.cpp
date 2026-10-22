@@ -5,6 +5,16 @@ module;
 #include <QPlainTextEdit>
 #include <QWidget>
 #include <QFontDatabase>
+#include <QChar>
+#include <QColor>
+#include <QFont>
+#include <QFrame>
+#include <QPaintEvent>
+#include <QPalette>
+#include <QRect>
+#include <QSize>
+#include <QString>
+#include <QtCore/Qt>
 #include <wobjectimpl.h>
 module CodeEditor;
 
