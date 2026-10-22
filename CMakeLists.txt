@@ -67,6 +67,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EnhancedSlider.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ColorWheel.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/InterpretFootageDialog.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/KeyboardOverlayDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Effect/WidgetGlowFrame.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Time/TimeCodeEditor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AlignmentComboBox.cpp"

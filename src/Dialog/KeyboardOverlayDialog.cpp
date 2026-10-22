@@ -25,6 +25,12 @@ module;
 #include <QPoint>
 #include <QSizePolicy>
 #include <QBrush>
+#include <QAbstractItemView>
+#include <QGuiApplication>
+#include <QLayout>
+#include <QObject>
+#include <QString>
+#include <QWidget>
 #include <algorithm>
 #include <vector>
 #include <set>
