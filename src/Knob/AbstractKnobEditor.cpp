@@ -1,10 +1,11 @@
-﻿//#include "../../include/Knob/AbstractKnobEditor.hpp"
+//#include "../../include/Knob/AbstractKnobEditor.hpp"
 
 module;
 #include <wobjectimpl.h>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QWidget>
 
 module Widgets.Knob;
 
