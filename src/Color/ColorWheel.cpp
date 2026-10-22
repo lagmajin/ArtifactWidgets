@@ -5,7 +5,15 @@
 #include <QPainter>
 #include <QRadialGradient>
 #include <QWidget>
+#include <QColor>
+#include <QPaintEvent>
+#include <QPen>
+#include <QPoint>
+#include <QPointF>
+#include <QRect>
+#include <QSize>
 #include <wobjectimpl.h>
+#include <cmath>
 
 module Widgets.ColorWheel;
 
