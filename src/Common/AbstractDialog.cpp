@@ -4,8 +4,12 @@ module;
 //#include <wobjectdefs.h>
 #include <wobjectimpl.h>
 #include <QDialog>
+#include <QFocusEvent>
+#include <QGraphicsDropShadowEffect>
+#include <QKeyEvent>
 #include <QMouseEvent>
-#include <QGraphicsEffect>
+#include <QPoint>
+#include <QWidget>
 module Widgets.Dialog.Abstract;
 
 
