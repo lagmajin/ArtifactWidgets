@@ -1,7 +1,10 @@
-﻿module;
+module;
 #include <QWidget>
 #include <QSlider>
 #include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPoint>
+#include <QWheelEvent>
 #include <wobjectimpl.h>
 module Widget.Knob.Slider;
 
