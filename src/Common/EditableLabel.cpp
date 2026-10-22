@@ -11,6 +11,12 @@ module;
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <QAbstractAnimation>
+#include <QHBoxLayout>
+#include <QObject>
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
 #include <vector>
 module Widgets.EditableLabel;
 
