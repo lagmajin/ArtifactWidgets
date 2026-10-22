@@ -1,6 +1,24 @@
 module;
 
 #include <QAction>
+#include <QAbstractItemModel>
+#include <QAbstractItemView>
+#include <QByteArray>
+#include <QChar>
+#include <QColor>
+#include <QHash>
+#include <QImage>
+#include <QMetaObject>
+#include <QModelIndex>
+#include <QObject>
+#include <QPoint>
+#include <QRect>
+#include <QSize>
+#include <QSizePolicy>
+#include <QString>
+#include <QStringList>
+#include <QStyleOptionViewItem>
+#include <QtCore/Qt>
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
