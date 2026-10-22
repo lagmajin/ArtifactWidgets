@@ -9,8 +9,15 @@ module;
 #include <QtGui/QColor>
 #include <QtCore/QRect>
 #include <QtCore/QPoint>
+#include <QtGui/qrgb.h>
+#include <QPaintEvent>
+#include <QPen>
+#include <QPointF>
+#include <QResizeEvent>
+#include <QString>
 #include <vector>
 #include <wobjectimpl.h>
+#include <cmath>
 
 module VectorScopeWidget;
 

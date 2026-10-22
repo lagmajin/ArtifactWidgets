@@ -66,6 +66,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EditableLabel.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EnhancedSlider.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ColorWheel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/InterpretFootageDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/KeyboardOverlayDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Effect/WidgetGlowFrame.cpp"
@@ -88,12 +89,11 @@ foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
     endif()
 endforeach()
 
-# These scope widgets are legacy implementation units paired with exported
+# These remaining scope widgets are legacy implementation units paired with exported
 # module interfaces. Keep them explicitly in the shared library so a stale
 # module scan cannot silently omit their exported method definitions.
 foreach(_scope_widget_impl IN ITEMS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/HistgramWidget.cppm"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cppm"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cppm")
     list(FIND WIDGETS_IMPL "${_scope_widget_impl}" _scope_widget_idx)
     if(_scope_widget_idx EQUAL -1)
