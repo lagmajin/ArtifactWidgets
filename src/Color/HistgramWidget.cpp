@@ -5,6 +5,13 @@ module;
 #include <QtGui/QPainterPath>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QResizeEvent>
+#include <QtGui/qrgb.h>
+#include <QtWidgets/QWidget>
+#include <QColor>
+#include <QFont>
+#include <QPen>
+#include <QRect>
+#include <QString>
 #include <algorithm>
 #include <cmath>
 #include <array>
