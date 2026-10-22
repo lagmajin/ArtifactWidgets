@@ -3,6 +3,7 @@ module;
 #include <wobjectimpl.h>
 
 #include <QSlider>
+#include <QWidget>
 module VolumeSlider;
 
 namespace ArtifactWidgets {
