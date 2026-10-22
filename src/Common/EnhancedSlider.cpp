@@ -8,6 +8,15 @@ module;
 #include <QStyle>
 #include <QStyleOptionSlider>
 #include <QVariant>
+#include <QColor>
+#include <QObject>
+#include <QPalette>
+#include <QPen>
+#include <QPoint>
+#include <QPointF>
+#include <QRectF>
+#include <QSlider>
+#include <QWidget>
 #include <wobjectimpl.h>
 
 module EnhancedSlider;

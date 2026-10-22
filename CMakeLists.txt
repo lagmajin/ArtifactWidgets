@@ -64,6 +64,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AppProgress_Win.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/DragSpinBox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EditableLabel.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EnhancedSlider.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/InterpretFootageDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Effect/WidgetGlowFrame.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Time/TimeCodeEditor.cpp"
