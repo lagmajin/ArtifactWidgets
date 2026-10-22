@@ -7,6 +7,15 @@ module;
 #include <vector>
 #include <QtConcurrent>
 #include <QFutureWatcher>
+#include <QtGui/qrgb.h>
+#include <QColor>
+#include <QFont>
+#include <QPaintEvent>
+#include <QPen>
+#include <QRect>
+#include <QResizeEvent>
+#include <QString>
+#include <QObject>
 
 #include <iostream>
 #include <vector>
