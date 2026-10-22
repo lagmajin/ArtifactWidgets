@@ -1,7 +1,11 @@
-﻿module;
+module;
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
 #include <QTextCharFormat>
+#include <QColor>
+#include <QFont>
+#include <QObject>
+#include <QString>
 #include <iostream>
 #include <vector>
 #include <string>
