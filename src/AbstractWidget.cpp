@@ -1,8 +1,11 @@
-﻿//#include "../include/Common/AbstractWidget.hpp"
+//#include "../include/Common/AbstractWidget.hpp"
 
 module;
 #include <wobjectimpl.h>
 #include <qevent.h>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QResizeEvent>
+#include <QtWidgets/QWidget>
 
 #include <iostream>
 #include <vector>
