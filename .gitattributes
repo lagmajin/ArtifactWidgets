@@ -5,6 +5,7 @@
 .gitattributes text eol=lf
 CMakeLists.txt text eol=lf
 *.cpp text eol=lf
+*.cppm text eol=lf
 
 ###############################################################################
 # Set default behavior for command prompt diff.
