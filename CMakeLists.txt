@@ -95,7 +95,8 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/KnobCheckBox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WinJumpList.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WinTaskbarProgress.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/CommandAction.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/CommandAction.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Console/ConsoleWidget.cpp")
 foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
     list(FIND WIDGETS_IMPL "${_widget_cpp_impl}" _widget_cpp_impl_idx)
     if(_widget_cpp_impl_idx EQUAL -1)
