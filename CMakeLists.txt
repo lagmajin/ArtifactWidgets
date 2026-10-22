@@ -70,6 +70,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ParadeScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/FloatColorPicker.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/InterpretFootageDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/KeyboardOverlayDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Effect/WidgetGlowFrame.cpp"

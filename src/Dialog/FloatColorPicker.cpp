@@ -14,6 +14,14 @@ module;
 #include <QTabBar>
 #include <QVBoxLayout>
 #include <QColor>
+#include <QtCore/QChar>
+#include <QtCore/Qt>
+#include <QtCore/QString>
+#include <QtCore/qglobal.h>
+#include <QtGui/QFont>
+#include <QtGui/QPalette>
+#include <QtWidgets/QAbstractSpinBox>
+#include <QtWidgets/QWidget>
 #include <wobjectimpl.h>
 
 
