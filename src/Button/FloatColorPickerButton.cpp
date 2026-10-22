@@ -1,6 +1,10 @@
 module;
 #include <QPainter>
 #include <QPushButton>
+#include <QColor>
+#include <QDialog>
+#include <QPalette>
+#include <QWidget>
 #include <wobjectimpl.h>
 
 module FloatColorPickerButton;
