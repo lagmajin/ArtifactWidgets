@@ -11,6 +11,11 @@ module;
 #include <QFont>
 #include <QPalette>
 #include <QColor>
+#include <QPaintEvent>
+#include <QString>
+#include <QtCore/Qt>
+#include <QWidget>
+#include <memory>
 #include <wobjectimpl.h>
 
 module AudioBusWidget;
