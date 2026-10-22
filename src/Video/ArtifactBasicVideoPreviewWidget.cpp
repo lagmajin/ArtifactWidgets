@@ -1,4 +1,4 @@
-﻿module;
+module;
 #include <wobjectcpp.h>
 #include <wobjectdefs.h>
 #include <wobjectimpl.h>
@@ -13,6 +13,13 @@
 #include <QImage>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QAudioFormat>
+#include <QByteArray>
+#include <QDragEnterEvent>
+#include <QObject>
+#include <QPixmap>
+#include <QSize>
+#include <QString>
 #include <cstring>
 #include <stdexcept>
 #include <type_traits>
