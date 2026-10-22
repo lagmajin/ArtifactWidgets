@@ -10,6 +10,10 @@ module;
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
+#include <QDialog>
+#include <QString>
+#include <QWidget>
+#include <memory>
 
 module Widgets.Dialog.InterpretFootage;
 
