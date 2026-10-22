@@ -67,6 +67,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/EnhancedSlider.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ColorWheel.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/HistgramWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/ParadeScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/VectorScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Color/WaveformScopeWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Dialog/InterpretFootageDialog.cpp"

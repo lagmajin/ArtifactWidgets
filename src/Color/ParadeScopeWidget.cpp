@@ -10,6 +10,16 @@ module;
 #include <vector>
 #include <QtConcurrent>
 #include <QFutureWatcher>
+#include <QtCore/QObject>
+#include <QtCore/QRect>
+#include <QtCore/QString>
+#include <QtCore/Qt>
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QPen>
+#include <QtGui/QResizeEvent>
+#include <QtGui/qrgb.h>
 
 #include <iostream>
 #include <vector>
