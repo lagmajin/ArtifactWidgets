@@ -3,6 +3,10 @@ module;
 #include <QMouseEvent>
 #include <QApplication>
 #include <QCursor>
+#include <QDoubleSpinBox>
+#include <QPoint>
+#include <QSpinBox>
+#include <QWidget>
 
 module DragSpinBox;
 import Core.ArtifactMath;
