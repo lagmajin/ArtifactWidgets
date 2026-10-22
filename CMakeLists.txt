@@ -104,7 +104,8 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/HeadPanel.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Render/RayTracerWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Preview/PreviewControlWidget.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Video/ArtifactBasicVideoPreviewWidget.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Video/ArtifactBasicVideoPreviewWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Viewer/ModelViewer.cpp")
 foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
     list(FIND WIDGETS_IMPL "${_widget_cpp_impl}" _widget_cpp_impl_idx)
     if(_widget_cpp_impl_idx EQUAL -1)
