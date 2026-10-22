@@ -1,4 +1,4 @@
-﻿module ;
+module ;
 #include <wobjectimpl.h>
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -15,6 +15,21 @@
 #include <QFile>
 #include <QtConcurrent>
 #include <QFutureWatcher>
+#include <QDebug>
+#include <QFocusEvent>
+#include <QGraphicsPixmapItem>
+#include <QImage>
+#include <QObject>
+#include <QPainter>
+#include <QPixmap>
+#include <QPoint>
+#include <QRectF>
+#include <QSize>
+#include <QString>
+#include <QUrl>
+#include <QWheelEvent>
+#include <QWidget>
+#include <QtCore/Qt>
 module BasicImageViewWidget;
 
 import Widgets.Effects.GlowFrame;
