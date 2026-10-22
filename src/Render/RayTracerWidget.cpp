@@ -7,6 +7,9 @@ module;
 #include <QPaintEvent>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QString>
+#include <QColor>
+#include <QRect>
 #include <QFileInfo>
 #include <QKeyEvent>
 #include <wobjectimpl.h>
