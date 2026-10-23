@@ -140,7 +140,7 @@ if(TARGET ArtifactStdModule)
             "/reference;std=${_artifact_std_ifc}"
         )
     endif()
-elseif(TARGET __CMAKE::CXX23)
+elseif(ARTIFACT_CXX23_MODULE_STD_AVAILABLE AND TARGET __CMAKE::CXX23)
     set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD ON)
 else()
     set_property(TARGET ArtifactWidgets PROPERTY CXX_MODULE_STD OFF)
