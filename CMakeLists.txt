@@ -66,6 +66,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Code/CodeEditor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Code/SyntaxHighlighter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Render/RenderQueueManagerWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Render/BackendSettingWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AbstractWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/AbstractWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AbstractDialog.cpp"
@@ -94,6 +95,7 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/CollapsibleSection.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WidgetCounter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/KnobCheckBox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/KnobEditorWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WinJumpList.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/WinTaskbarProgress.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/CommandAction.cpp"
@@ -107,7 +109,8 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Preview/PreviewControlWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Video/ArtifactBasicVideoPreviewWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Viewer/ModelViewer.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/GraphicsItemFloatImageItem.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/GraphicsItemFloatImageItem.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/NodeWireGraphicItem.cpp")
 foreach(_widget_cpp_impl IN LISTS _widget_cpp_implementation_sources)
     list(FIND WIDGETS_IMPL "${_widget_cpp_impl}" _widget_cpp_impl_idx)
     if(_widget_cpp_impl_idx EQUAL -1)
