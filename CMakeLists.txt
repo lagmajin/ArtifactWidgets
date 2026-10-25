@@ -56,7 +56,7 @@ foreach(file_path ${POTENTIAL_SOURCES})
     endif()
 endforeach()
 
-# Gradual .cppm -> .cpp implementation-unit migration pilots. Keep the
+# Gradual .cppm -> .cpp source-migration pilots. Keep the
 # renamed implementation explicit so this CMakeLists change triggers a fresh
 # configure and the source cannot disappear behind a stale file(GLOB) result.
 set(_widget_cpp_implementation_sources
@@ -66,6 +66,10 @@ set(_widget_cpp_implementation_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Code/CodeEditor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Code/SyntaxHighlighter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Render/RenderQueueManagerWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Render/BackendSettingWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AbstractWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Knob/KnobEditorWidget/KnobEditorWidget.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/NodeWireGraphicItem.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/AbstractWidget.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AbstractDialog.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Common/AppProgress_Win.cpp"
@@ -150,9 +154,9 @@ endif()
 if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE /WX-)
     # Enable C++23 standard (latest)
-    target_compile_options(ArtifactWidgets PRIVATE /std:c++latest)
+    target_compile_options(ArtifactWidgets PRIVATE $<$<BOOL:${ARTIFACT_COMPILER_MSVC_CL}>:/std:c++latest>)
     # Enable modules support
-    target_compile_options(ArtifactWidgets PRIVATE /experimental:module)
+    target_compile_options(ArtifactWidgets PRIVATE $<$<BOOL:${ARTIFACT_COMPILER_MSVC_CL}>:/experimental:module>)
     # Enable full C++23 library support
     target_compile_options(ArtifactWidgets PRIVATE /Zc:__cplusplus /permissive-)
 endif()
@@ -178,11 +182,11 @@ if(MSVC)
     endforeach()
 endif()
 
-if(ARTIFACT_COMPILER_CLANG_GNU)
-    # The upstream GNU-style Clang driver treats .cppm as a module interface
-    # unless the implementation units are explicitly compiled as C++ source.
-    # Keep P1689 scanning enabled so imports and module partitions still get
-    # ordered against the public interfaces in WIDGETS_MODULES.
+if(ARTIFACT_COMPILER_CLANG_GNU OR ARTIFACT_COMPILER_CLANG_CL)
+    # Keep Clang's P1689 scan enabled for implementation units and import
+    # consumers regardless of whether they use the legacy .cppm or migrated
+    # .cpp extension. Upstream GNU-style Clang additionally needs -x c++ for
+    # .cppm so a module implementation is not classified as an interface.
     foreach(_widget_impl IN LISTS WIDGETS_IMPL)
         if(_widget_impl MATCHES "[.]cppm$")
             file(STRINGS "${_widget_impl}" _widget_export_module
@@ -190,8 +194,17 @@ if(ARTIFACT_COMPILER_CLANG_GNU)
             if(NOT _widget_export_module)
                 set_source_files_properties("${_widget_impl}" PROPERTIES
                     CXX_SCAN_FOR_MODULES ON)
-                set_property(SOURCE "${_widget_impl}" APPEND PROPERTY
-                    COMPILE_OPTIONS -x c++)
+                if(ARTIFACT_COMPILER_CLANG_GNU)
+                    set_property(SOURCE "${_widget_impl}" APPEND PROPERTY
+                        COMPILE_OPTIONS -x c++)
+                endif()
+            endif()
+        elseif(_widget_impl MATCHES "[.]cpp$")
+            file(STRINGS "${_widget_impl}" _widget_module_declarations
+                REGEX "^[ \t]*(export[ \t]+)?(module[ \t]+[A-Za-z_][A-Za-z0-9_.:]*|import[ \t]+[^;]+)[ \t]*;")
+            if(_widget_module_declarations)
+                set_source_files_properties("${_widget_impl}" PROPERTIES
+                    CXX_SCAN_FOR_MODULES ON)
             endif()
         endif()
     endforeach()
