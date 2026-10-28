@@ -1,5 +1,6 @@
 module;
 
+#include <compare>
 #include <QWindow>
 
 #include "..\Define\DllExportMacro.hpp"

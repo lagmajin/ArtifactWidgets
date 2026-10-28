@@ -1,5 +1,6 @@
 module;
 
+#include <compare>
 #include <QtWidgets/QGraphicsItem>
 
 export module GraphicsFloatImageItem;
