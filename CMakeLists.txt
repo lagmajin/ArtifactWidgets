@@ -159,6 +159,10 @@ if(ARTIFACT_FRONTEND_MSVC)
     target_compile_options(ArtifactWidgets PRIVATE $<$<BOOL:${ARTIFACT_COMPILER_MSVC_CL}>:/experimental:module>)
     # Enable full C++23 library support
     target_compile_options(ArtifactWidgets PRIVATE /Zc:__cplusplus /permissive-)
+    if(ARTIFACT_COMPILER_MSVC_CL)
+        target_compile_options(ArtifactWidgets PRIVATE
+            "/FI${CMAKE_CURRENT_SOURCE_DIR}/../ArtifactCore/include/Compat/QtListForward.h")
+    endif()
 endif()
 
 target_sources(ArtifactWidgets
